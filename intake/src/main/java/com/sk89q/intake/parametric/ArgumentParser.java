@@ -30,6 +30,7 @@ import com.sk89q.intake.parametric.annotation.Classifier;
 import com.sk89q.intake.parametric.annotation.Optional;
 import com.sk89q.intake.parametric.annotation.Switch;
 
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -251,7 +252,7 @@ public final class ArgumentParser {
 
                         optionType = (type == boolean.class || type == Boolean.class) ? OptionType.flag(((Switch) annotation).value()) : OptionType.valueFlag(((Switch) annotation).value());
 
-                    } else if (annotation instanceof Optional) {
+                    } else if (annotation instanceof Optional || annotation instanceof Nullable) {
                         if (optionType != null) {
                             throw new IllegalParameterException("Both @Optional and @Switch were found on the same element for parameter #" + index);
                         }
@@ -260,9 +261,11 @@ public final class ArgumentParser {
 
                         optionType = OptionType.optionalPositional();
 
-                        String[] value = ((Optional) annotation).value();
-                        if (value.length > 0) {
-                            defaultValue = ImmutableList.copyOf(value);
+                        if (annotation instanceof Optional) {
+                            String[] value = ((Optional) annotation).value();
+                            if (value.length > 0) {
+                                defaultValue = ImmutableList.copyOf(value);
+                            }
                         }
                     }
                 }
