@@ -20,7 +20,6 @@
 package com.sk89q.intake.example.parametric;
 
 import com.sk89q.intake.Command;
-import com.sk89q.intake.Require;
 import com.sk89q.intake.example.parametric.model.Body;
 import com.sk89q.intake.example.parametric.model.CelestialType;
 import com.sk89q.intake.example.parametric.model.Universe;
@@ -37,14 +36,12 @@ public class UniverseCommands {
         return temp * 9.0 / 5.0 + 32;
     }
 
-    @Command(aliases = "settype", desc = "Set the type of an object")
-    @Require("body.settype")
+    @Command(aliases = "settype", desc = "Set the type of an object", permissions = "body.settype")
     public void setType(Body body, CelestialType type) {
         body.setType(type);
     }
 
-    @Command(aliases = "settemp", desc = "Set the mean temperature of an object")
-    @Require("body.settemp")
+    @Command(aliases = "settemp", desc = "Set the mean temperature of an object", permissions = "body.settemp")
     public void setTemp(Body body, double meanTemp, @Switch('f') boolean inFahrenheit) {
         if (inFahrenheit) {
             meanTemp = fahrenheitToCelsius(meanTemp);
@@ -52,16 +49,14 @@ public class UniverseCommands {
         body.setMeanTemperature(meanTemp);
     }
 
-    @Command(aliases = "setdesc", desc = "Set the description of an object")
-    @Require("body.setdesc")
+    @Command(aliases = "setdesc", desc = "Set the description of an object", permissions = "body.setdesc")
     public void setDesc(Body body, @Text String desc) {
         // @Text is a classifier that overrides the normal String provider
         // This @Text provider uses up the rest of the arguments
         body.setDescription(desc);
     }
 
-    @Command(aliases = "info", desc = "Show information about an object")
-    @Require("body.info")
+    @Command(aliases = "info", desc = "Show information about an object", permissions = "body.info")
     public void info(Body body, @Switch('f') boolean inFahrenheit) {
         System.out.println("type: " + body.getType());
         if (inFahrenheit) {
@@ -74,8 +69,7 @@ public class UniverseCommands {
         }
     }
 
-    @Command(aliases = "delete", desc = "Delete a celestial body")
-    @Require("body.deathstar")
+    @Command(aliases = "delete", desc = "Delete a celestial body", permissions = "body.deathstar")
     public void delete(Universe universe, String name) {
         universe.remove(name);
     }

@@ -20,7 +20,6 @@
 package com.sk89q.intake.parametric.handler;
 
 import com.sk89q.intake.ImmutableDescription;
-import com.sk89q.intake.Require;
 import com.sk89q.intake.parametric.ArgumentParser;
 import com.sk89q.intake.parametric.ParametricBuilder;
 
@@ -34,9 +33,6 @@ public interface InvokeListener {
     
     /**
      * Create a new invocation handler.
-     * 
-     * <p>An example use of an {@link InvokeHandler} would be to verify permissions
-     * added by the {@link Require} annotation.</p>
      * 
      * <p>For simple {@link InvokeHandler}, an object can implement both this
      * interface and {@link InvokeHandler}.</p>

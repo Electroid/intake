@@ -102,4 +102,12 @@ public @interface Command {
      */
     boolean anyFlags() default false;
 
+    /**
+     * A list of permissions, evaluated as a union of the permissions to
+     * test whether the caller is permitted to use the command
+     *
+     * @return a list of permissions
+     */
+    String[] permissions() default {};
+
 }

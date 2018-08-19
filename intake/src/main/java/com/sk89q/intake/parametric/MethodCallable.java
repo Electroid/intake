@@ -45,14 +45,12 @@ final class MethodCallable extends AbstractParametricCallable {
     private final Object object;
     private final Method method;
     private final Description description;
-    private final List<String> permissions;
 
-    private MethodCallable(ParametricBuilder builder, ArgumentParser parser, Object object, Method method, Description description, List<String> permissions) {
+    private MethodCallable(ParametricBuilder builder, ArgumentParser parser, Object object, Method method, Description description) {
         super(builder, parser);
         this.object = object;
         this.method = method;
         this.description = description;
-        this.permissions = permissions;
     }
 
     @Override
@@ -77,17 +75,16 @@ final class MethodCallable extends AbstractParametricCallable {
 
     @Override
     public boolean testPermission(Namespace namespace) {
-        if (permissions != null) {
-            for (String perm : permissions) {
-                if (getBuilder().getAuthorizer().testPermission(namespace, perm)) {
-                    return true;
-                }
-            }
-
-            return false;
-        } else {
+        List<String> permissions = getDescription().getPermissions();
+        if (permissions.isEmpty()) {
             return true;
         }
+        for (String perm : permissions) {
+            if (getBuilder().getAuthorizer().testPermission(namespace, perm)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     static MethodCallable create(ParametricBuilder builder, Object object, Method method) throws IllegalParameterException {
@@ -116,14 +113,8 @@ final class MethodCallable extends AbstractParametricCallable {
                 .setParameters(parser.getUserParameters())
                 .setShortDescription(!definition.desc().isEmpty() ? definition.desc() : null)
                 .setHelp(!definition.help().isEmpty() ? definition.help() : null)
-                .setUsageOverride(!definition.usage().isEmpty() ? definition.usage() : null);
-
-        Require permHint = method.getAnnotation(Require.class);
-        List<String> permissions = null;
-        if (permHint != null) {
-            descBuilder.setPermissions(Arrays.asList(permHint.value()));
-            permissions = Arrays.asList(permHint.value());
-        }
+                .setUsageOverride(!definition.usage().isEmpty() ? definition.usage() : null)
+                .setPermissions(Arrays.asList(definition.permissions()));
 
         for (InvokeListener listener : builder.getInvokeListeners()) {
             listener.updateDescription(commandAnnotations, parser, descBuilder);
@@ -131,7 +122,7 @@ final class MethodCallable extends AbstractParametricCallable {
 
         Description description = descBuilder.build();
 
-        MethodCallable callable = new MethodCallable(builder, parser, object, method, description, permissions);
+        MethodCallable callable = new MethodCallable(builder, parser, object, method, description);
         callable.setCommandAnnotations(ImmutableList.copyOf(method.getAnnotations()));
         callable.setIgnoreUnusedFlags(ignoreUnusedFlags);
         callable.setUnusedFlags(unusedFlags);

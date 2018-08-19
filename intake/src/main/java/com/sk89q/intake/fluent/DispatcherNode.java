@@ -19,10 +19,7 @@
 
 package com.sk89q.intake.fluent;
 
-import com.sk89q.intake.CommandCallable;
-import com.sk89q.intake.dispatcher.Dispatcher;
 import com.sk89q.intake.dispatcher.SimpleDispatcher;
-import com.sk89q.intake.parametric.ParametricBuilder;
 
 /**
  * A collection of commands.
