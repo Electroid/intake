@@ -25,11 +25,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates an optional parameter.
+ * Indicates an optional parameter with a default value.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.PARAMETER, ElementType.FIELD })
-public @interface Optional {
+public @interface Default {
     
     /**
      * The default value to use if no value is set.

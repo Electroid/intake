@@ -27,7 +27,7 @@ import com.google.common.collect.Sets;
 import com.sk89q.intake.*;
 import com.sk89q.intake.argument.*;
 import com.sk89q.intake.parametric.annotation.Classifier;
-import com.sk89q.intake.parametric.annotation.Optional;
+import com.sk89q.intake.parametric.annotation.Default;
 import com.sk89q.intake.parametric.annotation.Switch;
 
 import javax.annotation.Nullable;
@@ -247,22 +247,22 @@ public final class ArgumentParser {
 
                     if (annotation instanceof Switch) {
                         if (optionType != null) {
-                            throw new IllegalParameterException("Both @Optional and @Switch were found on the same element for parameter #" + index);
+                            throw new IllegalParameterException("Both @Default and @Switch were found on the same element for parameter #" + index);
                         }
 
                         optionType = (type == boolean.class || type == Boolean.class) ? OptionType.flag(((Switch) annotation).value()) : OptionType.valueFlag(((Switch) annotation).value());
 
-                    } else if (annotation instanceof Optional || annotation instanceof Nullable) {
+                    } else if (annotation instanceof Default || annotation instanceof Nullable) {
                         if (optionType != null) {
-                            throw new IllegalParameterException("Both @Optional and @Switch were found on the same element for parameter #" + index);
+                            throw new IllegalParameterException("Both @Default and @Switch were found on the same element for parameter #" + index);
                         }
 
                         seenOptionalParameter = true;
 
                         optionType = OptionType.optionalPositional();
 
-                        if (annotation instanceof Optional) {
-                            String[] value = ((Optional) annotation).value();
+                        if (annotation instanceof Default) {
+                            String[] value = ((Default) annotation).value();
                             if (value.length > 0) {
                                 defaultValue = ImmutableList.copyOf(value);
                             }
