@@ -35,7 +35,10 @@ import com.sk89q.intake.util.auth.AuthorizationException;
 
 import java.util.Collections;
 
-public class GroupExample {
+public final class GroupExample {
+
+    private GroupExample() {
+    }
 
     public static void main(String[] appArgs) {
         Injector injector = Intake.createInjector();
