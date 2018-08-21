@@ -11,16 +11,6 @@
         <module>core</module>
         <module>bukkit</module>
     </modules>
-    <repositories>
-        <repository>
-            <id>pa-snapshots</id>
-            <url>https://repo.extension.ws/content/repositories/snapshots</url>
-        </repository>
-        <repository>
-            <id>pa-releases</id>
-            <url>https://repo.extension.ws/content/repositories/releases</url>
-        </repository>
-    </repositories>
     <build>
         <finalName>${project.name}</finalName>
         <sourceDirectory>core/src/main/java/</sourceDirectory>

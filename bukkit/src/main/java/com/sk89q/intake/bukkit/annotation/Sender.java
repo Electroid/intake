@@ -1,0 +1,14 @@
+package com.sk89q.intake.bukkit.annotation;
+
+import com.sk89q.intake.parametric.annotation.Classifier;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+/**
+ * Represents a {@link org.bukkit.command.CommandSender} of
+ * a command, that must be a {@link org.bukkit.entity.Player}.
+ */
+@Classifier
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Sender {}

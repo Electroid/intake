@@ -30,19 +30,19 @@ package com.sk89q.intake.argument;
  */
 public class ArgumentException extends Exception {
 
-    protected ArgumentException() {
+    public ArgumentException() {
         super();
     }
 
-    protected ArgumentException(String message) {
+    public ArgumentException(String message) {
         super(message);
     }
 
-    protected ArgumentException(String message, Throwable cause) {
+    public ArgumentException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    protected ArgumentException(Throwable cause) {
+    public ArgumentException(Throwable cause) {
         super(cause);
     }
 
