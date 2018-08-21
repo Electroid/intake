@@ -22,6 +22,7 @@ package com.sk89q.intake.parametric.provider;
 import com.google.common.collect.ImmutableList;
 import com.sk89q.intake.argument.ArgumentParseException;
 import com.sk89q.intake.argument.Arguments;
+import com.sk89q.intake.argument.Namespace;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -49,13 +50,15 @@ public class EnumProviderTest {
 
     @Test
     public void testGetSuggestions() throws Exception {
-        assertThat(provider.getSuggestions(""), containsInAnyOrder("small", "medium", "large", "very_large"));
-        assertThat(provider.getSuggestions("s"), containsInAnyOrder("small"));
-        assertThat(provider.getSuggestions("la"), containsInAnyOrder("large"));
-        assertThat(provider.getSuggestions("very"), containsInAnyOrder("very_large"));
-        assertThat(provider.getSuggestions("verylarg"), containsInAnyOrder("very_large"));
-        assertThat(provider.getSuggestions("very_"), containsInAnyOrder("very_large"));
-        assertThat(provider.getSuggestions("tiny"), Matchers.<String>empty());
+        Namespace namespace = new Namespace();
+
+        assertThat(provider.getSuggestions("", namespace, ImmutableList.<Annotation>of()), containsInAnyOrder("small", "medium", "large", "very_large"));
+        assertThat(provider.getSuggestions("s", namespace, ImmutableList.<Annotation>of()), containsInAnyOrder("small"));
+        assertThat(provider.getSuggestions("la", namespace, ImmutableList.<Annotation>of()), containsInAnyOrder("large"));
+        assertThat(provider.getSuggestions("very", namespace, ImmutableList.<Annotation>of()), containsInAnyOrder("very_large"));
+        assertThat(provider.getSuggestions("verylarg", namespace, ImmutableList.<Annotation>of()), containsInAnyOrder("very_large"));
+        assertThat(provider.getSuggestions("very_", namespace, ImmutableList.<Annotation>of()), containsInAnyOrder("very_large"));
+        assertThat(provider.getSuggestions("tiny", namespace, ImmutableList.<Annotation>of()), Matchers.<String>empty());
     }
 
     enum Size {

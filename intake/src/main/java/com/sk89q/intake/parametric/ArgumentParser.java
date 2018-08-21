@@ -20,10 +20,7 @@
 package com.sk89q.intake.parametric;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import com.google.common.reflect.TypeToken;
 import com.sk89q.intake.*;
 import com.sk89q.intake.argument.*;
@@ -47,12 +44,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class ArgumentParser {
 
-    private final List<ParameterEntry> parameters;
+    private final Map<Parameter, ParameterEntry> parameters;
     private final List<Parameter> userParams;
     private final Set<Character> valueFlags;
 
-    private ArgumentParser(List<ParameterEntry> parameters, List<Parameter> userParams, Set<Character> valueFlags) {
-        this.parameters = ImmutableList.copyOf(parameters);
+    private ArgumentParser(Map<Parameter, ParameterEntry> parameters, List<Parameter> userParams, Set<Character> valueFlags) {
+        this.parameters = ImmutableMap.copyOf(parameters);
         this.userParams = ImmutableList.copyOf(userParams);
         this.valueFlags = ImmutableSet.copyOf(valueFlags);
     }
@@ -99,9 +96,10 @@ public final class ArgumentParser {
      */
     public Object[] parseArguments(CommandArgs args, boolean ignoreUnusedFlags, Set<Character> unusedFlags) throws ArgumentException, ProvisionException {
         Object[] parsedObjects = new Object[parameters.size()];
+        List<ParameterEntry> entries = Lists.newArrayList(parameters.values());
 
         for (int i = 0; i < parameters.size(); i++) {
-            ParameterEntry entry = parameters.get(i);
+            ParameterEntry entry = entries.get(i);
             OptionType optionType = entry.getParameter().getOptionType();
             CommandArgs argsForParameter = optionType.transform(args);
 
@@ -126,6 +124,27 @@ public final class ArgumentParser {
         checkUnconsumed(args, ignoreUnusedFlags, unusedFlags);
 
         return parsedObjects;
+    }
+
+    /**
+     * Parse the given arguments into a list of suggestions.
+     *
+     * @param arguments What the user has typed so far
+     * @param namespace The namespace to send to providers
+     * @return The list of suggestions
+     */
+    public List<String> parseSuggestions(String arguments, Namespace namespace) {
+        String[] split = CommandContext.split(arguments);
+
+        int argId = split.length - 1;
+        String arg = split[argId];
+
+        if(argId > userParams.size()) return ImmutableList.of();
+        Parameter parameter = userParams.get(argId);
+        if(parameter == null) return ImmutableList.of();
+
+        ParameterEntry entry = parameters.get(parameter);
+        return entry.getBinding().getProvider().getSuggestions(arg, namespace, entry.getModifiers());
     }
 
     private Object getDefaultValue(ParameterEntry entry, CommandArgs arguments) {
@@ -157,7 +176,7 @@ public final class ArgumentParser {
                     break;
                 }
 
-                for (ParameterEntry parameter : parameters) {
+                for (ParameterEntry parameter : parameters.values()) {
                     Character paramFlag = parameter.getParameter().getOptionType().getFlag();
                     if (paramFlag != null && flag == paramFlag) {
                         found = true;
@@ -198,7 +217,7 @@ public final class ArgumentParser {
      */
     public static class Builder {
         private final Injector injector;
-        private final List<ParameterEntry> parameters = Lists.newArrayList();
+        private final Map<Parameter, ParameterEntry> parameters = Maps.newLinkedHashMap(); // Order matters
         private final List<Parameter> userProvidedParameters = Lists.newArrayList();
         private final Set<Character> valueFlags = Sets.newHashSet();
         private boolean seenOptionalParameter = false;
@@ -241,8 +260,12 @@ public final class ArgumentParser {
             List<Annotation> modifiers = Lists.newArrayList();
             boolean seenJavaOptional = false;
 
-            Supplier<IllegalParameterException> exceptionSupplier = () ->
-                new IllegalParameterException("Optional<?>, @Default, @Nullable, and @Switch cannot be mixed for parameter #" + index);
+            Supplier<IllegalParameterException> exceptionSupplier = new Supplier<IllegalParameterException>() {
+                @Override
+                public IllegalParameterException get() {
+                    return new IllegalParameterException("Optional<?>, @Default, @Nullable, and @Switch cannot be mixed for parameter #" + index);
+                }
+            };
 
             if (TypeToken.of(Optional.class).isAssignableFrom(type)) {
                 type = ((ParameterizedType) type).getActualTypeArguments()[0];
@@ -316,7 +339,7 @@ public final class ArgumentParser {
                 userProvidedParameters.add(parameter);
             }
 
-            parameters.add(entry);
+            parameters.put(parameter, entry);
         }
 
         /**

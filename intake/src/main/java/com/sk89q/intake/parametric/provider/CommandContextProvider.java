@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableList;
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.argument.CommandContext;
+import com.sk89q.intake.argument.Namespace;
 import com.sk89q.intake.parametric.Provider;
 import com.sk89q.intake.parametric.ProvisionException;
 
@@ -53,7 +54,7 @@ public final class CommandContextProvider implements Provider<CommandContext> {
     }
 
     @Override
-    public List<String> getSuggestions(String prefix) {
+    public List<String> getSuggestions(String prefix, Namespace namespace, List<? extends Annotation> modifiers) {
         return ImmutableList.of();
     }
 
