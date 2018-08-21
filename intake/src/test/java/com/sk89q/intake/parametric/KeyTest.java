@@ -59,5 +59,5 @@ public class KeyTest {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.PARAMETER)
     private @interface MyClassifier {}
-    
+
 }

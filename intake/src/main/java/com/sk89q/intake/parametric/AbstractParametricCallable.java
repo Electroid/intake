@@ -163,8 +163,14 @@ public abstract class AbstractParametricCallable implements CommandCallable {
 
         String calledCommand = !parentCommands.isEmpty() ? parentCommands.get(parentCommands.size() - 1) : "_";
         String[] split = CommandContext.split(calledCommand + " " + stringArguments);
-        CommandContext context = new CommandContext(split, parser.getValueFlags(), false, namespace);
+
+
+        final CommandContext context = new CommandContext(split, parser.getValueFlags(), false, namespace);
+        namespace.put(CommandContext.class, context);
+
         final CommandArgs commandArgs = Arguments.viewOf(context);
+        namespace.put(CommandArgs.class, commandArgs);
+
         List<InvokeHandler> handlers = new ArrayList<InvokeHandler>();
 
         // Provide help if -? is specified
@@ -178,9 +184,6 @@ public abstract class AbstractParametricCallable implements CommandCallable {
         }
 
         try {
-            namespace.put(CommandArgs.class, commandArgs);
-            namespace.put(CommandContext.class, context);
-
             boolean invoke = true;
 
             // preProcess
