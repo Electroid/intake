@@ -4,11 +4,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sk89q.intake</groupId>
-    <artifactId>intake</artifactId>
+    <artifactId>intake-parent</artifactId>
     <version>5.0-SNAPSHOT</version>
+    <modules>
+        <module>core</module>
+        <module>bukkit</module>
+    </modules>
+    <repositories>
+        <repository>
+            <id>pa-snapshots</id>
+            <url>https://repo.extension.ws/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+            <id>pa-releases</id>
+            <url>https://repo.extension.ws/content/repositories/releases</url>
+        </repository>
+    </repositories>
     <build>
         <finalName>${project.name}</finalName>
-        <sourceDirectory>${project.basedir}/src/main/java/</sourceDirectory>
+        <sourceDirectory>core/src/main/java/</sourceDirectory>
         <resources>
             <resource>
                 <directory>../src/main/resources</directory>
@@ -32,25 +46,6 @@
             </plugin>
         </plugins>
     </build>
-    <dependencies>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>23.0</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>1.3</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
