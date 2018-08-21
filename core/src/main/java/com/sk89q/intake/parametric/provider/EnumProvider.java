@@ -58,11 +58,6 @@ public class EnumProvider<T extends Enum<T>> implements Provider<T> {
         this.enumClass = enumClass;
     }
 
-    @Override
-    public boolean isProvided() {
-        return false;
-    }
-
     @Nullable
     @Override
     public T get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException {

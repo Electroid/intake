@@ -31,16 +31,6 @@ import java.util.List;
 
 abstract class NumberProvider<T extends Number> implements Provider<T> {
 
-    @Override
-    public boolean isProvided() {
-        return false;
-    }
-
-    @Override
-    public List<String> getSuggestions(String prefix, Namespace namespace, List<? extends Annotation> modifiers) {
-        return Collections.emptyList();
-    }
-
     /**
      * Try to parse numeric input as either a number or a mathematical expression.
      *

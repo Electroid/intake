@@ -6,6 +6,7 @@
     <groupId>com.sk89q.intake</groupId>
     <artifactId>intake-parent</artifactId>
     <version>5.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <modules>
         <module>core</module>
         <module>bukkit</module>

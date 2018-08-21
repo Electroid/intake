@@ -19,6 +19,7 @@
 
 package com.sk89q.intake.parametric;
 
+import com.google.common.collect.ImmutableList;
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.argument.Namespace;
@@ -33,6 +34,7 @@ import java.util.List;
  * <p>Providers do the heavy work of reading passed in arguments and
  * transforming them into Java objects.</p>
  */
+@FunctionalInterface
 public interface Provider<T> {
 
     /**
@@ -41,7 +43,9 @@ public interface Provider<T> {
      *
      * @return Whether values are provided without use of the arguments
      */
-    boolean isProvided();
+    default boolean isProvided() {
+        return false;
+    }
 
     /**
      * Provide a value given the arguments.
@@ -66,6 +70,8 @@ public interface Provider<T> {
      * @param modifiers The modifiers on the parameter
      * @return A list of suggestions
      */
-    List<String> getSuggestions(String prefix, Namespace namespace, List<? extends Annotation> modifiers);
+    default List<String> getSuggestions(String prefix, Namespace namespace, List<? extends Annotation> modifiers) {
+        return ImmutableList.of();
+    }
 
 }

@@ -19,10 +19,7 @@
 
 package com.sk89q.intake.parametric.provider;
 
-import com.google.common.collect.ImmutableList;
-import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.CommandArgs;
-import com.sk89q.intake.argument.Namespace;
 import com.sk89q.intake.parametric.Provider;
 import com.sk89q.intake.parametric.ProvisionException;
 
@@ -39,19 +36,10 @@ class CommandArgsProvider implements Provider<CommandArgs> {
 
     @Nullable
     @Override
-    public CommandArgs get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException {
-        CommandArgs commandArgs = arguments.getNamespace().get(CommandArgs.class);
-        if (commandArgs != null) {
-            commandArgs.markConsumed();
-            return commandArgs;
-        } else {
-            throw new ProvisionException("CommandArgs object not found in Namespace");
-        }
-    }
-
-    @Override
-    public List<String> getSuggestions(String prefix, Namespace namespace, List<? extends Annotation> modifiers) {
-        return ImmutableList.of();
+    public CommandArgs get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ProvisionException {
+        CommandArgs commandArgs = arguments.getNamespace().need(CommandArgs.class);
+        arguments.markConsumed();
+        return arguments;
     }
 
 }

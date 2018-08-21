@@ -19,9 +19,12 @@
 
 package com.sk89q.intake.argument;
 
+import com.sk89q.intake.parametric.ProvisionException;
+
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * This object holds contextual data for a command execution.
@@ -75,6 +78,55 @@ public class Namespace {
     @SuppressWarnings("unchecked")
     public <T> T get(Class<T> key) {
         return (T) locals.get(key);
+    }
+
+    /**
+     * Returns the value specified by the given key.
+     *
+     * @param key The key
+     * @return The optional value
+     */
+    public Optional<Object> find(Object key) {
+        return Optional.ofNullable(get(key));
+    }
+
+    /**
+     * Get an object whose key will be the object's class.
+     *
+     * @param key The key
+     * @param <T> The type of object
+     * @return The optional value
+     */
+    public <T> Optional<T> find(Class<T> key) {
+        return Optional.ofNullable(get(key));
+    }
+
+    /**
+     * Returns the value specified by the given key.
+     *
+     * @param key The key
+     * @throws ProvisionException If the value is null
+     * @return The value, which will not be null
+     */
+    public Object need(Object key) {
+        Object value = get(key);
+        if(value == null) {
+            throw new ProvisionException("Could not find value for '" + key + "' in namespace " + locals);
+        }
+        return value;
+    }
+
+    /**
+     * Get an object whose key will be the object's class.
+     *
+     * @param key The key
+     * @param <T> The type of object
+     * @throws ProvisionException If the value is null
+     * @return The value
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T need(Class<T> key) {
+        return (T) need(key);
     }
 
     /**

@@ -35,22 +35,12 @@ class StringProvider implements Provider<String> {
 
     static final StringProvider INSTANCE = new StringProvider();
 
-    @Override
-    public boolean isProvided() {
-        return false;
-    }
-
     @Nullable
     @Override
     public String get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
         String v = arguments.next();
         validate(v, modifiers);
         return v;
-    }
-
-    @Override
-    public List<String> getSuggestions(String prefix, Namespace namespace, List<? extends Annotation> modifiers) {
-        return Collections.emptyList();
     }
 
     /**

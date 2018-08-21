@@ -19,11 +19,9 @@
 
 package com.sk89q.intake.parametric.provider;
 
-import com.google.common.collect.ImmutableList;
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.argument.CommandContext;
-import com.sk89q.intake.argument.Namespace;
 import com.sk89q.intake.parametric.Provider;
 import com.sk89q.intake.parametric.ProvisionException;
 
@@ -45,17 +43,7 @@ public final class CommandContextProvider implements Provider<CommandContext> {
     @Nullable
     @Override
     public CommandContext get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException {
-        CommandContext context = arguments.getNamespace().get(CommandContext.class);
-        if (context != null) {
-            return context;
-        } else {
-            throw new ProvisionException("CommandContext object not found in Namespace");
-        }
-    }
-
-    @Override
-    public List<String> getSuggestions(String prefix, Namespace namespace, List<? extends Annotation> modifiers) {
-        return ImmutableList.of();
+        return arguments.getNamespace().need(CommandContext.class);
     }
 
 }
