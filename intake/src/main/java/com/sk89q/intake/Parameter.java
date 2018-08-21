@@ -41,6 +41,13 @@ public interface Parameter {
     OptionType getOptionType();
 
     /**
+     * Whether the parameter is wrapped in an {@link java.util.Optional}.
+     *
+     * @return Whether the parameter is optional.
+     */
+    boolean isOptional();
+
+    /**
      * The default value as a list of tokenized strings (but one single value).
      *
      * <p>If there is no default value, the returned list will be empty.</p>

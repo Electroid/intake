@@ -33,6 +33,7 @@ import com.sk89q.intake.parametric.ParametricBuilder;
 import com.sk89q.intake.util.auth.AuthorizationException;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public final class SenderExample {
@@ -64,6 +65,7 @@ public final class SenderExample {
         dispatcher.call("privmsg michelle", namespace, ImmutableList.<String>of());
         dispatcher.call("poke aaron", namespace, ImmutableList.<String>of());
         dispatcher.call("poke michelle", namespace, ImmutableList.<String>of());
+        dispatcher.call("poke", namespace, ImmutableList.<String>of());
     }
 
     @Command(aliases = "greet", desc = "Greet the sender")
@@ -77,8 +79,8 @@ public final class SenderExample {
     }
 
     @Command(aliases = "poke", desc = "Poke someone anonymously")
-    public void poke(User target) {
-        target.message("You've been poked!");
+    public void poke(Optional<User> target) {
+        target.ifPresent(user -> user.message("You've been poked!"));
     }
 
 }

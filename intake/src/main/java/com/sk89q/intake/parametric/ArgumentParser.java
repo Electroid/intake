@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.common.reflect.TypeToken;
 import com.sk89q.intake.*;
 import com.sk89q.intake.argument.*;
 import com.sk89q.intake.parametric.annotation.Classifier;
@@ -32,11 +33,10 @@ import com.sk89q.intake.parametric.annotation.Switch;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -116,6 +116,10 @@ public final class ArgumentParser {
 
                 parsedObjects[i] = getDefaultValue(entry, args);
             }
+
+            if (entry.getParameter().isOptional()) {
+                parsedObjects[i] = Optional.ofNullable(parsedObjects[i]);
+            }
         }
 
         // Check for unused arguments
@@ -133,10 +137,7 @@ public final class ArgumentParser {
         } else {
             try {
                 return provider.get(Arguments.copyOf(defaultValue, arguments.getFlags(), arguments.getNamespace()), entry.getModifiers());
-            } catch (ArgumentException e) {
-                throw new IllegalParameterException("No value was specified for the '" + entry.getParameter().getName() + "' parameter " +
-                        "so the default value '" + Joiner.on(" ").join(defaultValue) + "' was used, but this value doesn't work due to an error: " + e.getMessage());
-            } catch (ProvisionException e) {
+            } catch (ProvisionException | ArgumentException e) {
                 throw new IllegalParameterException("No value was specified for the '" + entry.getParameter().getName() + "' parameter " +
                         "so the default value '" + Joiner.on(" ").join(defaultValue) + "' was used, but this value doesn't work due to an error: " + e.getMessage());
             }
@@ -238,6 +239,19 @@ public final class ArgumentParser {
             List<String> defaultValue = ImmutableList.of();
             Annotation classifier = null;
             List<Annotation> modifiers = Lists.newArrayList();
+            boolean seenJavaOptional = false;
+
+            Supplier<IllegalParameterException> exceptionSupplier = () ->
+                new IllegalParameterException("Optional<?>, @Default, @Nullable, and @Switch cannot be mixed for parameter #" + index);
+
+            if (TypeToken.of(Optional.class).isAssignableFrom(type)) {
+                type = ((ParameterizedType) type).getActualTypeArguments()[0];
+
+                seenOptionalParameter = true;
+                seenJavaOptional = true;
+
+                optionType = OptionType.optionalPositional();
+            }
 
             for (Annotation annotation : annotations) {
                 if (annotation.annotationType().getAnnotation(Classifier.class) != null) {
@@ -247,14 +261,14 @@ public final class ArgumentParser {
 
                     if (annotation instanceof Switch) {
                         if (optionType != null) {
-                            throw new IllegalParameterException("Both @Default and @Switch were found on the same element for parameter #" + index);
+                            throw exceptionSupplier.get();
                         }
 
                         optionType = (type == boolean.class || type == Boolean.class) ? OptionType.flag(((Switch) annotation).value()) : OptionType.valueFlag(((Switch) annotation).value());
 
                     } else if (annotation instanceof Default || annotation instanceof Nullable) {
-                        if (optionType != null) {
-                            throw new IllegalParameterException("Both @Default and @Switch were found on the same element for parameter #" + index);
+                        if (seenOptionalParameter || optionType != null) {
+                            throw exceptionSupplier.get();
                         }
 
                         seenOptionalParameter = true;
@@ -283,6 +297,7 @@ public final class ArgumentParser {
             builder.setName(getFriendlyName(type, classifier, index));
             builder.setOptionType(optionType);
             builder.setDefaultValue(defaultValue);
+            builder.setOptional(seenJavaOptional);
             Parameter parameter = builder.build();
 
             Key<?> key = Key.get(type, classifier != null ? classifier.annotationType() : null);

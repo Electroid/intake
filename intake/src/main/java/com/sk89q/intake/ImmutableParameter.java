@@ -36,11 +36,13 @@ public final class ImmutableParameter implements Parameter {
     @Nullable
     private final OptionType optionType;
     private final List<String> defaultValue;
+    private final boolean isOptional;
 
-    private ImmutableParameter(String name, OptionType optionType, List<String> defaultValue) {
+    private ImmutableParameter(String name, OptionType optionType, List<String> defaultValue, boolean isOptional) {
         this.name = name;
         this.optionType = optionType;
         this.defaultValue = defaultValue;
+        this.isOptional = isOptional;
     }
 
     @Override
@@ -51,6 +53,11 @@ public final class ImmutableParameter implements Parameter {
     @Override
     public OptionType getOptionType() {
         return optionType;
+    }
+
+    @Override
+    public boolean isOptional() {
+        return isOptional;
     }
 
     @Override
@@ -67,6 +74,7 @@ public final class ImmutableParameter implements Parameter {
         private String name;
         private OptionType optionType;
         private List<String> defaultValue = Collections.emptyList();
+        private boolean isOptional = false;
 
         /**
          * Get the name of the parameter.
@@ -136,6 +144,17 @@ public final class ImmutableParameter implements Parameter {
         }
 
         /**
+         * Set whether the value is wrapped in an optional.
+         *
+         * @param isOptional Whether the value is optional
+         * @return The builder
+         */
+        public Builder setOptional(boolean isOptional) {
+            this.isOptional = isOptional;
+            return this;
+        }
+
+        /**
          * Create an instance.
          *
          * <p>Neither {@code name} nor {@code optionType} can be null.</p>
@@ -145,7 +164,7 @@ public final class ImmutableParameter implements Parameter {
         public ImmutableParameter build() {
             checkNotNull(name, "name");
             checkNotNull(optionType, "optionType");
-            return new ImmutableParameter(name, optionType, defaultValue);
+            return new ImmutableParameter(name, optionType, defaultValue, isOptional);
         }
     }
 }
