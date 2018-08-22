@@ -28,6 +28,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BukkitIntake implements CommandExecutor, TabCompleter {
 
@@ -61,8 +62,8 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
         this.dispatcher = dispatcher;
     }
 
-    public BukkitIntake(Plugin plugin) {
-        this(plugin, null);
+    public BukkitIntake(Plugin plugin, Object... commands) {
+        this(plugin, (builder, dispatcher) -> Stream.of(commands).forEachOrdered(command -> builder.registerMethodsAsCommands(dispatcher, command)));
     }
 
     public Injector getInjector() {
@@ -115,11 +116,11 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
         }
     }
 
-    private String getCommand(Command command, String[] args) {
+    protected String getCommand(Command command, String[] args) {
         return Joiner.on(' ').join(Lists.asList(command.getName(), args));
     }
 
-    private Namespace getNamespace(CommandSender sender) {
+    protected Namespace getNamespace(CommandSender sender) {
         return new Namespace(CommandSender.class, sender);
     }
 
