@@ -7,11 +7,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Represents a {@link org.bukkit.command.CommandSender} of
- * a command, that must be a {@link org.bukkit.entity.Player}.
+ * Define the fetching behaviour of {@link Player}s
+ * on the local server.
+ *
+ * If not defined, the default is {@link Type#THROW}.
  */
 @Classifier
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Default {
+public @interface Player {
     Type value();
 }

@@ -11,6 +11,9 @@ import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
+/**
+ * Provides the {@link World} of the {@link CommandSender}.
+ */
 public class WorldProvider implements BukkitProvider<World> {
 
     @Override

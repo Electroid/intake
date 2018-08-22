@@ -8,6 +8,9 @@ import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
+/**
+ * Provides the {@link CommandSender} of the command.
+ */
 public class CommandSenderProvider implements BukkitProvider<CommandSender> {
 
     @Override

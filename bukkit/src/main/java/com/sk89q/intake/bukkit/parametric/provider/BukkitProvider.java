@@ -12,6 +12,9 @@ import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
+/**
+ * A {@link Provider} where the {@link CommandSender} is always present.
+ */
 public interface BukkitProvider<T> extends Provider<T> {
 
     @Nullable

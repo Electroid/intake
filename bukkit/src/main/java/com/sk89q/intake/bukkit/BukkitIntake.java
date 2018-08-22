@@ -22,6 +22,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
@@ -30,6 +31,12 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Omnibus API that hooks into a {@link JavaPlugin} and
+ * allows implementors to register commands.
+ */
+// TODO: Better error handling
+// TODO: Better help and usage messages
 public class BukkitIntake implements CommandExecutor, TabCompleter {
 
     static {

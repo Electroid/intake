@@ -3,28 +3,30 @@ package com.sk89q.intake.bukkit.parametric.provider;
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.argument.Namespace;
-import com.sk89q.intake.bukkit.parametric.annotation.Default;
+import com.sk89q.intake.bukkit.parametric.annotation.Player;
 import com.sk89q.intake.bukkit.parametric.Type;
 import com.sk89q.intake.bukkit.util.BukkitUtil;
 import com.sk89q.intake.parametric.ProvisionException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DynamicPlayerProvider implements BukkitProvider<Player> {
+/**
+ * Provides {@link org.bukkit.entity.Player}s from a name query.
+ */
+public class DynamicPlayerProvider implements BukkitProvider<org.bukkit.entity.Player> {
 
     @Nullable
     @Override
-    public Player get(CommandSender sender, CommandArgs args, List<? extends Annotation> mods) throws ArgumentException, ProvisionException {
+    public org.bukkit.entity.Player get(CommandSender sender, CommandArgs args, List<? extends Annotation> mods) throws ArgumentException, ProvisionException {
         String query = null;
         if (args.hasNext()) {
             query = args.next();
-            final Player player = BukkitUtil.getPlayer(query, sender);
+            final org.bukkit.entity.Player player = BukkitUtil.getPlayer(query, sender);
             if (player != null) {
                 return player;
             }
@@ -32,8 +34,8 @@ public class DynamicPlayerProvider implements BukkitProvider<Player> {
         final Type type = getType(mods);
         if (type == Type.NULL) {
             return null;
-        } else if (type == Type.SELF && sender instanceof Player) {
-            return (Player) sender;
+        } else if (type == Type.SELF && sender instanceof org.bukkit.entity.Player) {
+            return (org.bukkit.entity.Player) sender;
         } else if (query != null) {
             throw new ArgumentException("Could not find player named '" + query + "'");
         } else {
@@ -53,8 +55,8 @@ public class DynamicPlayerProvider implements BukkitProvider<Player> {
 
     private Type getType(List<? extends Annotation> mods) {
         for (Annotation mod : mods) {
-            if(mod instanceof Default) {
-                return ((Default) mod).value();
+            if(mod instanceof Player) {
+                return ((Player) mod).value();
             }
         }
         return Type.THROW;

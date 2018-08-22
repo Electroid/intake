@@ -4,6 +4,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.help.HelpTopicFactory;
 
+/**
+ * Generates help text when using a {@link BukkitCommand}.
+ */
 public class BukkitHelpTopic extends HelpTopic {
 
     private final BukkitCommand command;

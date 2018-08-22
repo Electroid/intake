@@ -9,27 +9,37 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * Utility methods for accessing various {@link Bukkit} APIs.
+ */
 public class BukkitUtil {
 
-    private static volatile boolean sportbukkit = true;
+    /**
+     * Some forks of {@link Bukkit}, namely SportBukkit, support
+     * a fake name patch which allows different players to see different names.
+     *
+     * Try to use the path with reflection and if it fails, assume the patch
+     * is not loaded.
+     */
+    private static volatile boolean canSearchByViewer = true;
 
     public static Player getPlayer(String name, CommandSender viewer) {
-        if (sportbukkit) {
+        if (canSearchByViewer) {
             try {
                 return (Player) Bukkit.class.getDeclaredMethod("getPlayer", String.class, CommandSender.class).invoke(name, viewer);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException error) {
-                sportbukkit = false;
+                canSearchByViewer = false;
             }
         }
         return Bukkit.getPlayer(name);
     }
 
     public static String getPlayerName(Player player, CommandSender viewer) {
-        if (sportbukkit) {
+        if (canSearchByViewer) {
             try {
                 return (String) Player.class.getDeclaredMethod("getName", CommandSender.class).invoke(player, viewer);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException error) {
-                sportbukkit = false;
+                canSearchByViewer = false;
             }
         }
         return player.getName();

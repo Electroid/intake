@@ -4,6 +4,10 @@ import com.sk89q.intake.argument.Namespace;
 import com.sk89q.intake.util.auth.Authorizer;
 import org.bukkit.command.CommandSender;
 
+/**
+ * An {@link Authorizer} that checks if the {@link CommandSender}
+ * has permission to execute the command.
+ */
 public interface BukkitAuthorizer extends Authorizer {
 
     @Override

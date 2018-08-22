@@ -8,6 +8,10 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
+/**
+ * A wrapped {@link Command} that hooks up to a {@link CommandMapping},
+ * and generates all the proper help and usage information.
+ */
 public class BukkitCommand extends Command implements PluginIdentifiableCommand {
 
     protected final Plugin plugin;
