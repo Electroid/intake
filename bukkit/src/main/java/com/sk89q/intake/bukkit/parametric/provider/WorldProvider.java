@@ -1,9 +1,9 @@
-package com.sk89q.intake.bukkit.provider;
+package com.sk89q.intake.bukkit.parametric.provider;
 
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.CommandArgs;
+import com.sk89q.intake.bukkit.util.BukkitUtil;
 import com.sk89q.intake.parametric.ProvisionException;
-import org.bukkit.Physical;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
@@ -21,10 +21,11 @@ public class WorldProvider implements BukkitProvider<World> {
     @Nullable
     @Override
     public World get(CommandSender sender, CommandArgs args, List<? extends Annotation> mods) throws ArgumentException, ProvisionException {
-        if(sender instanceof Physical) {
-            return ((Physical) sender).getWorld();
+        World world = BukkitUtil.getWorld(sender);
+        if(world == null) {
+            throw new ArgumentException("You must be in a world to execute this command");
         }
-        throw new ArgumentException("You must be in a world to execute this command");
+        return world;
     }
 
 }

@@ -108,7 +108,7 @@ public class InvalidUsageException extends CommandException {
      * Get a list of command names that were invoked, with the first-most
      * listed command being the most "top-level" command.
      *
-     * <p>For example, if {@code /party add} was invoked but this exception
+     * <p>For bukkit, if {@code /party add} was invoked but this exception
      * was raised, then the aliases list would consist of
      * {@code [party, add]}.</p>
      *

@@ -35,7 +35,7 @@ import java.util.List;
  * <p>Invoke handlers have access to three different stages of command
  * execution and can view the annotations, parameters, and arguments of the
  * command. An invoke handler could be used to implement command logging,
- * for example.</p>
+ * for bukkit.</p>
  */
 public interface InvokeHandler {
 

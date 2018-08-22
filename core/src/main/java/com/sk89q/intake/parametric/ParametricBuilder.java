@@ -50,7 +50,7 @@ public class ParametricBuilder {
     private final List<ExceptionConverter> exceptionConverters = Lists.newArrayList();
     private Authorizer authorizer = new NullAuthorizer();
     private CommandCompleter defaultCompleter = new NullCompleter();
-    private CommandExecutor commandExecutor = new CommandExecutorWrapper(MoreExecutors.newDirectExecutorService());
+    private CommandExecutor commandExecutor = new CommandExecutorWrapper(MoreExecutors.sameThreadExecutor());
 
     public ParametricBuilder(Injector injector) {
         this.injector = injector;

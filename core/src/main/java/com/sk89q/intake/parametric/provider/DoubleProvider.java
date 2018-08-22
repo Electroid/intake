@@ -21,11 +21,12 @@ package com.sk89q.intake.parametric.provider;
 
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.CommandArgs;
+import com.sk89q.intake.parametric.Provider;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-class DoubleProvider extends NumberProvider<Double> {
+class DoubleProvider implements Provider<Double>, NumberProvider<Double> {
 
     static final DoubleProvider INSTANCE = new DoubleProvider();
 

@@ -1,0 +1,7 @@
+name: ${name}
+version: ${version}
+description: ${description}
+website: ${url}
+main: ${plugin.mainClass}
+prefix: ${plugin.prefix}
+author: Ashcon Partovi

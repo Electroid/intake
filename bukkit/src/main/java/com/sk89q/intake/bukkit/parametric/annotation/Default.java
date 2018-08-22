@@ -1,5 +1,6 @@
-package com.sk89q.intake.bukkit.annotation;
+package com.sk89q.intake.bukkit.parametric.annotation;
 
+import com.sk89q.intake.bukkit.parametric.Type;
 import com.sk89q.intake.parametric.annotation.Classifier;
 
 import java.lang.annotation.Retention;

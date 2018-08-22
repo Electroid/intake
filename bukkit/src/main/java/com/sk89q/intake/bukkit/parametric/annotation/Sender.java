@@ -1,4 +1,4 @@
-package com.sk89q.intake.bukkit.annotation;
+package com.sk89q.intake.bukkit.parametric.annotation;
 
 import com.sk89q.intake.parametric.annotation.Classifier;
 

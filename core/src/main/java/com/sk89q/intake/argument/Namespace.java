@@ -36,6 +36,12 @@ public class Namespace {
     
     private final Map<Object, Object> locals = new HashMap<Object, Object>();
 
+    public Namespace() {}
+
+    public Namespace(Object initialKey, Object initialValue) {
+        put(initialKey, initialValue);
+    }
+
     /**
      * Test whether the given key exists.
      *
@@ -77,7 +83,7 @@ public class Namespace {
     @Nullable
     @SuppressWarnings("unchecked")
     public <T> T get(Class<T> key) {
-        return (T) locals.get(key);
+        return (T) get((Object) key);
     }
 
     /**
@@ -97,8 +103,9 @@ public class Namespace {
      * @param <T> The type of object
      * @return The optional value
      */
+    @SuppressWarnings("unchecked")
     public <T> Optional<T> find(Class<T> key) {
-        return Optional.ofNullable(get(key));
+        return (Optional<T>) find((Object) key);
     }
 
     /**
@@ -126,7 +133,7 @@ public class Namespace {
      */
     @SuppressWarnings("unchecked")
     public <T> T need(Class<T> key) {
-        return (T) need(key);
+        return (T) need((Object) key);
     }
 
     /**

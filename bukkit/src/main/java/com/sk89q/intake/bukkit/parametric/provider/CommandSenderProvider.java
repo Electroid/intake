@@ -1,4 +1,4 @@
-package com.sk89q.intake.bukkit.provider;
+package com.sk89q.intake.bukkit.parametric.provider;
 
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.parametric.ProvisionException;

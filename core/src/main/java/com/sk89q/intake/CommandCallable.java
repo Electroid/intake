@@ -19,6 +19,7 @@
 
 package com.sk89q.intake;
 
+import com.google.common.collect.ImmutableList;
 import com.sk89q.intake.argument.Namespace;
 import com.sk89q.intake.completion.CommandCompleter;
 import com.sk89q.intake.util.auth.AuthorizationException;
@@ -37,7 +38,7 @@ public interface CommandCallable extends CommandCompleter {
      * the current command, where each deeper command is appended to
      * the list of parent commands.</p>
      *
-     * <p>For example, if the command entered was {@code /world create ocean} and
+     * <p>For bukkit, if the command entered was {@code /world create ocean} and
      * the command in question was the "create" command, then:</p>
      *
      * <ul>
@@ -61,6 +62,10 @@ public interface CommandCallable extends CommandCompleter {
      * @throws AuthorizationException If there is a authorization error
      */
     boolean call(String arguments, Namespace namespace, List<String> parentCommands) throws CommandException, InvocationCommandException, AuthorizationException;
+
+    default boolean call(String arguments, Namespace namespace) throws CommandException, InvocationCommandException, AuthorizationException {
+        return call(arguments, namespace, ImmutableList.of());
+    }
 
     /**
      * Get the object describing the command.

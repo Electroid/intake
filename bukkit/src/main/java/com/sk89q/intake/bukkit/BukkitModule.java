@@ -1,10 +1,10 @@
 package com.sk89q.intake.bukkit;
 
-import com.sk89q.intake.bukkit.annotation.Sender;
-import com.sk89q.intake.bukkit.provider.CommandSenderProvider;
-import com.sk89q.intake.bukkit.provider.DynamicPlayerProvider;
-import com.sk89q.intake.bukkit.provider.ProvidedPlayerProvider;
-import com.sk89q.intake.bukkit.provider.WorldProvider;
+import com.sk89q.intake.bukkit.parametric.annotation.Sender;
+import com.sk89q.intake.bukkit.parametric.provider.CommandSenderProvider;
+import com.sk89q.intake.bukkit.parametric.provider.DynamicPlayerProvider;
+import com.sk89q.intake.bukkit.parametric.provider.ProvidedPlayerProvider;
+import com.sk89q.intake.bukkit.parametric.provider.WorldProvider;
 import com.sk89q.intake.parametric.AbstractModule;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;

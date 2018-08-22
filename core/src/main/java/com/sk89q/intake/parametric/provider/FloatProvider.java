@@ -21,12 +21,13 @@ package com.sk89q.intake.parametric.provider;
 
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.CommandArgs;
+import com.sk89q.intake.parametric.Provider;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-class FloatProvider extends NumberProvider<Float> {
+class FloatProvider implements Provider<Float>, NumberProvider<Float> {
 
     static final FloatProvider INSTANCE = new FloatProvider();
 

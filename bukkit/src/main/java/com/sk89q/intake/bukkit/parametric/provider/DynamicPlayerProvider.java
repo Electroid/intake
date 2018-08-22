@@ -1,10 +1,11 @@
-package com.sk89q.intake.bukkit.provider;
+package com.sk89q.intake.bukkit.parametric.provider;
 
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.CommandArgs;
 import com.sk89q.intake.argument.Namespace;
-import com.sk89q.intake.bukkit.annotation.Default;
-import com.sk89q.intake.bukkit.annotation.Type;
+import com.sk89q.intake.bukkit.parametric.annotation.Default;
+import com.sk89q.intake.bukkit.parametric.Type;
+import com.sk89q.intake.bukkit.util.BukkitUtil;
 import com.sk89q.intake.parametric.ProvisionException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -23,7 +24,7 @@ public class DynamicPlayerProvider implements BukkitProvider<Player> {
         String query = null;
         if (args.hasNext()) {
             query = args.next();
-            final Player player = Bukkit.getPlayer(query, sender);
+            final Player player = BukkitUtil.getPlayer(query, sender);
             if (player != null) {
                 return player;
             }
@@ -44,7 +45,7 @@ public class DynamicPlayerProvider implements BukkitProvider<Player> {
     public List<String> getSuggestions(String prefix, CommandSender sender, Namespace namespace, List<? extends Annotation> mods) {
         return Bukkit.getOnlinePlayers()
                      .stream()
-                     .map(player -> player.getName(sender))
+                     .map(player -> BukkitUtil.getPlayerName(player, sender))
                      .filter(name -> name.startsWith(prefix))
                      .sorted()
                      .collect(Collectors.toList());

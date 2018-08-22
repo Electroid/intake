@@ -21,11 +21,12 @@ package com.sk89q.intake.parametric.provider;
 
 import com.sk89q.intake.argument.ArgumentException;
 import com.sk89q.intake.argument.CommandArgs;
+import com.sk89q.intake.parametric.Provider;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-class ShortProvider extends NumberProvider<Short> {
+class ShortProvider implements Provider<Short>, NumberProvider<Short> {
 
     static final ShortProvider INSTANCE = new ShortProvider();
 

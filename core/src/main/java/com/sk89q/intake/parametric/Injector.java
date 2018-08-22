@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * An injector knows a list of "bindings" that map types to a provider.
  *
- * <p>For example, a command might accept an integer as an argument,
+ * <p>For bukkit, a command might accept an integer as an argument,
  * and so an appropriate binding for that parameter would have a provider
  * that parsed the argument as an integer and returned it.</p>
  */

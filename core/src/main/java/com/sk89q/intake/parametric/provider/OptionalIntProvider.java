@@ -25,21 +25,23 @@ import com.sk89q.intake.parametric.Provider;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.OptionalInt;
 
-class IntegerProvider implements Provider<Integer>, NumberProvider<Integer> {
+class OptionalIntProvider implements Provider<OptionalInt>, NumberProvider<Integer> {
 
-    static final IntegerProvider INSTANCE = new IntegerProvider();
+    static final OptionalIntProvider INSTANCE = new OptionalIntProvider();
 
     @Override
-    public Integer get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
-        Double v = parseNumericInput(arguments.next());
-        if (v != null) {
-            int intValue = v.intValue();
-            validate(intValue, modifiers);
-            return intValue;
-        } else {
-            return null;
+    public OptionalInt get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
+        if (arguments.hasNext()) {
+            Double v = parseNumericInput(arguments.next());
+            if (v != null) {
+                int intValue = v.intValue();
+                validate(intValue, modifiers);
+                return OptionalInt.of(intValue);
+            }
         }
+        return OptionalInt.empty();
     }
 
 }

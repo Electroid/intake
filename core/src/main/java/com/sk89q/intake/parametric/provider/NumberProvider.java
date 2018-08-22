@@ -20,16 +20,13 @@
 package com.sk89q.intake.parametric.provider;
 
 import com.sk89q.intake.argument.ArgumentParseException;
-import com.sk89q.intake.argument.Namespace;
-import com.sk89q.intake.parametric.Provider;
 import com.sk89q.intake.parametric.annotation.Range;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
-import java.util.Collections;
 import java.util.List;
 
-abstract class NumberProvider<T extends Number> implements Provider<T> {
+interface NumberProvider<T extends Number> {
 
     /**
      * Try to parse numeric input as either a number or a mathematical expression.
@@ -39,7 +36,7 @@ abstract class NumberProvider<T extends Number> implements Provider<T> {
      * @throws ArgumentParseException thrown on parse error
      */
     @Nullable
-    protected static Double parseNumericInput(@Nullable String input) throws ArgumentParseException {
+    default Double parseNumericInput(@Nullable String input) throws ArgumentParseException {
         if (input == null || input.isEmpty()) {
             return null;
         }
@@ -58,7 +55,7 @@ abstract class NumberProvider<T extends Number> implements Provider<T> {
      * @param modifiers the list of modifiers to scan
      * @throws ArgumentParseException on a validation error
      */
-    protected static void validate(double number, List<? extends Annotation> modifiers) throws ArgumentParseException {
+    default void validate(double number, List<? extends Annotation> modifiers) throws ArgumentParseException {
         for (Annotation modifier : modifiers) {
             if (modifier instanceof Range) {
                 Range range = (Range) modifier;
@@ -78,7 +75,7 @@ abstract class NumberProvider<T extends Number> implements Provider<T> {
      * @param modifiers the list of modifiers to scan
      * @throws ArgumentParseException on a validation error
      */
-    protected static void validate(int number, List<? extends Annotation> modifiers) throws ArgumentParseException {
+    default void validate(int number, List<? extends Annotation> modifiers) throws ArgumentParseException {
         for (Annotation modifier : modifiers) {
             if (modifier instanceof Range) {
                 Range range = (Range) modifier;

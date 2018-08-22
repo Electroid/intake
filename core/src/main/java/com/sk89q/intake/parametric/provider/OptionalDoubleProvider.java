@@ -25,21 +25,21 @@ import com.sk89q.intake.parametric.Provider;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.OptionalDouble;
 
-class IntegerProvider implements Provider<Integer>, NumberProvider<Integer> {
+class OptionalDoubleProvider implements Provider<OptionalDouble>, NumberProvider<Double> {
 
-    static final IntegerProvider INSTANCE = new IntegerProvider();
+    static final OptionalDoubleProvider INSTANCE = new OptionalDoubleProvider();
 
     @Override
-    public Integer get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
-        Double v = parseNumericInput(arguments.next());
-        if (v != null) {
-            int intValue = v.intValue();
-            validate(intValue, modifiers);
-            return intValue;
-        } else {
-            return null;
+    public OptionalDouble get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
+        if (arguments.hasNext()) {
+            Double v = parseNumericInput(arguments.next());
+            if (v != null) {
+                return OptionalDouble.of(v);
+            }
         }
+        return OptionalDouble.empty();
     }
 
 }

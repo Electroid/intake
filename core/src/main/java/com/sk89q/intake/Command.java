@@ -40,9 +40,9 @@ public @interface Command {
     String[] aliases();
 
     /**
-     * An example usage string of the command.
+     * An bukkit usage string of the command.
      *
-     * <p>An example would be
+     * <p>An bukkit would be
      * {@code [-h &lt;value&gt;] &lt;name&gt; &lt;message&gt;}.</p>
      *
      * <p>If a parametric command is used, this field is

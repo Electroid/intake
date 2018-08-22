@@ -67,7 +67,7 @@ public abstract class OptionType {
      * Create a new list of command arguments for the given arguments that
      * is appropriate for this type of parameter.
      *
-     * <p>For example, if the type of parameter is a value flag,
+     * <p>For bukkit, if the type of parameter is a value flag,
      * then the returned arguments object will only have the value flag's
      * value as the argument.</p>
      *
