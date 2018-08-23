@@ -1,8 +1,8 @@
+sudo: false
 language: java
-notifications:
-  email: false
+jdk:
+  - oraclejdk8
+  - openjdk8
 install: true
-matrix:
-  include:
-  - jdk: oraclejdk8
-    script: mvn clean package
+script: mvn clean install
+after_success: $TRAVIS_BRANCH == "master" && mvn deploy --settings settings.xml
