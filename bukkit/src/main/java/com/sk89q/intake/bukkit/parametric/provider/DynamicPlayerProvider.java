@@ -20,6 +20,11 @@ import java.util.stream.Collectors;
  */
 public class DynamicPlayerProvider implements BukkitProvider<org.bukkit.entity.Player> {
 
+    @Override
+    public String getName() {
+        return "player";
+    }
+
     @Nullable
     @Override
     public org.bukkit.entity.Player get(CommandSender sender, CommandArgs args, List<? extends Annotation> mods) throws ArgumentException, ProvisionException {

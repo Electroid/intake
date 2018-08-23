@@ -316,18 +316,18 @@ public final class ArgumentParser {
                 throw new IllegalParameterException("An non-optional parameter followed an optional parameter at #" + index);
             }
 
-            ImmutableParameter.Builder builder = new ImmutableParameter.Builder();
-            builder.setName(getFriendlyName(type, classifier, index));
-            builder.setOptionType(optionType);
-            builder.setDefaultValue(defaultValue);
-            builder.setOptional(seenJavaOptional);
-            Parameter parameter = builder.build();
-
             Key<?> key = Key.get(type, classifier != null ? classifier.annotationType() : null);
             Binding<?> binding = injector.getBinding(key);
             if (binding == null) {
                 throw new IllegalParameterException("Can't finding a binding for the parameter type '" + type + "'");
             }
+
+            ImmutableParameter.Builder builder = new ImmutableParameter.Builder();
+            builder.setName(getFriendlyName(binding.getProvider(), classifier, index));
+            builder.setOptionType(optionType);
+            builder.setDefaultValue(defaultValue);
+            builder.setOptional(seenJavaOptional);
+            Parameter parameter = builder.build();
 
             ParameterEntry entry = new ParameterEntry(parameter, key, binding, modifiers);
 
@@ -351,11 +351,11 @@ public final class ArgumentParser {
             return new ArgumentParser(parameters, userProvidedParameters, valueFlags);
         }
 
-        private static String getFriendlyName(Type type, Annotation classifier, int index) {
+        private static String getFriendlyName(Provider provider, Annotation classifier, int index) {
             if (classifier != null) {
                 return classifier.annotationType().getSimpleName().toLowerCase();
             } else {
-                return type instanceof Class<?> ? ((Class<?>) type).getSimpleName().toLowerCase() : "unknown" + index;
+                return provider.getName();
             }
         }
     }

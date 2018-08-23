@@ -34,8 +34,20 @@ import java.util.List;
  * <p>Providers do the heavy work of reading passed in arguments and
  * transforming them into Java objects.</p>
  */
-@FunctionalInterface
 public interface Provider<T> {
+
+    /**
+     * Gets the human-readable name of the provider type.
+     *
+     * @return The name of the provider type.
+     */
+    default String getName() {
+        if (isProvided()) {
+            return "context";
+        } else {
+            throw new UnsupportedOperationException("Must implement name for provider");
+        }
+    }
 
     /**
      * Gets whether this provider does not actually consume values

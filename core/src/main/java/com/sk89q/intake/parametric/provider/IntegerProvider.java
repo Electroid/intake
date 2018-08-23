@@ -26,9 +26,14 @@ import com.sk89q.intake.parametric.Provider;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-class IntegerProvider implements Provider<Integer>, NumberProvider<Integer> {
+class IntegerProvider implements Provider<Integer>, NumberProvider {
 
     static final IntegerProvider INSTANCE = new IntegerProvider();
+
+    @Override
+    public String getName() {
+        return "integer";
+    }
 
     @Override
     public Integer get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {

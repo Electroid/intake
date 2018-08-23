@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-interface NumberProvider<T extends Number> {
+interface NumberProvider {
 
     /**
      * Try to parse numeric input as either a number or a mathematical expression.

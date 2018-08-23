@@ -16,6 +16,11 @@ import java.util.List;
  */
 public class ProvidedPlayerProvider implements BukkitProvider<Player> {
 
+    @Override
+    public boolean isProvided() {
+        return true;
+    }
+
     @Nullable
     @Override
     public Player get(CommandSender sender, CommandArgs args, List<? extends Annotation> mods) throws ArgumentException, ProvisionException {

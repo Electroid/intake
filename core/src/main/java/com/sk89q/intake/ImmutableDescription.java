@@ -38,14 +38,14 @@ public final class ImmutableDescription implements Description {
     private final String shortDescription;
     private final String help;
     @Nullable
-    private final String usageOverride;
+    private String usage;
 
-    private ImmutableDescription(List<Parameter> parameters, List<String> permissions, String shortDescription, String help, @Nullable String usageOverride) {
+    private ImmutableDescription(List<Parameter> parameters, List<String> permissions, String shortDescription, String help, @Nullable String usage) {
         this.parameters = ImmutableList.copyOf(parameters);
         this.permissions = ImmutableList.copyOf(permissions);
         this.shortDescription = shortDescription;
         this.help = help;
-        this.usageOverride = usageOverride;
+        this.usage = usage;
     }
 
     @Override
@@ -72,22 +72,51 @@ public final class ImmutableDescription implements Description {
 
     @Override
     public String getUsage() {
-        if (usageOverride != null) {
-            return usageOverride;
+        if (usage != null) {
+            return usage;
         }
         
         StringBuilder builder = new StringBuilder();
+        StringBuilder flagBuilder = new StringBuilder();
         boolean first = true;
         
         for (Parameter parameter : parameters) {
             if (!first) {
                 builder.append(" ");
             }
-            builder.append(parameter.getName());
+            String text;
+            String name = parameter.getName();
+            OptionType type = parameter.getOptionType();
+            Character flag = type.getFlag();
+            if (flag == null) {
+                if (type.isOptional()) {
+                    text = "[" + name + "]";
+                } else {
+                    text = "<" + name + ">";
+                }
+            } else {
+                if (type.isValueFlag()) {
+                    text = "[-" + flag + "=" + name + "]";
+                } else {
+                    // Accumulate boolean flags to be appended at the end
+                    flagBuilder.append(flag);
+                    first = true;
+                    continue;
+                }
+            }
+            builder.append(text);
             first = false;
         }
+
+        String flags = flagBuilder.toString();
+        if (!flags.isEmpty()) {
+            if (!first) {
+                builder.append(" ");
+            }
+            builder.append("[-").append(flags).append("]");
+        }
         
-        return builder.toString();
+        return usage = builder.toString();
     }
 
     @Override

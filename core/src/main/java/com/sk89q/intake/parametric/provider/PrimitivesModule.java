@@ -36,12 +36,10 @@ public final class PrimitivesModule extends AbstractModule {
         bind(boolean.class).toProvider(BooleanProvider.INSTANCE);
         bind(Integer.class).toProvider(IntegerProvider.INSTANCE);
         bind(int.class).toProvider(IntegerProvider.INSTANCE);
-        bind(OptionalInt.class).toProvider(OptionalIntProvider.INSTANCE);
         bind(Short.class).toProvider(ShortProvider.INSTANCE);
         bind(short.class).toProvider(ShortProvider.INSTANCE);
         bind(Double.class).toProvider(DoubleProvider.INSTANCE);
         bind(double.class).toProvider(DoubleProvider.INSTANCE);
-        bind(OptionalDouble.class).toProvider(OptionalDoubleProvider.INSTANCE);
         bind(Float.class).toProvider(FloatProvider.INSTANCE);
         bind(float.class).toProvider(FloatProvider.INSTANCE);
         bind(String.class).toProvider(StringProvider.INSTANCE);

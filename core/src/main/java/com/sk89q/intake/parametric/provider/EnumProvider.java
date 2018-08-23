@@ -58,6 +58,11 @@ public class EnumProvider<T extends Enum<T>> implements Provider<T> {
         this.enumClass = enumClass;
     }
 
+    @Override
+    public String getName() {
+        return enumClass.getSimpleName().toLowerCase();
+    }
+
     @Nullable
     @Override
     public T get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException {

@@ -31,6 +31,11 @@ class TextProvider extends StringProvider {
 
     static final TextProvider INSTANCE = new TextProvider();
 
+    @Override
+    public String getName() {
+        return "string...";
+    }
+
     @Nullable
     @Override
     public String get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {

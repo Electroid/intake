@@ -26,9 +26,14 @@ import com.sk89q.intake.parametric.Provider;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-class DoubleProvider implements Provider<Double>, NumberProvider<Double> {
+class DoubleProvider implements Provider<Double>, NumberProvider {
 
     static final DoubleProvider INSTANCE = new DoubleProvider();
+
+    @Override
+    public String getName() {
+        return "number";
+    }
 
     @Override
     public Double get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {

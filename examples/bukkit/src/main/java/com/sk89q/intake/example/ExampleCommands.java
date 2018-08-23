@@ -61,7 +61,6 @@ public class ExampleCommands {
     @Command(
         aliases = "sum",
         desc = "Get the sum of two numbers",
-        usage = "<num> <num>",
         min = 2,
         max = 2
     )
@@ -74,7 +73,6 @@ public class ExampleCommands {
     @Command(
         aliases = "div",
         desc = "Divide two numbers",
-        usage = "<num> <num>",
         flags = "r",
         min = 2,
         max = 2

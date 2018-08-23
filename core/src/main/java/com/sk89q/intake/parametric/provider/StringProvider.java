@@ -35,6 +35,11 @@ class StringProvider implements Provider<String> {
 
     static final StringProvider INSTANCE = new StringProvider();
 
+    @Override
+    public String getName() {
+        return "string";
+    }
+
     @Nullable
     @Override
     public String get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {

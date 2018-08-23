@@ -26,9 +26,14 @@ import com.sk89q.intake.parametric.Provider;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-class ShortProvider implements Provider<Short>, NumberProvider<Short> {
+class ShortProvider implements Provider<Short>, NumberProvider {
 
     static final ShortProvider INSTANCE = new ShortProvider();
+
+    @Override
+    public String getName() {
+        return "integer";
+    }
 
     @Override
     public Short get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {

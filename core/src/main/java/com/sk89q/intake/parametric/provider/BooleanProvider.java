@@ -31,6 +31,11 @@ class BooleanProvider implements Provider<Boolean> {
 
     static final BooleanProvider INSTANCE = new BooleanProvider();
 
+    @Override
+    public String getName() {
+        return "boolean";
+    }
+
     @Nullable
     @Override
     public Boolean get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {

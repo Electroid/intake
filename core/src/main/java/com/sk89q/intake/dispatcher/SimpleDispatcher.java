@@ -191,7 +191,7 @@ public class SimpleDispatcher implements Dispatcher {
         return new ImmutableDescription.Builder()
                 .setParameters(Lists.newArrayList(
                         new ImmutableParameter.Builder()
-                            .setName("<" + Joiner.on("|").join(commands) + ">")
+                            .setName(Joiner.on("|").join(commands))
                             .setOptionType(OptionType.positional())
                             .build()))
                 .build();

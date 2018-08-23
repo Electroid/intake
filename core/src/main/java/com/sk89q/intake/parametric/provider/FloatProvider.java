@@ -27,9 +27,14 @@ import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-class FloatProvider implements Provider<Float>, NumberProvider<Float> {
+class FloatProvider implements Provider<Float>, NumberProvider {
 
     static final FloatProvider INSTANCE = new FloatProvider();
+
+    @Override
+    public String getName() {
+        return "number";
+    }
 
     @Nullable
     @Override
