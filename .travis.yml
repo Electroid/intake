@@ -1,8 +1,6 @@
 sudo: false
 language: java
-jdk:
-  - oraclejdk8
-  - openjdk8
+jdk: oraclejdk8
 install: true
 script: mvn clean install
 after_success: $TRAVIS_BRANCH == "master" && mvn deploy --settings settings.xml
