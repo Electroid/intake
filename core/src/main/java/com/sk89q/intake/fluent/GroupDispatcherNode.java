@@ -111,6 +111,7 @@ public class GroupDispatcherNode extends AbstractDispatcherNode {
                         checkArgument(!at.value().isEmpty(), "group cannot be empty");
                         this.getGroup(at.value()).registerCommand(callable, definition.aliases());
                     }
+                    continue; // Once registered in a group, it cannot be registered at root
                 }
 
                 if (method.getAnnotation(Root.class) != null || !classRegistered) {
