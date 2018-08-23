@@ -1,199 +1,76 @@
-# Intake
+# Intake [![Build Status](https://travis-ci.org/Electroid/intake.png?branch=master)](https://travis-ci.org/Electroid/intake)
 
-Intake is a IoC-oriented command parsing library.
+Intake is a command parsing library that can be implemented along various platforms, such as Minecraft.
 
-Consider the following command:
+When a user inputs a command:
 
 ```
-/body settype pluto dwarfplanet
+/sum 1 2
 ```
 
-Consider a theoretical `Body` class and `CelestialType` enum in the project. The command above presumably would execute the following code:
+You can easily handle that request with only a couple lines of code.
 
 ```java
-pluto.setType(CelestialType.DWARF_PLANET);
-```
-
-Rather than write argument parsing code in the routine for that command, it'd be simpler to simply request a `Body` and a `CelestialType` from the user, so it'd be possible to write the command like so:
-
-```java
-void setType(Body body, CelestialType type) {
-	body.setType(type);
+public class Commands {
+   @Command(
+       aliases = "sum",
+       desc = "Adds two numbers and returns their result",
+       perms = "math.sum",
+       usage = "[number] [number]",
+       min = 2,
+       max = 2
+   )
+   public void sum(CommandSender user, int a, int b) {
+       user.sendMessage(a + b);
+   }
 }
 ```
 
-The purpose of Intake is to make that possible.
+Intake allows you to define custom providers for your own classes and handle errors with ease. Check out the [detailed breakdown](core/README.md) of the project for more details.
 
-## Overview
+## Example
 
-Intake consists of four parts:
-
-### Command Framework
-
-The command framework consists of some basic interfaces and classes:
-
-* Commands are modeled by `CommandCallable`
-* Groups of sub-commands are modeled by `Dispatcher`
-* Descriptions of commands are modeled by `Description`
-* Individual parameters (for introspection) are modeled by `Parameter`
-* Commands that can suggest completions are modeled by `CommandCompleter`
-* Arguments (accessed as a stack) are represented by `CommandArgs`
-
-There is also support for:
-
-* Boolean single-character flags (`/command -f`)
-* Value flags (`/command -v value`)
-* Testing whether a user has permission to execute a command
-
-The goal of the framework is to provide a compromise between a heavily-opinionated framework and a flexible one.
-
-### Parameter Injection
-
-The parameter injection framework provides IoC-oriented argument parsing and completion.
-
-Raw use of the injection framework can be best seen in an example:
-
+To see how easy it is to implement Intake, take a look at the [Bukkit](bukkit/src/main/java/com/sk89q/intake/bukkit) module. For game developers that want to extend that module specifically, all you need to do is add this to your `JavaPlugin` class:
 ```java
-Injector injector = Intake.createInjector();
-injector.install(new PrimitivesModule());
-injector.install(new UniverseModule());
-
-Builder argParserBuilder = new Builder(injector);
-argParserBuilder.addParameter(Body.class);
-argParserBuilder.addParameter(CelestialType.class);
-
-ArgumentParser parser = argParserBuilder.build();
-parser.parseArguments(Arguments.of("pluto", "dwarfplanet")));
-```
-
-ArgumentParser finds "providers" for the Body and CelestialType Java types, which are then later utilized to create object instances from the provided arguments.
-
-`UniverseModule` might look like this:
-
-```java
-public class UniverseModule extends AbstractModule {
-
-    private final Universe universe;
-
-    public UniverseModule(Universe universe) {
-        this.universe = universe;
-    }
-
-    @Override
-    protected void configure() {
-        bind(Universe.class).toInstance(universe);
-        bind(Body.class).toProvider(new BodyProvider(universe));
-        bind(CelestialType.class).toProvider(
-				new EnumProvider<CelestialType>(CelestialType.class));
-    }
-
+@Override
+public void onLoad() {
+   new BukkitIntake(this, new Commands());
 }
 ```
 
-The parameter injection framework has strong similarity to Google Guice's API.
+An example `Bukkit` plugin is provided for your convenience [here](examples/bukkit/src/main/java/com/sk89q/intake/example/).
 
-### Parametric Commands
+## Installation
 
-The parametric command framework provides an opinionated method of defining commands using classes:
-
-```java
-public class UniverseCommands {
-
-    @Command(aliases = "settype", desc = "Set the type of an object")
-    public void setType(Body body, CelestialType type) {
-        body.setType(type);
-    }
-
-}
-```
-
-It makes use of the parameter injection framework.
-
-### Fluent API
-
-There is also a fluent API that combines the command framework with the parametric command framework.
-
-
-## Examples
-
-To see some example code, check out the [example projects](examples/bukkit/src/main/java/com/sk89q/intake/example/).
-
-## Usage
-
-There are two major versions of Intake:
-
-* 3.x (available via Git tags)
-* 4.x (in the `master` branch)
-
-There was a major overhaul in 4.0 to decompule the IoC portion from the parametric binding. Previously they were an inseperable couple.
-
-The documentation in the wiki is for 3.x. The examples in this README are for 4.x.
-
-### Resolution
-
-Currently, Intake is available in sk89q's Maven repository:
+Release and snapshot artifacts are automatically deployed to my Nexus repo. Include the following snippet in your `pom.xml` to start using Intake.
 
 ```xml
 <repositories>
   <repository>
-    <id>maven.sk89q.com</id>
-    <url>http://maven.sk89q.com/repo/</url>
+    <id>ashcon.app</id>
+    <url>https://repo.ashcon.app/nexus/content/repositories/releases/</url>
   </repository>
 </repositories>
+<dependencies>
+  <dependency>
+    <groupId>com.sk89q.intake</groupId>
+    <!-- Use "intake-core" if you don't want Minecraft -->
+    <artifactId>intake-bukkit</artifactId>
+    <version>5.0-SNAPSHOT</version>
+  </dependency>
+</dependencies>
 ```
-
-or for Gradle users:
-
-```groovy
-repositories {
-    maven { url "http://maven.sk89q.com/repo/" }
-}
-```
-
-Depending on whether you want to use 3.x (3.1.2 is recommended) or 4.x, the Maven group ID will vary:
-
-* 3.1.2:
-	* Group ID: `com.sk89q`
-	* Artifact ID: `intake`
-	* Version: `3.1.2`
-* 4.0:
-	* Group ID: `com.sk89q.intake`
-	* Artifact ID: `intake`
-	* Version: `4.0-SNAPSHOT`
-
-**Note:** The API is subject to change in snapshot builds.
-
-### Migration
-
-If you are coming from the command framework that was used in WorldEdit since 2010, then there have been many changes.
-
-If you are moving from 3.x to 4.x, then the changes have not been too major (except for registering bindings). Some classes were moved around or renamed.
-
-## Documentation
-
-If you are using 3.x, find work-in-progress documentation at https://github.com/sk89q/Intake/wiki
-
-However, if you are using 4.x, you are better looking at examples found in the repository.
 
 ## Compiling
 
-Use Gradle to compile Intake.
+Use Maven to compile Intake.
 
-If you are on Linux or Mac OS X, run the following in your terminal:
+```
+mvn clean install
+```
 
-    ./gradlew clean build
+## Attributions
 
-If you are on Windows, run the following in your command prompt:
+Intake was adapted from [sk89q's abandoned fork](https://github.com/EngineHub/Intake), but heavily modified and abstracted. Therefore, it is available under the GNU Lesser General Public License.
 
-    gradlew clean build
-
-## Contributing
-
-Intake is available under the GNU Lesser General Public License.
-
-We happily accept contributions, especially through pull requests on GitHub.
-
-## Links
-
-* [Visit our website](http://www.enginehub.org/)
-* [IRC channel](http://skq.me/irc/irc.esper.net/sk89q/) (#sk89q on irc.esper.net)
+I happily accept contributions, especially through pull requests on GitHub!
