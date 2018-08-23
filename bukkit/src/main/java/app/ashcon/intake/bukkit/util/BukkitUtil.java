@@ -1,10 +1,10 @@
 package app.ashcon.intake.bukkit.util;
 
+import com.sk89q.intake.parametric.ProvisionException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
@@ -45,15 +45,13 @@ public class BukkitUtil {
         return player.getName();
     }
 
-    public static World getWorld(CommandSender sender) {
+    public static World getWorld(CommandSender sender) throws ProvisionException {
         if (sender instanceof Player) {
             return ((Player) sender).getWorld();
         } else if (sender instanceof Block) {
             return ((Block) sender).getWorld();
-        } else if (sender instanceof Entity) {
-            return ((Entity) sender).getWorld();
         } else {
-            return null;
+            throw new ProvisionException("Unsupported command sender - World cannot be retrieved.");
         }
     }
 
