@@ -5,14 +5,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.sk89q.intake.CommandException;
 import com.sk89q.intake.Intake;
-import com.sk89q.intake.InvalidUsageException;
 import com.sk89q.intake.InvocationCommandException;
 import com.sk89q.intake.argument.Namespace;
 import com.sk89q.intake.bukkit.authorizer.BukkitAuthorizer;
 import com.sk89q.intake.bukkit.command.BukkitCommand;
 import com.sk89q.intake.bukkit.command.BukkitHelpTopic;
 import com.sk89q.intake.dispatcher.Dispatcher;
-import com.sk89q.intake.dispatcher.SimpleDispatcher;
+import com.sk89q.intake.fluent.CommandGraph;
 import com.sk89q.intake.parametric.Injector;
 import com.sk89q.intake.parametric.ParametricBuilder;
 import com.sk89q.intake.parametric.provider.PrimitivesModule;
@@ -24,10 +23,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -48,29 +46,27 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
     private final ParametricBuilder builder;
     private final Dispatcher dispatcher;
 
-    public BukkitIntake(Plugin plugin, @Nullable BiConsumer<ParametricBuilder, Dispatcher> init) {
+    public BukkitIntake(Plugin plugin, Consumer<CommandGraph> init) {
         this.plugin = plugin;
         Injector injector = Intake.createInjector();
         injector.install(new PrimitivesModule());
         injector.install(new BukkitModule());
         this.injector = injector;
         ParametricBuilder builder = new ParametricBuilder(injector);
-        this.builder = builder;
-        Dispatcher dispatcher = new SimpleDispatcher();
         builder.setAuthorizer(new BukkitAuthorizer(){});
-        if(init != null) {
-            init.accept(builder, dispatcher);
-        }
+        this.builder = builder;
+        CommandGraph graph = new CommandGraph().builder(builder);
+        init.accept(graph);
+        this.dispatcher = graph.getDispatcher();
         List<Command> commands = dispatcher.getCommands()
                                            .stream()
                                            .map(cmd -> new BukkitCommand(plugin, this, this, cmd))
                                            .collect(Collectors.toList());
         getCommandMap().registerAll(plugin.getName(), commands);
-        this.dispatcher = dispatcher;
     }
 
     public BukkitIntake(Plugin plugin, Object... commands) {
-        this(plugin, (builder, dispatcher) -> Stream.of(commands).forEachOrdered(command -> builder.registerMethodsAsCommands(dispatcher, command)));
+        this(plugin, graph -> Stream.of(commands).forEachOrdered(command -> graph.groupedCommands().registerGrouped(command)));
     }
 
     public Injector getInjector() {
@@ -100,16 +96,13 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         try {
             return getDispatcher().call(getCommand(command, args), getNamespace(sender));
-        } catch (InvalidUsageException e) {
-            sender.sendMessage(ChatColor.RED + "Invalid usage: " + e.getMessage());
         } catch (AuthorizationException e) {
-            sender.sendMessage(ChatColor.RED + "You do not have permission to use this command");
-        } catch (CommandException e) {
-            sender.sendMessage(ChatColor.RED + "Command exception: " + e.getMessage());
-            e.printStackTrace();
+            sender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
         } catch (InvocationCommandException e) {
-            sender.sendMessage(ChatColor.RED + "Invocation exception: " + e.getMessage());
+            sender.sendMessage(ChatColor.RED + "An unexpected exception occurred while executing your command!");
             e.printStackTrace();
+        } catch (CommandException e) {
+            sender.sendMessage(ChatColor.RED + e.getMessage());
         }
         return false;
     }

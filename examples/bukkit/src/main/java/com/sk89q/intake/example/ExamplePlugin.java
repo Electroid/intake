@@ -7,7 +7,7 @@ public class ExamplePlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        new BukkitIntake(this, new MathCommands());
+        new BukkitIntake(this, new ExampleCommands());
     }
 
 }
