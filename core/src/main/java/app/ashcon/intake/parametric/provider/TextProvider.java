@@ -39,25 +39,22 @@ class TextProvider extends StringProvider {
     @Nullable
     @Override
     public String get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
-        StringBuilder builder = new StringBuilder();
-        boolean first = true;
-        while (true) {
-            if (!first) {
-                builder.append(" ");
-            }
-            try {
-                builder.append(arguments.next());
-            } catch (MissingArgumentException ignored) {
-                break;
-            }
-            first = false;
-        }
-        if (first) {
+        // NPE when the command expects (more) arguments but is provided none
+        StringBuilder builder;
+        try {
+            builder = new StringBuilder(arguments.next());
+        } catch (NullPointerException e){
             throw new MissingArgumentException();
         }
-        String v = builder.toString();
-        validate(v, modifiers);
-        return v;
+
+        while(arguments.hasNext()) {
+            // This properly handles the trailing blank character if the CommandSender accidentally included a blank character at the end
+            // i.e. /potato buy 27 (blank)
+            builder.append(" ").append(arguments.next());
+        }
+        String appendedText = builder.toString();
+        validate(appendedText, modifiers);
+        return appendedText;
     }
 
 }
