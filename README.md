@@ -116,7 +116,7 @@ There is also a fluent API that combines the command framework with the parametr
 
 ## Examples
 
-To see some example code, check out the [example projects](intake-example/src/main/java/com/sk89q/intake/example).
+To see some example code, check out the [example projects](examples/bukkit/src/main/java/com/sk89q/intake/example/).
 
 ## Usage
 
