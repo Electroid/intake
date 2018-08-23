@@ -25,6 +25,7 @@ import com.google.common.collect.Lists;
 import com.sk89q.intake.*;
 import com.sk89q.intake.argument.CommandContext;
 import com.sk89q.intake.argument.Namespace;
+import com.sk89q.intake.parametric.ProvisionException;
 import com.sk89q.intake.util.auth.AuthorizationException;
 
 import java.util.ArrayList;
@@ -42,33 +43,24 @@ import java.util.Set;
 public class SimpleDispatcher implements Dispatcher {
 
     private final Map<String, CommandMapping> commands = new HashMap<String, CommandMapping>();
-    private final Description description;
+    private volatile boolean locked = false;
+    private Description description;
 
     /**
-     * Create a new instance.
+     * Lock the {@link Dispatcher} and prevents more commands from
+     * being registered, as well as purge the {@link Description} cache.
      */
-    public SimpleDispatcher() {
-        List<Parameter> parameters = Lists.newArrayList();
-
-        parameters.add(
-                new ImmutableParameter.Builder()
-                        .setName("subcommand")
-                        .setOptionType(OptionType.positional())
-                        .build());
-
-        parameters.add(
-                new ImmutableParameter.Builder()
-                        .setName("...")
-                        .setOptionType(OptionType.optionalPositional())
-                        .build());
-
-        description = new ImmutableDescription.Builder()
-                .setParameters(parameters)
-                .build();
+    public void lock() {
+        locked = true; // Prevent more commands from being registered
+        description = null; // Purge the description cache
     }
 
     @Override
     public void registerCommand(CommandCallable callable, String... alias) {
+        if (locked) {
+            throw new IllegalArgumentException("Can't register another command because SimpleDispatcher is locked");
+        }
+
         CommandMapping mapping = new ImmutableCommandMapping(callable, alias);
         
         // Check for replacements
@@ -126,7 +118,7 @@ public class SimpleDispatcher implements Dispatcher {
         Set<String> aliases = getPrimaryAliases();
 
         if (aliases.isEmpty()) {
-            throw new InvalidUsageException("This command has no sub-commands.", this, parentCommands);
+            throw new ProvisionException("There are no sub-commands for " + parentCommands);
         } else if (split.length > 0) {
             String subCommand = split[0];
             String subArguments = Joiner.on(" ").join(Arrays.copyOfRange(split, 1, split.length));
@@ -151,7 +143,7 @@ public class SimpleDispatcher implements Dispatcher {
 
         }
 
-        throw new InvalidUsageException("Please choose a sub-command.", this, parentCommands, true);
+        throw new InvalidUsageException(null, this, parentCommands, true);
     }
 
     @Override
@@ -188,8 +180,28 @@ public class SimpleDispatcher implements Dispatcher {
         }
     }
 
+    public Description createDescription() {
+        List<String> commands = Lists.newArrayList(this.commands.keySet());
+        commands.sort(String.CASE_INSENSITIVE_ORDER);
+
+        if (commands.isEmpty()) {
+            commands.add("command");
+        }
+
+        return new ImmutableDescription.Builder()
+                .setParameters(Lists.newArrayList(
+                        new ImmutableParameter.Builder()
+                            .setName("<" + Joiner.on("|").join(commands) + ">")
+                            .setOptionType(OptionType.positional())
+                            .build()))
+                .build();
+    }
+
     @Override
     public Description getDescription() {
+        if (description == null) {
+            description = createDescription();
+        }
         return description;
     }
 

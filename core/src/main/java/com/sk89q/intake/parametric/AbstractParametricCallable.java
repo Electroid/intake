@@ -230,32 +230,28 @@ public abstract class AbstractParametricCallable implements CommandCallable {
 
         } catch (MissingArgumentException e) {
             if (e.getParameter() != null) {
-                throw new InvalidUsageException("Too few arguments! No value found for parameter '" + e.getParameter().getName() + "'", this, parentCommands, false, e);
+                throw new InvalidUsageException("Too few arguments! Expected another '" + e.getParameter().getName() + "'", this, parentCommands, false, e);
             } else {
-                throw new InvalidUsageException("Too few arguments!", this, parentCommands, false, e);
+                throw new InvalidUsageException("Too few arguments!", this, parentCommands, true, e);
             }
 
         } catch (UnusedArgumentException e) {
-            throw new InvalidUsageException("Too many arguments! Unused arguments: " + e.getUnconsumed(), this, parentCommands, false, e);
+            throw new InvalidUsageException("Too many arguments! Did not use '" + e.getUnconsumed() + "'", this, parentCommands, false, e);
 
         } catch (ArgumentParseException e) {
-            if (e.getParameter() != null) {
-                throw new InvalidUsageException("For parameter '" + e.getParameter().getName() + "': " + e.getMessage(), this, parentCommands, false, e);
-            } else {
-                throw new InvalidUsageException("Error parsing arguments: " + e.getMessage(), this, parentCommands, false, e);
-            }
+            throw new InvalidUsageException(e.getMessage(), this, parentCommands, false, e);
 
         } catch (ArgumentException e) { // Something else wrong with an argument
-            throw new InvalidUsageException("Error parsing arguments: " + e.getMessage(), this, parentCommands, false, e);
+            throw new InvalidUsageException(e.getMessage(), this, parentCommands, false, e);
 
         } catch (CommandException e) { // Thrown by commands
             throw e;
 
         } catch (ProvisionException e) { // Argument binding failed
-            throw new InvocationCommandException("Internal error occurred: " + e.getMessage(), e);
+            throw new InvocationCommandException("Exception binding arguments: " + e.getMessage(), e);
 
         } catch (InterruptedException e) { // Thrown by execution
-            throw new InvocationCommandException("Execution of the command was interrupted", e.getCause());
+            throw new InvocationCommandException("Interruption exception: " + e.getCause().getMessage(), e.getCause());
 
         } catch (Throwable e) { // Catch all
             for (ExceptionConverter converter : builder.getExceptionConverters()) {

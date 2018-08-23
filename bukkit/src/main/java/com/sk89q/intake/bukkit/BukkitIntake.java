@@ -5,12 +5,14 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.sk89q.intake.CommandException;
 import com.sk89q.intake.Intake;
+import com.sk89q.intake.InvalidUsageException;
 import com.sk89q.intake.InvocationCommandException;
 import com.sk89q.intake.argument.Namespace;
 import com.sk89q.intake.bukkit.authorizer.BukkitAuthorizer;
 import com.sk89q.intake.bukkit.command.BukkitCommand;
 import com.sk89q.intake.bukkit.command.BukkitHelpTopic;
 import com.sk89q.intake.dispatcher.Dispatcher;
+import com.sk89q.intake.dispatcher.SimpleDispatcher;
 import com.sk89q.intake.fluent.CommandGraph;
 import com.sk89q.intake.parametric.Injector;
 import com.sk89q.intake.parametric.ParametricBuilder;
@@ -58,6 +60,9 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
         CommandGraph graph = new CommandGraph().builder(builder);
         init.accept(graph);
         this.dispatcher = graph.getDispatcher();
+        if (dispatcher instanceof SimpleDispatcher) {
+            ((SimpleDispatcher) dispatcher).lock();
+        }
         List<Command> commands = dispatcher.getCommands()
                                            .stream()
                                            .map(cmd -> new BukkitCommand(plugin, this, this, cmd))
@@ -99,8 +104,15 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
         } catch (AuthorizationException e) {
             sender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
         } catch (InvocationCommandException e) {
-            sender.sendMessage(ChatColor.RED + "An unexpected exception occurred while executing your command!");
-            e.printStackTrace();
+            sender.sendMessage(ChatColor.RED + "An exception occurred while executing this command!");
+            e.getCause().printStackTrace();
+        } catch (InvalidUsageException e) {
+            if (e.getMessage() != null) {
+                sender.sendMessage(ChatColor.RED + e.getMessage());
+            }
+            if (e.isFullHelpSuggested()) {
+                sender.sendMessage(ChatColor.RED + "/" + Joiner.on(' ').join(e.getAliasStack()) + " " + e.getCommand().getDescription().getUsage());
+            }
         } catch (CommandException e) {
             sender.sendMessage(ChatColor.RED + e.getMessage());
         }
