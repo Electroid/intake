@@ -114,7 +114,7 @@ final class MethodCallable extends AbstractParametricCallable {
                 .setShortDescription(!definition.desc().isEmpty() ? definition.desc() : null)
                 .setHelp(!definition.help().isEmpty() ? definition.help() : null)
                 .setUsageOverride(!definition.usage().isEmpty() ? definition.usage() : null)
-                .setPermissions(Arrays.asList(definition.permissions()));
+                .setPermissions(Arrays.asList(definition.perms()));
 
         for (InvokeListener listener : builder.getInvokeListeners()) {
             listener.updateDescription(commandAnnotations, parser, descBuilder);

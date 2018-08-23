@@ -108,6 +108,6 @@ public @interface Command {
      *
      * @return a list of permissions
      */
-    String[] permissions() default {};
+    String[] perms() default {};
 
 }
