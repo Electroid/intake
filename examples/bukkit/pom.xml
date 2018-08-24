@@ -3,15 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.sk89q.intake</groupId>
+    <groupId>app.ashcon.intake</groupId>
     <artifactId>intake-bukkit-example</artifactId>
-    <version>5.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.sk89q.intake</groupId>
+            <groupId>app.ashcon.intake</groupId>
             <artifactId>intake-bukkit</artifactId>
-            <version>5.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
     </dependencies>
     <build>
@@ -38,7 +38,7 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>com.sk89q.intake:intake-bukkit</include>
+                                    <include>app.ashcon.intake:intake-bukkit</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
@@ -55,6 +55,6 @@
     </build>
     <properties>
         <plugin.prefix>ExamplePlugin</plugin.prefix>
-        <plugin.mainClass>com.sk89q.intake.example.ExamplePlugin</plugin.mainClass>
+        <plugin.mainClass>app.ashcon.intake.example.ExamplePlugin</plugin.mainClass>
     </properties>
 </project>

@@ -30,7 +30,7 @@ Intake allows you to define custom providers for your own classes and handle err
 
 ## Example
 
-To see how easy it is to implement Intake, take a look at the [Bukkit](bukkit/src/main/java/com/sk89q/intake/bukkit) module. For game developers that want to extend that module specifically, all you need to do is add this to your `JavaPlugin` class:
+To see how easy it is to implement Intake, take a look at the [Bukkit](bukkit/src/main/java/app/ashcon/intake/bukkit) module. For game developers that want to extend that module specifically, all you need to do is add this to your `JavaPlugin` class:
 ```java
 @Override
 public void onLoad() {
@@ -38,7 +38,7 @@ public void onLoad() {
 }
 ```
 
-An example `Bukkit` plugin is provided for your convenience [here](examples/bukkit/src/main/java/com/sk89q/intake/example/).
+An example `Bukkit` plugin is provided for your convenience [here](examples/bukkit/src/main/java/app/ashcon/intake/example/).
 
 ## Installation
 
@@ -53,10 +53,10 @@ Release and snapshot artifacts are automatically deployed to my Nexus repo. Incl
 </repositories>
 <dependencies>
   <dependency>
-    <groupId>com.sk89q.intake</groupId>
+    <groupId>app.ashcon.intake</groupId>
     <!-- Use "intake-core" if you don't want Minecraft -->
     <artifactId>intake-bukkit</artifactId>
-    <version>5.0-SNAPSHOT</version>
+    <version>1.0</version>
   </dependency>
 </dependencies>
 ```
