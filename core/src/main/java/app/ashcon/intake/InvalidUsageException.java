@@ -126,4 +126,5 @@ public class InvalidUsageException extends CommandException {
     public boolean isFullHelpSuggested() {
         return fullHelpSuggested;
     }
+
 }

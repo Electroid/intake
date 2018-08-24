@@ -279,12 +279,8 @@ public final class ArgumentParser {
             List<Annotation> modifiers = Lists.newArrayList();
             boolean seenJavaOptional = false;
 
-            Supplier<IllegalParameterException> exceptionSupplier = new Supplier<IllegalParameterException>() {
-                @Override
-                public IllegalParameterException get() {
-                    return new IllegalParameterException("Optional<?>, @Default, @Nullable, and @Switch cannot be mixed for parameter #" + index);
-                }
-            };
+            Supplier<IllegalParameterException> exceptionSupplier =
+                    () -> new IllegalParameterException("Optional<?>, @Default, @Nullable, and @Switch cannot be mixed for parameter #" + index);
 
             if (TypeToken.of(Optional.class).isAssignableFrom(type)) {
                 type = ((ParameterizedType) type).getActualTypeArguments()[0];

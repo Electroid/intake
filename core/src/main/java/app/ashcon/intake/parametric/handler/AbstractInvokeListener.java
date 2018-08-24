@@ -34,4 +34,5 @@ public abstract class AbstractInvokeListener implements InvokeListener {
     @Override
     public void updateDescription(Set<Annotation> annotations, ArgumentParser parser, Builder descriptionBuilder) {
     }
+
 }

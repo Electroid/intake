@@ -22,6 +22,8 @@ package app.ashcon.intake.internal.parametric;
 import app.ashcon.intake.parametric.Binding;
 import app.ashcon.intake.parametric.Key;
 import app.ashcon.intake.parametric.Provider;
+
+import com.google.common.base.Objects;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
@@ -36,7 +38,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 class BindingList {
 
-    private final Multimap<Type, BindingEntry<?>> providers = Multimaps.newMultimap(Maps.<Type, Collection<BindingEntry<?>>>newHashMap(), new CollectionSupplier());
+    private final Multimap<Type, BindingEntry<?>> providers = Multimaps.newMultimap(Maps.newHashMap(), new CollectionSupplier());
 
     public <T> void addBinding(Key<T> key, Provider<T> provider) {
         checkNotNull(key, "key");
@@ -90,10 +92,11 @@ class BindingList {
 
         @Override
         public String toString() {
-            return "BindingEntry{" +
-                    "key=" + key +
-                    ", provider=" + provider +
-                    '}';
+            return Objects.toStringHelper(this)
+                    .add("key", key)
+                    .add("provider", provider)
+                    .toString();
         }
     }
+
 }

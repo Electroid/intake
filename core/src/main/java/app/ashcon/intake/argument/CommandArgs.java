@@ -48,7 +48,7 @@ public interface CommandArgs {
      *
      * @return The next argument as an integer
      * @throws MissingArgumentException Thrown if there are no remaining arguments
-     * @throws ArgumentParseException Thrown if the next argument could not be parsed to an integer
+     * @throws ArgumentParseException   Thrown if the next argument could not be parsed to an integer
      */
     int nextInt() throws MissingArgumentException, ArgumentParseException;
 
@@ -57,7 +57,7 @@ public interface CommandArgs {
      *
      * @return The next argument as an short
      * @throws MissingArgumentException Thrown if there are no remaining arguments
-     * @throws ArgumentParseException Thrown if the next argument could not be parsed to an short
+     * @throws ArgumentParseException   Thrown if the next argument could not be parsed to an short
      */
     short nextShort() throws MissingArgumentException, ArgumentParseException;
 
@@ -66,7 +66,7 @@ public interface CommandArgs {
      *
      * @return The next argument as an byte
      * @throws MissingArgumentException Thrown if there are no remaining arguments
-     * @throws ArgumentParseException Thrown if the next argument could not be parsed to an byte
+     * @throws ArgumentParseException   Thrown if the next argument could not be parsed to an byte
      */
     byte nextByte() throws MissingArgumentException, ArgumentParseException;
 
@@ -75,7 +75,7 @@ public interface CommandArgs {
      *
      * @return The next argument as an double
      * @throws MissingArgumentException Thrown if there are no remaining arguments
-     * @throws ArgumentParseException Thrown if the next argument could not be parsed to an double
+     * @throws ArgumentParseException   Thrown if the next argument could not be parsed to an double
      */
     double nextDouble() throws MissingArgumentException, ArgumentParseException;
 
@@ -84,7 +84,7 @@ public interface CommandArgs {
      *
      * @return The next argument as an float
      * @throws MissingArgumentException Thrown if there are no remaining arguments
-     * @throws ArgumentParseException Thrown if the next argument could not be parsed to an float
+     * @throws ArgumentParseException   Thrown if the next argument could not be parsed to an float
      */
     float nextFloat() throws MissingArgumentException, ArgumentParseException;
 
@@ -93,7 +93,7 @@ public interface CommandArgs {
      *
      * @return The next argument as an boolean
      * @throws MissingArgumentException Thrown if there are no remaining arguments
-     * @throws ArgumentParseException Thrown if the next argument could not be parsed to an boolean
+     * @throws ArgumentParseException   Thrown if the next argument could not be parsed to an boolean
      */
     boolean nextBoolean() throws MissingArgumentException, ArgumentParseException;
 

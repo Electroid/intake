@@ -13,4 +13,5 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Classifier
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Sender {}
+public @interface Sender {
+}

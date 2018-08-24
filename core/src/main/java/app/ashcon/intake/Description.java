@@ -36,14 +36,14 @@ public interface Description {
 
     /**
      * Get the list of parameters for this command.
-     * 
+     *
      * @return A list of parameters
      */
     List<Parameter> getParameters();
 
     /**
      * Get a short one-line description of this command.
-     * 
+     *
      * @return A description, or null if no description is available
      */
     @Nullable
@@ -51,7 +51,7 @@ public interface Description {
 
     /**
      * Get a longer help text about this command.
-     * 
+     *
      * @return A help text, or null if no help is available
      */
     @Nullable
@@ -59,20 +59,20 @@ public interface Description {
 
     /**
      * Get the usage string of this command.
-     * 
-     * <p>A usage string may look like 
+     *
+     * <p>A usage string may look like
      * {@code [-w &lt;world&gt;] &lt;var1&gt; &lt;var2&gt;}.</p>
-     * 
+     *
      * @return A usage string
      */
     String getUsage();
-    
+
     /**
      * Get a list of permissions that the player may have to have permission.
-     * 
+     *
      * <p>Permission data may or may not be available. This is only useful as a
      * potential hint.</p>
-     * 
+     *
      * @return The list of permissions
      */
     List<String> getPermissions();

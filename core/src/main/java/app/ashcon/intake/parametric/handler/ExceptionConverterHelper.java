@@ -76,9 +76,7 @@ public abstract class ExceptionConverterHelper implements ExceptionConverter {
                         throw (CommandException) e.getCause();
                     }
                     throw new InvocationCommandException(e);
-                } catch (IllegalArgumentException e) {
-                    throw new InvocationCommandException(e);
-                } catch (IllegalAccessException e) {
+                } catch (IllegalArgumentException | IllegalAccessException e) {
                     throw new InvocationCommandException(e);
                 }
             }

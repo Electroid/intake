@@ -25,6 +25,7 @@ package app.ashcon.intake.util.auth;
 public class AuthorizationException extends Exception {
 
     public AuthorizationException() {
+        super();
     }
 
     public AuthorizationException(String message) {

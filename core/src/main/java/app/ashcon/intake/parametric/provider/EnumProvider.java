@@ -96,4 +96,5 @@ public class EnumProvider<T extends Enum<T>> implements Provider<T> {
     private static String simplify(String t) {
         return NON_ALPHANUMERIC.matcher(t.toLowerCase()).replaceAll("");
     }
+
 }

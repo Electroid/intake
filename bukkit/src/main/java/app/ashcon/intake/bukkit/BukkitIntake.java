@@ -65,9 +65,9 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
             ((SimpleDispatcher) dispatcher).lock();
         }
         List<Command> commands = dispatcher.getCommands()
-                                           .stream()
-                                           .map(cmd -> new BukkitCommand(plugin, this, this, cmd))
-                                           .collect(Collectors.toList());
+                .stream()
+                .map(cmd -> new BukkitCommand(plugin, this, this, cmd))
+                .collect(Collectors.toList());
         getCommandMap().registerAll(plugin.getName(), commands);
     }
 
@@ -92,7 +92,7 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
             PluginManager manager = plugin.getServer().getPluginManager();
             Field field = manager.getClass().getDeclaredField("commandMap");
             field.setAccessible(true);
-            return CommandMap.class.cast(field.get(manager));
+            return (CommandMap) field.get(manager);
         } catch (NoSuchFieldException | IllegalAccessException error) {
             throw new IllegalStateException("Intake could not find CommandMap from server", error);
         }
