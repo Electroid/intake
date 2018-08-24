@@ -49,4 +49,5 @@ public class MissingArgumentException extends ArgumentException {
     public Parameter getParameter() {
         return parameter;
     }
+
 }

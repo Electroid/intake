@@ -238,9 +238,6 @@ public abstract class AbstractParametricCallable implements CommandCallable {
         } catch (UnusedArgumentException e) {
             throw new InvalidUsageException("Too many arguments! Did not use '" + e.getUnconsumed() + "'", this, parentCommands, false, e);
 
-        } catch (ArgumentParseException e) {
-            throw new InvalidUsageException(e.getMessage(), this, parentCommands, false, e);
-
         } catch (ArgumentException e) { // Something else wrong with an argument
             throw new InvalidUsageException(e.getMessage(), this, parentCommands, false, e);
 

@@ -26,6 +26,7 @@ package app.ashcon.intake.parametric;
 public class ProvisionException extends RuntimeException {
 
     public ProvisionException() {
+        super();
     }
 
     public ProvisionException(String message) {

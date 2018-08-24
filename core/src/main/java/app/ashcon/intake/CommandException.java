@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class CommandException extends Exception {
 
-    private final List<String> commandStack = new ArrayList<String>();
+    private final List<String> commandStack = new ArrayList<>();
 
     public CommandException() {
     }

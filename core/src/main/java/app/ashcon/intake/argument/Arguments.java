@@ -69,7 +69,7 @@ public final class Arguments {
      * Create an argument stack from a list of string arguments.
      *
      * @param arguments The list of string arguments
-     * @param flags A map of flags, where the key is the flag and the value may be null
+     * @param flags     A map of flags, where the key is the flag and the value may be null
      * @return The arguments
      */
     public static CommandArgs copyOf(List<String> arguments, Map<Character, String> flags) {
@@ -80,7 +80,7 @@ public final class Arguments {
      * Create an argument stack from a list of string arguments.
      *
      * @param arguments The list of string arguments
-     * @param flags A map of flags, where the key is the flag and the value may be null
+     * @param flags     A map of flags, where the key is the flag and the value may be null
      * @param namespace The associated namespace
      * @return The arguments
      */

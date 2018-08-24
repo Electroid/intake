@@ -27,7 +27,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class UnusedArgumentException extends ArgumentException {
     
-    private String unconsumed;
+    private final String unconsumed;
 
     /**
      * Create a new instance with the unconsumed argument data.

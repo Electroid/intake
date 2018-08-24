@@ -32,4 +32,5 @@ public class MutableStringListArgs extends StringListArgs {
     public void insert(String argument) {
         super.insert(argument);
     }
+
 }

@@ -19,6 +19,8 @@
 
 package app.ashcon.intake.parametric;
 
+import com.google.common.base.Objects;
+
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -94,10 +96,10 @@ public final class Key<T> implements Comparable<Key<?>> {
 
     @Override
     public String toString() {
-        return "Key{" +
-                "type=" + type +
-                ", classifier=" + classifier +
-                '}';
+        return Objects.toStringHelper(this)
+                .add("type", type)
+                .add("classifier", classifier)
+                .toString();
     }
 
     public static <T> Key<T> get(Class<T> type) {

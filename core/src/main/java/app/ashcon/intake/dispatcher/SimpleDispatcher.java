@@ -71,7 +71,7 @@ public class SimpleDispatcher implements Dispatcher {
         }
 
         CommandMapping mapping = new ImmutableCommandMapping(callable, alias);
-        
+
         // Check for replacements
         for (String a : alias) {
             String lower = a.toLowerCase();
@@ -80,7 +80,7 @@ public class SimpleDispatcher implements Dispatcher {
                         "Can't add the command '" + a + "' because SimpleDispatcher does not support replacing commands");
             }
         }
-        
+
         for (String a : alias) {
             String lower = a.toLowerCase();
             commands.put(lower, mapping);
@@ -91,12 +91,12 @@ public class SimpleDispatcher implements Dispatcher {
     public Set<CommandMapping> getCommands() {
         return Collections.unmodifiableSet(new HashSet<CommandMapping>(commands.values()));
     }
-    
+
     @Override
     public Set<String> getAliases() {
         return Collections.unmodifiableSet(commands.keySet());
     }
-    
+
     @Override
     public Set<String> getPrimaryAliases() {
         Set<String> aliases = new HashSet<String>();
@@ -137,11 +137,7 @@ public class SimpleDispatcher implements Dispatcher {
             if (mapping != null) {
                 try {
                     mapping.getCallable().call(subArguments, namespace, subParents);
-                } catch (AuthorizationException e) {
-                    throw e;
-                } catch (CommandException e) {
-                    throw e;
-                } catch (InvocationCommandException e) {
+                } catch (AuthorizationException | InvocationCommandException | CommandException e) {
                     throw e;
                 } catch (Throwable t) {
                     throw new InvocationCommandException(t);
@@ -200,9 +196,9 @@ public class SimpleDispatcher implements Dispatcher {
         return new ImmutableDescription.Builder()
                 .setParameters(Lists.newArrayList(
                         new ImmutableParameter.Builder()
-                            .setName(Joiner.on("|").join(commands))
-                            .setOptionType(OptionType.positional())
-                            .build()))
+                                .setName(Joiner.on("|").join(commands))
+                                .setOptionType(OptionType.positional())
+                                .build()))
                 .build();
     }
 

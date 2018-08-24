@@ -132,4 +132,5 @@ public class GroupDispatcherNode extends AbstractDispatcherNode {
             throw new IllegalStateException("Can't put group at '" + group + "' because there is an existing command there");
         }
     }
+
 }

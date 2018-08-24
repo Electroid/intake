@@ -74,13 +74,13 @@ public class CommandContext {
 
     /**
      * Parse the given array of arguments.
-     * 
+     *
      * <p>Empty arguments are removed from the list of arguments.</p>
      *
-     * @param args             an array with arguments
-     * @param expectedValueFlags       a set containing all value flags (pass null to disable value flag parsing)
-     * @param allowHangingFlag true if hanging flags are allowed
-     * @param namespace        the locals, null to create empty one
+     * @param args               an array with arguments
+     * @param expectedValueFlags a set containing all value flags (pass null to disable value flag parsing)
+     * @param allowHangingFlag   true if hanging flags are allowed
+     * @param namespace          the locals, null to create empty one
      * @throws CommandException thrown on a parsing error
      */
     public CommandContext(String[] args, Set<Character> expectedValueFlags, boolean allowHangingFlag, Namespace namespace) throws CommandException {

@@ -43,7 +43,7 @@ public final class PrimaryAliasComparator implements Comparator<CommandMapping> 
      *
      * @param removalPattern A regex to remove unwanted characters from the compared aliases
      */
-    public PrimaryAliasComparator(@Nullable Pattern removalPattern) {
+    private PrimaryAliasComparator(@Nullable Pattern removalPattern) {
         this.removalPattern = removalPattern;
     }
 

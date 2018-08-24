@@ -51,20 +51,18 @@ public class DynamicPlayerProvider implements BukkitProvider<org.bukkit.entity.P
     @Override
     public List<String> getSuggestions(String prefix, CommandSender sender, Namespace namespace, List<? extends Annotation> mods) {
         return Bukkit.getOnlinePlayers()
-                     .stream()
-                     .map(player -> BukkitUtil.getPlayerName(player, sender))
-                     .filter(name -> name.startsWith(prefix))
-                     .sorted()
-                     .collect(Collectors.toList());
+                .stream()
+                .map(player -> BukkitUtil.getPlayerName(player, sender))
+                .filter(name -> name.startsWith(prefix))
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     private Type getType(List<? extends Annotation> mods) {
-        for (Annotation mod : mods) {
-            if(mod instanceof Player) {
-                return ((Player) mod).value();
-            }
-        }
-        return Type.THROW;
+        return mods.stream()
+                .filter(mod -> mod instanceof Player).findFirst()
+                .map(mod -> ((Player) mod).value())
+                .orElse(Type.THROW);
     }
 
 }

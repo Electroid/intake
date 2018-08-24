@@ -12,16 +12,19 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Utility methods for accessing various {@link Bukkit} APIs.
  */
-public class BukkitUtil {
+public final class BukkitUtil {
 
     /**
      * Some forks of {@link Bukkit}, namely SportBukkit, support
      * a fake name patch which allows different players to see different names.
-     *
+     * <p>
      * Try to use the path with reflection and if it fails, assume the patch
      * is not loaded.
      */
     private static volatile boolean canSearchByViewer = true;
+
+    private BukkitUtil() {
+    }
 
     public static Player getPlayer(String name, CommandSender viewer) {
         if (canSearchByViewer) {

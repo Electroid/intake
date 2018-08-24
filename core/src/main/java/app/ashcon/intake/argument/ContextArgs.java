@@ -27,7 +27,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Provides a view of a {@link CommandContext} as arguments.
  */
 class ContextArgs extends AbstractCommandArgs {
-    
+
     private final CommandContext context;
     private int position = 0;
 

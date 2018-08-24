@@ -19,6 +19,8 @@
 
 package app.ashcon.intake;
 
+import com.google.common.base.Objects;
+
 import java.util.Arrays;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -66,10 +68,10 @@ public class ImmutableCommandMapping implements CommandMapping {
 
     @Override
     public String toString() {
-        return "CommandMapping{" +
-                "aliases=" + Arrays.toString(aliases) +
-                ", callable=" + callable +
-                '}';
+        return Objects.toStringHelper(this)
+                .add("aliases", aliases)
+                .add("callable", callable)
+                .toString();
     }
 
 }
