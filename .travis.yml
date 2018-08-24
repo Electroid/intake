@@ -1,8 +1,12 @@
 sudo: false
 language: java
-jdk:
-  - oraclejdk8
-  - openjdk8
+jdk: openjdk8
 install: true
 script: mvn clean install
-after_success: $TRAVIS_BRANCH == "master" && mvn deploy --settings settings.xml
+after_success: "[[ $TRAVIS_BRANCH =~ master ]] && mvn deploy --settings settings.xml"
+# These secret credentials to nexus can only be decrypted by travis ci:
+# https://docs.travis-ci.com/user/encryption-keys
+env:
+  global:
+  - secure: tQZ6YGM+ls+snnRtKtjlOzvFPeZGYw7dX9scEKIAW6L82/y9d42S47bPwE43zFsXCpVCFDk8bI0F1BUnqTVzGng3bCsYUXyGea14mKEB2rwXjstPTEayLfKtXNSPtLB9IxdyDD/jXxzIAHnQjGIxN5wsaoIg/kc6Wg1kXshOj90IMJPhcrHrK/K337ObmN9a60lQb9JyQbqkHpp3aquLb1eWS+ebbwGT2NzYkosZ6zd/d96CwsaN7Bg/4RO3c7FXsOGgujMWMfkNJYq5bImjof4D5AzG6lrdyPm2RLNvX3Td0mblBXmwaLqdBRCoL9HbOe1ib7d7Tkz7zCKcChWBORIooug/Xdr0sWxrVOC/M3U159OHPVYa0xuJdXWCiVoooGxMM/kaNWxedCt6g+c4o+PxfQkhlSi3joO7UUrFgcVTL3yQzLbn8Bv2SrwxWYpGIDiStP2NFgNH3OFd0HeM04I/i5vRfgQ8KFZ6CL1GAox4TyUn8el1FO3Isnvc9M452vjWE7aGIriR7SLEJrZtpg13slcRjOpPMyfJ73Iewaui+yARo1H+OvtSLIiyPz8tcWhM942TpkcDZVRF/RtaQtsBJwdvuk89YNLjIR875R8Dsh8nJmjGz1lxaXq91R0ntfqbBd7Cnf4+okOiwBj+YunYOSVMrivmdz7w9ZMs96o=
+  - secure: x6Izk3uajoF4VeYpK9EtRyBmx5VHZs57qo6sCNUoeHAKvWTZ/wBZBOqQldPUjBMp4C1jbfNMYQrJ7TZFD+BjWR5x/PycNHOaB+ZS4Twf14GD/yeSmKwax7QhTDLQvhnvR3oknCnc+C/jKYVBcwChxmOhT6yjRGEsN0VSzFRYRI7LFHp8jAZ/oVYSLbohy9QQIEKxp4FzV3kuup33EQYhp18jsnhtC3vnSEoUl9O3AE6oBnOTGcBkqHMwJez8RHlRAbyRUnV/B8f/1qsstuDnKn88D9zVQEZrJVBRYYluK/bjM3/rM0bCYaIlLA2mb2IUSBpml50csO3dcuEyx8X85qbGB/+nTCDYq7znBjCXm9530n3TWs9u74OkALJ4mZZyYMtvIllC4wUkhTfpY95Bg2Jn4JSTEIRAtWQvarzOnVRWmkWk1SfKQFHREcuWNm/5N4bl0NuUHEyAVO/kt/gv1uhtnSTWGt0TkOm0Yu74QHEVHT6eApoWkrvP/BdPbHxMgKQmwXhrvEO03XrEei5QPPmRgPVAHFI/HtpQvaX0N7NhzG1ucQuNgYGI+vLv7AA+UqxsQT+vIpRv9Nldm6QwckiPO+EmUkiRigvZrFmL62dkX5Y58eXSf0XFXOJrRBtntbxWtizZ62d1SNfmV2NNVdzHMXQbC7SquOnFJw+kd8g=
