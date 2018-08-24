@@ -64,6 +64,7 @@ public @interface Command {
      *
      * @return The minimum number of arguments
      */
+    @Deprecated
     int min() default 0;
 
     /**
@@ -72,6 +73,7 @@ public @interface Command {
      *
      * @return The maximum number of arguments
      */
+    @Deprecated
     int max() default -1;
 
     /**

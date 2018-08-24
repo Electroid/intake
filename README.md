@@ -16,9 +16,7 @@ public class Commands {
        aliases = "sum",
        desc = "Adds two numbers and returns their result",
        perms = "math.sum",
-       usage = "[number] [number]",
-       min = 2,
-       max = 2
+       usage = "[number] [number]"
    )
    public void sum(CommandSender user, int a, int b) {
        user.sendMessage(a + b);

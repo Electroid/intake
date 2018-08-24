@@ -20,10 +20,7 @@ public class ExampleCommands {
 
     @Command(
         aliases = "ping",
-        desc = "Send a ping to the server",
-        usage = "",
-        min = 0,
-        max = 0
+        desc = "Send a ping to the server"
     )
     public void ping(CommandSender sender) {
         sender.sendMessage(ChatColor.YELLOW + "Pong!");
@@ -33,9 +30,7 @@ public class ExampleCommands {
         aliases = "near",
         desc = "Find the closest player near you",
         usage = "[radius]",
-        flags = "s",
-        min = 0,
-        max = 1
+        flags = "s"
     )
     public void near(@Sender Player sender, @Default("100") @Range(min = 0, max = 1000) int radius, @Switch('s') boolean squared) {
         final Location location = sender.getLocation();
@@ -60,9 +55,7 @@ public class ExampleCommands {
     @Group(@At("math"))
     @Command(
         aliases = "sum",
-        desc = "Get the sum of two numbers",
-        min = 2,
-        max = 2
+        desc = "Get the sum of two numbers"
     )
     public void sum(CommandSender sender, int a, int b) {
         int sum = a + b;
@@ -73,9 +66,7 @@ public class ExampleCommands {
     @Command(
         aliases = "div",
         desc = "Divide two numbers",
-        flags = "r",
-        min = 2,
-        max = 2
+        flags = "r"
     )
     public void div(CommandSender sender, double a, double b, @Switch('r') boolean round) {
         double res = a / b;
