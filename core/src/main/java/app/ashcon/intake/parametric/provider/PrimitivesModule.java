@@ -22,6 +22,8 @@ package app.ashcon.intake.parametric.provider;
 import app.ashcon.intake.parametric.AbstractModule;
 import app.ashcon.intake.parametric.annotation.Text;
 
+import java.time.Duration;
+
 /**
  * Provides values for primitives as well as Strings.
  */
@@ -41,6 +43,7 @@ public final class PrimitivesModule extends AbstractModule {
         bind(float.class).toProvider(FloatProvider.INSTANCE);
         bind(String.class).toProvider(StringProvider.INSTANCE);
         bind(String.class).annotatedWith(Text.class).toProvider(TextProvider.INSTANCE);
+        bind(Duration.class).toProvider(DurationProvider.INSTANCE);
     }
 
 }
