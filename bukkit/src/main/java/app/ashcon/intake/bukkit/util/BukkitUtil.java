@@ -1,6 +1,6 @@
 package app.ashcon.intake.bukkit.util;
 
-import com.sk89q.intake.parametric.ProvisionException;
+import app.ashcon.intake.parametric.ProvisionException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
