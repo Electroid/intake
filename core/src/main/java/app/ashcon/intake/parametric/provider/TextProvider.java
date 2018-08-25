@@ -39,7 +39,6 @@ class TextProvider extends StringProvider {
     @Nullable
     @Override
     public String get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
-        // NPE when the command expects (more) arguments but is provided none
         StringBuilder builder;
         try {
             builder = new StringBuilder(arguments.next());
@@ -48,8 +47,6 @@ class TextProvider extends StringProvider {
         }
 
         while(arguments.hasNext()) {
-            // This properly handles the trailing blank character if the CommandSender accidentally included a blank character at the end
-            // i.e. /potato buy 27 (blank)
             builder.append(" ").append(arguments.next());
         }
         String appendedText = builder.toString();
