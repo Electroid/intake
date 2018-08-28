@@ -253,6 +253,9 @@ public abstract class AbstractParametricCallable implements CommandCallable {
         } catch (InterruptedException e) { // Thrown by execution
             throw new InvocationCommandException("Interruption exception: " + e.getCause().getMessage(), e.getCause());
 
+        } catch (IllegalArgumentException e) { // Generic argument exceptions
+            throw new InvalidUsageException(e.getMessage(), this, parentCommands, false, e);
+
         } catch (Throwable e) { // Catch all
             for (ExceptionConverter converter : builder.getExceptionConverters()) {
                 converter.convert(e);
