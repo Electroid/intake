@@ -1,7 +1,7 @@
 package app.ashcon.intake.bukkit.parametric.annotation;
 
 import app.ashcon.intake.bukkit.parametric.Type;
-import app.ashcon.intake.parametric.annotation.Classifier;
+import org.bukkit.entity.Player;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -12,8 +12,7 @@ import java.lang.annotation.RetentionPolicy;
  *
  * If not defined, the default is {@link Type#THROW}.
  */
-@Classifier
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Player {
+public @interface Fallback {
     Type value();
 }
