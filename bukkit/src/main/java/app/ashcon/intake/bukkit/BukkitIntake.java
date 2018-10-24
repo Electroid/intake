@@ -8,10 +8,13 @@ import app.ashcon.intake.argument.Namespace;
 import app.ashcon.intake.bukkit.command.BukkitCommand;
 import app.ashcon.intake.bukkit.command.BukkitHelpTopic;
 import app.ashcon.intake.dispatcher.Dispatcher;
+import app.ashcon.intake.dispatcher.Lockable;
 import app.ashcon.intake.dispatcher.SimpleDispatcher;
 import app.ashcon.intake.fluent.CommandGraph;
 import app.ashcon.intake.parametric.Injector;
+import app.ashcon.intake.parametric.Module;
 import app.ashcon.intake.parametric.ParametricBuilder;
+import app.ashcon.intake.parametric.provider.DefaultModule;
 import app.ashcon.intake.parametric.provider.PrimitivesModule;
 import app.ashcon.intake.util.auth.AuthorizationException;
 import com.google.common.base.Joiner;
@@ -29,8 +32,10 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -50,24 +55,36 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
     private final Dispatcher dispatcher;
 
     public BukkitIntake(Plugin plugin, Consumer<CommandGraph> init) {
+        this(plugin, new CommandGraph(), new BukkitAuthorizer(), Intake.createInjector(),
+                ParametricBuilder::new, init, new BukkitModule(), new PrimitivesModule());
+    }
+
+    public BukkitIntake(Plugin plugin, CommandGraph commandGraph, BukkitAuthorizer bukkitAuthorizer,
+                        Injector injector, ParametricBuilder parametricBuilder, Consumer<CommandGraph> init,
+                        Module... modules) {
+        this(plugin, new CommandGraph(), new BukkitAuthorizer(), Intake.createInjector(),
+                (unused -> parametricBuilder), init, new BukkitModule(), new PrimitivesModule());
+    }
+
+    private BukkitIntake(Plugin plugin, CommandGraph commandGraph, BukkitAuthorizer bukkitAuthorizer,
+                        Injector injector, Function<Injector, ParametricBuilder> parametricBuilderCreator,
+                        Consumer<CommandGraph> init, Module... modules) {
         this.plugin = plugin;
-        Injector injector = Intake.createInjector();
-        injector.install(new PrimitivesModule());
-        injector.install(new BukkitModule());
+        Arrays.stream(modules).forEach( (module) -> injector.install(module));
         this.injector = injector;
-        ParametricBuilder builder = new ParametricBuilder(injector);
-        builder.setAuthorizer(new BukkitAuthorizer());
+        ParametricBuilder builder = parametricBuilderCreator.apply(injector);
+        builder.setAuthorizer(bukkitAuthorizer);
         this.builder = builder;
-        CommandGraph graph = new CommandGraph().builder(builder);
+        CommandGraph graph = commandGraph.builder(builder);
         init.accept(graph);
         this.dispatcher = graph.getDispatcher();
-        if (dispatcher instanceof SimpleDispatcher) {
-            ((SimpleDispatcher) dispatcher).lock();
+        if (dispatcher instanceof Lockable) {
+            ((Lockable) dispatcher).lock();
         }
         List<Command> commands = dispatcher.getCommands()
-                                           .stream()
-                                           .map(cmd -> new BukkitCommand(plugin, this, this, cmd))
-                                           .collect(Collectors.toList());
+                .stream()
+                .map(cmd -> new BukkitCommand(plugin, this, this, cmd))
+                .collect(Collectors.toList());
         getCommandMap().registerAll(plugin.getName(), commands);
     }
 

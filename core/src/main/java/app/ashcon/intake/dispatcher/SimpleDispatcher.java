@@ -49,7 +49,7 @@ import java.util.Set;
 /**
  * A simple implementation of {@link Dispatcher}.
  */
-public class SimpleDispatcher implements Dispatcher {
+public class SimpleDispatcher implements Dispatcher, Lockable {
 
     private final Map<String, CommandMapping> commands = new HashMap<String, CommandMapping>();
     private volatile boolean locked = false;
@@ -59,6 +59,7 @@ public class SimpleDispatcher implements Dispatcher {
      * Lock the {@link Dispatcher} and prevents more commands from
      * being registered, as well as purge the {@link Description} cache.
      */
+    @Override
     public void lock() {
         locked = true; // Prevent more commands from being registered
         description = null; // Purge the description cache
