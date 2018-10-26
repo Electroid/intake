@@ -16,12 +16,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.completion;
 
 import app.ashcon.intake.CommandException;
 import app.ashcon.intake.argument.Namespace;
-
 import java.util.List;
 
 /**
@@ -33,7 +31,7 @@ public interface CommandCompleter {
      * Get a list of suggestions based on input.
      *
      * @param arguments the arguments entered up to this point
-     * @param locals the locals
+     * @param locals    the locals
      * @return a list of suggestions
      * @throws CommandException thrown if there was a parsing error
      */

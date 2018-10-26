@@ -16,18 +16,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.provider;
 
 import app.ashcon.intake.argument.ArgumentException;
 import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.parametric.Provider;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import javax.annotation.Nullable;
 
 class DurationProvider implements Provider<Duration> {
 
@@ -44,17 +42,20 @@ class DurationProvider implements Provider<Duration> {
         String query = arguments.next().toLowerCase();
         if (query.equals("oo") || query.equals("infinity")) {
             return Duration.ofNanos(Long.MAX_VALUE);
-        } else if (query.matches("[0-9]*")) {
+        }
+        else if (query.matches("[0-9]*")) {
             return Duration.ofSeconds(Integer.parseInt(query));
         }
         try {
             String[] parts = query.split("d");
             if (parts.length == 1) {
                 return Duration.parse((query.contains("d") ? "P" : "PT") + query);
-            } else {
+            }
+            else {
                 return Duration.parse("P" + parts[0] + "dT" + parts[1]);
             }
-        } catch (DateTimeParseException e) {
+        }
+        catch (DateTimeParseException e) {
             throw new ArgumentException("Could not parse duration '" + query + "'", e);
         }
     }

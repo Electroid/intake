@@ -16,11 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric;
 
 import app.ashcon.intake.argument.CommandArgs;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
@@ -34,7 +32,7 @@ public interface CommandExecutor {
      *
      * @param task The task
      * @param args The arguments
-     * @param <T> The type of the task return value
+     * @param <T>  The type of the task return value
      * @return A future
      */
     <T> Future<T> submit(Callable<T> task, CommandArgs args);

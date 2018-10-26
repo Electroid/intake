@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import app.ashcon.intake.Command;
 import app.ashcon.intake.CommandCallable;
@@ -29,7 +30,6 @@ import app.ashcon.intake.parametric.handler.InvokeListener;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Chars;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -37,8 +37,6 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * The implementation of a {@link CommandCallable} for the
@@ -50,45 +48,12 @@ final class MethodCallable extends AbstractParametricCallable {
     private final Method method;
     private final Description description;
 
-    private MethodCallable(ParametricBuilder builder, ArgumentParser parser, Object object, Method method, Description description) {
+    private MethodCallable(ParametricBuilder builder, ArgumentParser parser, Object object, Method method,
+                           Description description) {
         super(builder, parser);
         this.object = object;
         this.method = method;
         this.description = description;
-    }
-
-    @Override
-    protected void call(Object[] args) throws Exception {
-        try {
-            method.invoke(object, args);
-        } catch (IllegalAccessException e) {
-            throw new InvocationCommandException("Could not invoke method '" + method + "'", e);
-        } catch (InvocationTargetException e) {
-            if (e.getCause() instanceof Exception) {
-                throw (Exception) e.getCause();
-            } else {
-                throw new InvocationCommandException("Could not invoke method '" + method + "'", e);
-            }
-        }
-    }
-
-    @Override
-    public Description getDescription() {
-        return description;
-    }
-
-    @Override
-    public boolean testPermission(Namespace namespace) {
-        List<String> permissions = getDescription().getPermissions();
-        if (permissions.isEmpty()) {
-            return true;
-        }
-        for (String perm : permissions) {
-            if (getBuilder().getAuthorizer().testPermission(namespace, perm)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     static MethodCallable create(ParametricBuilder builder, Object object, Method method) throws IllegalParameterException {
@@ -114,11 +79,13 @@ final class MethodCallable extends AbstractParametricCallable {
         ArgumentParser parser = parserBuilder.build();
 
         ImmutableDescription.Builder descBuilder = new ImmutableDescription.Builder()
-                .setParameters(parser.getUserParameters())
-                .setShortDescription(!definition.desc().isEmpty() ? definition.desc() : null)
-                .setHelp(!definition.help().isEmpty() ? definition.help() : null)
-                .setUsageOverride(!definition.usage().isEmpty() ? definition.usage() : null)
-                .setPermissions(Arrays.asList(definition.perms()));
+                                                       .setParameters(parser.getUserParameters())
+                                                       .setShortDescription(
+                                                           !definition.desc().isEmpty() ? definition.desc() : null)
+                                                       .setHelp(!definition.help().isEmpty() ? definition.help() : null)
+                                                       .setUsageOverride(
+                                                           !definition.usage().isEmpty() ? definition.usage() : null)
+                                                       .setPermissions(Arrays.asList(definition.perms()));
 
         for (InvokeListener listener : builder.getInvokeListeners()) {
             listener.updateDescription(commandAnnotations, parser, descBuilder);
@@ -131,6 +98,43 @@ final class MethodCallable extends AbstractParametricCallable {
         callable.setIgnoreUnusedFlags(ignoreUnusedFlags);
         callable.setUnusedFlags(unusedFlags);
         return callable;
+    }
+
+    @Override
+    protected void call(Object[] args) throws Exception {
+        try {
+            method.invoke(object, args);
+        }
+        catch (IllegalAccessException e) {
+            throw new InvocationCommandException("Could not invoke method '" + method + "'", e);
+        }
+        catch (InvocationTargetException e) {
+            if (e.getCause() instanceof Exception) {
+                throw (Exception) e.getCause();
+            }
+            else {
+                throw new InvocationCommandException("Could not invoke method '" + method + "'", e);
+            }
+        }
+    }
+
+    @Override
+    public Description getDescription() {
+        return description;
+    }
+
+    @Override
+    public boolean testPermission(Namespace namespace) {
+        List<String> permissions = getDescription().getPermissions();
+        if (permissions.isEmpty()) {
+            return true;
+        }
+        for (String perm : permissions) {
+            if (getBuilder().getAuthorizer().testPermission(namespace, perm)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

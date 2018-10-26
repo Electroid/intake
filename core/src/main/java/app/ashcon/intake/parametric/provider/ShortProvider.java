@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.provider;
 
 import app.ashcon.intake.argument.ArgumentException;
 import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.parametric.Provider;
-
 import java.lang.annotation.Annotation;
 import java.util.List;
 
@@ -42,7 +40,8 @@ class ShortProvider implements Provider<Short>, NumberProvider {
             short shortValue = v.shortValue();
             validate(shortValue, modifiers);
             return shortValue;
-        } else {
+        }
+        else {
             return null;
         }
     }

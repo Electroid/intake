@@ -16,16 +16,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric;
 
-import app.ashcon.intake.argument.CommandArgs;
+import static com.google.common.base.Preconditions.checkNotNull;
 
+import app.ashcon.intake.argument.CommandArgs;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Wraps an ExecutorService into a CommandExecutor.

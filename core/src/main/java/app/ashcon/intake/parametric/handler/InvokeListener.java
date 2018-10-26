@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.handler;
 
 import app.ashcon.intake.ImmutableDescription;
 import app.ashcon.intake.parametric.ArgumentParser;
 import app.ashcon.intake.parametric.ParametricBuilder;
-
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
@@ -30,13 +28,13 @@ import java.util.Set;
  * Listens to events related to {@link ParametricBuilder}.
  */
 public interface InvokeListener {
-    
+
     /**
      * Create a new invocation handler.
-     * 
+     *
      * <p>For simple {@link InvokeHandler}, an object can implement both this
      * interface and {@link InvokeHandler}.</p>
-     * 
+     *
      * @return A new invocation handler
      */
     InvokeHandler createInvokeHandler();
@@ -44,8 +42,8 @@ public interface InvokeListener {
     /**
      * Called to update the description of a command.
      *
-     * @param annotations Annotations on the command
-     * @param parser The parser containing parameter information
+     * @param annotations        Annotations on the command
+     * @param parser             The parser containing parameter information
      * @param descriptionBuilder The description builder
      */
     void updateDescription(Set<Annotation> annotations, ArgumentParser parser, ImmutableDescription.Builder descriptionBuilder);

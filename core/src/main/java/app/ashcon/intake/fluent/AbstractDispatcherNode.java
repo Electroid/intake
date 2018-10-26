@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.fluent;
 
 import app.ashcon.intake.CommandCallable;
@@ -33,8 +32,8 @@ public abstract class AbstractDispatcherNode {
     /**
      * Create a new instance.
      *
-     * @param graph the root fluent graph object
-     * @param parent the parent node, or null
+     * @param graph      the root fluent graph object
+     * @param parent     the parent node, or null
      * @param dispatcher the dispatcher for this node
      */
     protected AbstractDispatcherNode(CommandGraph graph, AbstractDispatcherNode parent, Dispatcher dispatcher) {
@@ -47,7 +46,7 @@ public abstract class AbstractDispatcherNode {
      * Register a command with this dispatcher.
      *
      * @param callable the executor
-     * @param aliases the list of aliases, where the first alias is the primary one
+     * @param aliases  the list of aliases, where the first alias is the primary one
      */
     public void register(CommandCallable callable, String... aliases) {
         dispatcher.registerCommand(callable, aliases);

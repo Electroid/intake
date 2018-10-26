@@ -16,15 +16,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.argument;
 
 import app.ashcon.intake.parametric.ProvisionException;
-
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import javax.annotation.Nullable;
 
 /**
  * This object holds contextual data for a command execution.
@@ -33,7 +31,7 @@ import java.util.Optional;
  * commands such as current session data and so on.</p>
  */
 public class Namespace {
-    
+
     private final Map<Object, Object> locals = new HashMap<Object, Object>();
 
     public Namespace() {}
@@ -112,12 +110,12 @@ public class Namespace {
      * Returns the value specified by the given key.
      *
      * @param key The key
-     * @throws ProvisionException If the value is null
      * @return The value, which will not be null
+     * @throws ProvisionException If the value is null
      */
     public Object need(Object key) {
         Object value = get(key);
-        if(value == null) {
+        if (value == null) {
             throw new ProvisionException("Could not find value for '" + key + "' in namespace " + locals);
         }
         return value;
@@ -128,8 +126,8 @@ public class Namespace {
      *
      * @param key The key
      * @param <T> The type of object
-     * @throws ProvisionException If the value is null
      * @return The value
+     * @throws ProvisionException If the value is null
      */
     @SuppressWarnings("unchecked")
     public <T> T need(Class<T> key) {
@@ -139,17 +137,17 @@ public class Namespace {
     /**
      * Set an contextual value.
      *
-     * @param key Key with which the specified value is to be associated
+     * @param key   Key with which the specified value is to be associated
      * @param value Value to be associated with the specified key
      * @return The previous value associated with <tt>key</tt>, or
-     *         <tt>null</tt> if there was no mapping for <tt>key</tt>.
-     *         (A <tt>null</tt> return can also indicate that the map
-     *         previously associated <tt>null</tt> with <tt>key</tt>,
-     *         if the implementation supports <tt>null</tt> values.)
+     *     <tt>null</tt> if there was no mapping for <tt>key</tt>.
+     *     (A <tt>null</tt> return can also indicate that the map
+     *     previously associated <tt>null</tt> with <tt>key</tt>,
+     *     if the implementation supports <tt>null</tt> values.)
      * @throws UnsupportedOperationException if the <tt>put</tt> operation
-     *         is not supported by this map
-     * @throws ClassCastException if the class of the specified key or value
-     *         prevents it from being stored in this map
+     *                                       is not supported by this map
+     * @throws ClassCastException            if the class of the specified key or value
+     *                                       prevents it from being stored in this map
      */
     @Nullable
     public Object put(Object key, Object value) {

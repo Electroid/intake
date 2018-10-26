@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.handler;
 
 import app.ashcon.intake.Command;
@@ -29,7 +28,6 @@ import app.ashcon.intake.argument.UnusedArgumentException;
 import app.ashcon.intake.parametric.ArgumentParser;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Set;
@@ -46,12 +44,14 @@ public class LegacyCommandsHandler extends AbstractInvokeListener implements Inv
     }
 
     @Override
-    public boolean preProcess(List<? extends Annotation> annotations, ArgumentParser parser, CommandArgs commandArgs) throws CommandException, ArgumentException {
+    public boolean preProcess(List<? extends Annotation> annotations, ArgumentParser parser, CommandArgs commandArgs)
+        throws CommandException, ArgumentException {
         return true;
     }
 
     @Override
-    public boolean preInvoke(List<? extends Annotation> annotations, ArgumentParser parser, Object[] args, CommandArgs commandArgs) throws CommandException, ArgumentException {
+    public boolean preInvoke(List<? extends Annotation> annotations, ArgumentParser parser, Object[] args,
+                             CommandArgs commandArgs) throws CommandException, ArgumentException {
         for (Annotation annotation : annotations) {
             if (annotation instanceof Command) {
                 Command command = (Command) annotation;
@@ -69,7 +69,8 @@ public class LegacyCommandsHandler extends AbstractInvokeListener implements Inv
                             if (commandArgs.position() >= command.max()) {
                                 unconsumedArguments.add(value);
                             }
-                        } catch (MissingArgumentException ignored) {
+                        }
+                        catch (MissingArgumentException ignored) {
                             break;
                         }
                     }
@@ -83,7 +84,8 @@ public class LegacyCommandsHandler extends AbstractInvokeListener implements Inv
     }
 
     @Override
-    public void postInvoke(List<? extends Annotation> annotations, ArgumentParser parser, Object[] args, CommandArgs commandArgs) throws CommandException, ArgumentException {
+    public void postInvoke(List<? extends Annotation> annotations, ArgumentParser parser, Object[] args, CommandArgs commandArgs)
+        throws CommandException, ArgumentException {
     }
 
     @Override

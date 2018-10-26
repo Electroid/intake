@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.handler;
 
 import app.ashcon.intake.CommandException;
@@ -24,7 +23,6 @@ import app.ashcon.intake.argument.ArgumentException;
 import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.parametric.ArgumentParser;
 import app.ashcon.intake.parametric.ParametricBuilder;
-
 import java.lang.annotation.Annotation;
 import java.util.List;
 
@@ -43,38 +41,41 @@ public interface InvokeHandler {
      * Called before arguments have been parsed.
      *
      * @param annotations The list of annotations on the command
-     * @param parser The argument parser with parameter information
+     * @param parser      The argument parser with parameter information
      * @param commandArgs The arguments provided by the user
      * @return Whether command execution should continue
-     * @throws CommandException Thrown if there is a general command problem
+     * @throws CommandException  Thrown if there is a general command problem
      * @throws ArgumentException Thrown is there is an error with the arguments
      */
-    boolean preProcess(List<? extends Annotation> annotations, ArgumentParser parser, CommandArgs commandArgs) throws CommandException, ArgumentException;
+    boolean preProcess(List<? extends Annotation> annotations, ArgumentParser parser, CommandArgs commandArgs)
+        throws CommandException, ArgumentException;
 
     /**
      * Called after arguments have been parsed but the command has yet
      * to be executed.
      *
      * @param annotations The list of annotations on the command
-     * @param parser The argument parser with parameter information
-     * @param args The result of the parsed arguments: Java objects to be passed to the command
+     * @param parser      The argument parser with parameter information
+     * @param args        The result of the parsed arguments: Java objects to be passed to the command
      * @param commandArgs The arguments provided by the user
      * @return Whether command execution should continue
-     * @throws CommandException Thrown if there is a general command problem
+     * @throws CommandException  Thrown if there is a general command problem
      * @throws ArgumentException Thrown is there is an error with the arguments
      */
-    boolean preInvoke(List<? extends Annotation> annotations, ArgumentParser parser, Object[] args, CommandArgs commandArgs) throws CommandException, ArgumentException;
+    boolean preInvoke(List<? extends Annotation> annotations, ArgumentParser parser, Object[] args, CommandArgs commandArgs)
+        throws CommandException, ArgumentException;
 
     /**
      * Called after the command has been executed.
      *
      * @param annotations The list of annotations on the command
-     * @param parser The argument parser with parameter information
-     * @param args The result of the parsed arguments: Java objects to be passed to the command
+     * @param parser      The argument parser with parameter information
+     * @param args        The result of the parsed arguments: Java objects to be passed to the command
      * @param commandArgs The arguments provided by the user
-     * @throws CommandException Thrown if there is a general command problem
+     * @throws CommandException  Thrown if there is a general command problem
      * @throws ArgumentException Thrown is there is an error with the arguments
      */
-    void postInvoke(List<? extends Annotation> annotations, ArgumentParser parser, Object[] args, CommandArgs commandArgs) throws CommandException, ArgumentException;
+    void postInvoke(List<? extends Annotation> annotations, ArgumentParser parser, Object[] args, CommandArgs commandArgs)
+        throws CommandException, ArgumentException;
 
 }

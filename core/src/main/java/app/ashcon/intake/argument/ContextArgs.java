@@ -16,18 +16,17 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.argument;
 
-import java.util.Map;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.Map;
 
 /**
  * Provides a view of a {@link CommandContext} as arguments.
  */
 class ContextArgs extends AbstractCommandArgs {
-    
+
     private final CommandContext context;
     private int position = 0;
 
@@ -45,7 +44,8 @@ class ContextArgs extends AbstractCommandArgs {
     public String next() throws MissingArgumentException {
         try {
             return context.getString(position++);
-        } catch (IndexOutOfBoundsException ignored) {
+        }
+        catch (IndexOutOfBoundsException ignored) {
             throw new MissingArgumentException();
         }
     }
@@ -54,7 +54,8 @@ class ContextArgs extends AbstractCommandArgs {
     public String peek() throws MissingArgumentException {
         try {
             return context.getString(position);
-        } catch (IndexOutOfBoundsException ignored) {
+        }
+        catch (IndexOutOfBoundsException ignored) {
             throw new MissingArgumentException();
         }
     }

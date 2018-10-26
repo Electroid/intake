@@ -16,26 +16,25 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake;
 
-import java.util.Arrays;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.Arrays;
 
 /**
  * An immutable command mapping instance.
  */
 public class ImmutableCommandMapping implements CommandMapping {
-    
+
     private final String[] aliases;
     private final CommandCallable callable;
-    
+
     /**
      * Create a new instance.
-     * 
+     *
      * @param callable The command callable
-     * @param alias A list of all aliases, where the first one is the primary one
+     * @param alias    A list of all aliases, where the first one is the primary one
      */
     public ImmutableCommandMapping(CommandCallable callable, String... alias) {
         checkNotNull(callable);
@@ -48,12 +47,12 @@ public class ImmutableCommandMapping implements CommandMapping {
     public String getPrimaryAlias() {
         return aliases[0];
     }
-    
+
     @Override
     public String[] getAllAliases() {
         return aliases;
     }
-    
+
     @Override
     public CommandCallable getCallable() {
         return callable;
@@ -67,9 +66,9 @@ public class ImmutableCommandMapping implements CommandMapping {
     @Override
     public String toString() {
         return "CommandMapping{" +
-                "aliases=" + Arrays.toString(aliases) +
-                ", callable=" + callable +
-                '}';
+               "aliases=" + Arrays.toString(aliases) +
+               ", callable=" + callable +
+               '}';
     }
 
 }

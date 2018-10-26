@@ -16,14 +16,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake;
 
 import app.ashcon.intake.argument.Namespace;
 import app.ashcon.intake.completion.CommandCompleter;
 import app.ashcon.intake.util.auth.AuthorizationException;
 import com.google.common.collect.ImmutableList;
-
 import java.util.List;
 
 /**
@@ -42,28 +40,30 @@ public interface CommandCallable extends CommandCompleter {
      * the command in question was the "create" command, then:</p>
      *
      * <ul>
-     *     <li>{@code arguments} would be {@code ocean}</li>
-     *     <li>{@code parentCommands} would be {@code world create}</li>
+     * <li>{@code arguments} would be {@code ocean}</li>
+     * <li>{@code parentCommands} would be {@code world create}</li>
      * </ul>
      *
      * <p>On the other hand, if the command was "world," then:</p>
      *
      * <ul>
-     *     <li>{@code arguments} would be {@code create ocean}</li>
-     *     <li>{@code parentCommands} would be {@code world}</li>
+     * <li>{@code arguments} would be {@code create ocean}</li>
+     * <li>{@code parentCommands} would be {@code world}</li>
      * </ul>
      *
-     * @param arguments The arguments
-     * @param namespace Additional values used for execution
+     * @param arguments      The arguments
+     * @param namespace      Additional values used for execution
      * @param parentCommands The list of parent commands
      * @return Whether the command succeeded
-     * @throws CommandException If there is an error with the command
+     * @throws CommandException           If there is an error with the command
      * @throws InvocationCommandException If there is an error with executing the command
-     * @throws AuthorizationException If there is a authorization error
+     * @throws AuthorizationException     If there is a authorization error
      */
-    boolean call(String arguments, Namespace namespace, List<String> parentCommands) throws CommandException, InvocationCommandException, AuthorizationException;
+    boolean call(String arguments, Namespace namespace, List<String> parentCommands)
+        throws CommandException, InvocationCommandException, AuthorizationException;
 
-    default boolean call(String arguments, Namespace namespace) throws CommandException, InvocationCommandException, AuthorizationException {
+    default boolean call(String arguments, Namespace namespace)
+        throws CommandException, InvocationCommandException, AuthorizationException {
         return call(arguments, namespace, ImmutableList.of());
     }
 

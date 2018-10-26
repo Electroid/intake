@@ -9,18 +9,23 @@ import app.ashcon.intake.bukkit.command.BukkitCommand;
 import app.ashcon.intake.bukkit.command.BukkitHelpTopic;
 import app.ashcon.intake.dispatcher.Dispatcher;
 import app.ashcon.intake.dispatcher.Lockable;
-import app.ashcon.intake.dispatcher.SimpleDispatcher;
-import app.ashcon.intake.fluent.BasicCommandGraph;
 import app.ashcon.intake.fluent.CommandGraph;
 import app.ashcon.intake.parametric.Injector;
 import app.ashcon.intake.parametric.Module;
 import app.ashcon.intake.parametric.ParametricBuilder;
-import app.ashcon.intake.parametric.provider.DefaultModule;
 import app.ashcon.intake.parametric.provider.PrimitivesModule;
 import app.ashcon.intake.util.auth.AuthorizationException;
 import com.google.common.base.Joiner;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -31,14 +36,6 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Omnibus API that hooks into a {@link JavaPlugin} and
@@ -55,85 +52,80 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
     private final ParametricBuilder builder;
     private final Dispatcher dispatcher;
 
-    public BukkitIntake(Plugin plugin, CommandGraph commandGraph) {
-        this(plugin, commandGraph, new BukkitAuthorizer(), Intake.createInjector(),
-                ParametricBuilder::new);
-    }
-
-    public BukkitIntake(Plugin plugin, CommandGraph commandGraph, BukkitAuthorizer authorizer) {
-        this(plugin, commandGraph, authorizer, Intake.createInjector(), ParametricBuilder::new);
-    }
-
-    public BukkitIntake(Plugin plugin, CommandGraph commandGraph, Module... modules) {
-        this(plugin, commandGraph, new BukkitAuthorizer(), Intake.createInjector(),
-                ParametricBuilder::new, modules);
-    }
-
-    public BukkitIntake(Plugin plugin, CommandGraph commandGraph, BukkitAuthorizer authorizer,
-                        Module... modules) {
-        this(plugin, commandGraph, authorizer, Intake.createInjector(),
-                ParametricBuilder::new, modules);
-    }
-
-    public BukkitIntake(Plugin plugin, CommandGraph commandGraph, BukkitAuthorizer bukkitAuthorizer,
-                        Injector injector, ParametricBuilder builder,
-                        Module... modules) {
-        this(plugin, commandGraph, bukkitAuthorizer, injector, (nA) -> builder, modules);
-    }
-
-    public BukkitIntake(Plugin plugin, CommandGraph commandGraph, BukkitAuthorizer bukkitAuthorizer,
-                        Injector injector, Function<Injector, ParametricBuilder> parametricBuilderCreator,
-                        Module... modules) {
+    private BukkitIntake(Plugin plugin, CommandGraph commandGraph, BukkitAuthorizer bukkitAuthorizer,
+                        Injector injector, ParametricBuilder builder, Module... modules) {
         this.plugin = plugin;
         injector.install(new BukkitModule());
         injector.install(new PrimitivesModule());
         Arrays.stream(modules).forEach(injector::install);
         this.injector = injector;
-        this.builder = parametricBuilderCreator.apply(injector);
+        this.builder = builder;
         builder.setAuthorizer(bukkitAuthorizer);
         this.dispatcher = commandGraph.getRootDispatcherNode().getDispatcher();
         if (dispatcher instanceof Lockable) {
             ((Lockable) dispatcher).lock();
         }
         List<Command> commands = dispatcher.getCommands()
-                .stream()
-                .map(cmd -> new BukkitCommand(plugin, this, this, cmd))
-                .collect(Collectors.toList());
+                                     .stream()
+                                     .map(cmd -> new BukkitCommand(plugin, this, this, cmd))
+                                     .collect(Collectors.toList());
         getCommandMap().registerAll(plugin.getName(), commands);
     }
 
-    // DO NOT USE THIS!!!! This is ONLY here to support backwards compatibility.
-    // Instead, create a command graph, register your commands, and pass the command graph into
-    // one of the other BukkitIntake constructors.
-    @Deprecated
-    public BukkitIntake(Plugin plugin, Object... commands) {
-        this(plugin, graph -> Stream.of(commands).forEachOrdered(command -> graph.getRootDispatcherNode().registerGrouped(command)));
-    }
+    public static class Builder {
 
-    // DO NOT USE THIS!!!! This is ONLY here to support backwards compatibility.
-    // Instead, create a command graph, register your commands, and pass the command graph into
-    // one of the other BukkitIntake constructors.
-    @Deprecated
-    public BukkitIntake(Plugin plugin, Consumer<BasicCommandGraph> init) {
-        this.plugin = plugin;
-        Injector injector = Intake.createInjector();
-        injector.install(new PrimitivesModule());
-        injector.install(new BukkitModule());
-        this.injector = injector;
-        ParametricBuilder builder = new ParametricBuilder(injector);
-        builder.setAuthorizer(new BukkitAuthorizer());
-        this.builder = builder;
-        BasicCommandGraph graph = new BasicCommandGraph(builder);
-        init.accept(graph);
-        this.dispatcher = graph.getRootDispatcherNode().getDispatcher();
-        if (dispatcher instanceof SimpleDispatcher) {
-            ((SimpleDispatcher) dispatcher).lock();
+        private final Plugin plugin;
+        private final CommandGraph commandGraph;
+
+        private BukkitAuthorizer bukkitAuthorizer;
+        private Injector injector;
+        private Function<Injector, ParametricBuilder> builderCreator;
+        private List<Module> modules;
+
+        private static final BukkitAuthorizer defaultBukkitAuthorizer = new BukkitAuthorizer();
+        private static final Injector defaultInjector = Intake.createInjector();
+        private static final Function<Injector, ParametricBuilder> defaultBuilderCreator = ParametricBuilder::new;
+        private static final List<Module> defaultModules = new LinkedList<>();
+
+        public Builder(Plugin plugin, CommandGraph commandGraph) {
+            Preconditions.checkNotNull(plugin);
+            Preconditions.checkNotNull(commandGraph);
+
+            this.plugin = plugin;
+            this.commandGraph = commandGraph;
         }
-        List<Command> commands = dispatcher.getCommands()
-                .stream()
-                .map(cmd -> new BukkitCommand(plugin, this, this, cmd))
-                .collect(Collectors.toList());
-        getCommandMap().registerAll(plugin.getName(), commands);
+
+        public Builder injector(Injector injector) {
+            this.injector = injector;
+            return this;
+        }
+
+        public Builder builderCreator(Function<Injector, ParametricBuilder> builderCreator) {
+            this.builderCreator = builderCreator;
+            return this;
+        }
+
+        public Builder modules(Module... modules) {
+            this.modules = Arrays.asList(modules);
+            return this;
+        }
+
+        public Builder addModule(Module module) {
+            if(modules == null)
+                modules = new LinkedList<>();
+            modules.add(module);
+            return this;
+        }
+
+        public BukkitIntake build() {
+            Injector injector = (this.injector == null) ? defaultInjector : this.injector;
+            return new BukkitIntake(
+                plugin, commandGraph,
+                (bukkitAuthorizer == null) ? defaultBukkitAuthorizer : bukkitAuthorizer, injector,
+                (builderCreator == null) ? defaultBuilderCreator.apply(injector) : builderCreator.apply(injector),
+                (modules == null) ? defaultModules.toArray(new Module[0]) : modules.toArray(new Module[0])
+            );
+        }
     }
 
     public Injector getInjector() {
@@ -154,7 +146,8 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
             Field field = manager.getClass().getDeclaredField("commandMap");
             field.setAccessible(true);
             return CommandMap.class.cast(field.get(manager));
-        } catch (NoSuchFieldException | IllegalAccessException error) {
+        }
+        catch (NoSuchFieldException | IllegalAccessException error) {
             throw new IllegalStateException("Intake could not find CommandMap from server", error);
         }
     }
@@ -163,19 +156,25 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         try {
             return getDispatcher().call(getCommand(command, args), getNamespace(sender));
-        } catch (AuthorizationException e) {
+        }
+        catch (AuthorizationException e) {
             sender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
-        } catch (InvocationCommandException e) {
+        }
+        catch (InvocationCommandException e) {
             sender.sendMessage(ChatColor.RED + "An exception occurred while executing this command!");
             e.getCause().printStackTrace();
-        } catch (InvalidUsageException e) {
+        }
+        catch (InvalidUsageException e) {
             if (e.getMessage() != null) {
                 sender.sendMessage(ChatColor.RED + e.getMessage());
             }
             if (e.isFullHelpSuggested()) {
-                sender.sendMessage(ChatColor.RED + "/" + Joiner.on(' ').join(e.getAliasStack()) + " " + e.getCommand().getDescription().getUsage());
+                sender.sendMessage(
+                    ChatColor.RED + "/" + Joiner.on(' ').join(e.getAliasStack()) + " " + e.getCommand().getDescription()
+                                                                                             .getUsage());
             }
-        } catch (CommandException e) {
+        }
+        catch (CommandException e) {
             sender.sendMessage(ChatColor.RED + e.getMessage());
         }
         return false;
@@ -185,7 +184,8 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         try {
             return getDispatcher().getSuggestions(getCommand(command, args), getNamespace(sender));
-        } catch (CommandException e) {
+        }
+        catch (CommandException e) {
             return ImmutableList.of();
         }
     }

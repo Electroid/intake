@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.argument;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -26,7 +25,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * excess arguments.
  */
 public class UnusedArgumentException extends ArgumentException {
-    
+
     private String unconsumed;
 
     /**

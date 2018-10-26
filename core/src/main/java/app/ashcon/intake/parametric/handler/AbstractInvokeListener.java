@@ -16,12 +16,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.handler;
 
 import app.ashcon.intake.ImmutableDescription.Builder;
 import app.ashcon.intake.parametric.ArgumentParser;
-
 import java.lang.annotation.Annotation;
 import java.util.Set;
 

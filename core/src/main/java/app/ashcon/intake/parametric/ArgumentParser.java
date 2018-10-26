@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import app.ashcon.intake.ImmutableParameter;
 import app.ashcon.intake.OptionType;
@@ -41,8 +42,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.reflect.TypeToken;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -53,8 +52,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nullable;
 
 /**
  * An argument parser takes in a list of tokenized arguments and parses
@@ -96,7 +94,7 @@ public final class ArgumentParser {
      *
      * @param args The tokenized arguments
      * @return The list of Java objects
-     * @throws ArgumentException If there is a problem with the provided arguments
+     * @throws ArgumentException  If there is a problem with the provided arguments
      * @throws ProvisionException If there is a problem with the binding itself
      */
     public Object[] parseArguments(CommandArgs args) throws ArgumentException, ProvisionException {
@@ -106,14 +104,15 @@ public final class ArgumentParser {
     /**
      * Parse the given arguments into Java objects.
      *
-     * @param args The tokenized arguments
+     * @param args              The tokenized arguments
      * @param ignoreUnusedFlags Whether unused flags should not throw an exception
-     * @param unusedFlags List of flags that can be unconsumed
+     * @param unusedFlags       List of flags that can be unconsumed
      * @return The list of Java objects
-     * @throws ArgumentException If there is a problem with the provided arguments
+     * @throws ArgumentException  If there is a problem with the provided arguments
      * @throws ProvisionException If there is a problem with the binding itself
      */
-    public Object[] parseArguments(CommandArgs args, boolean ignoreUnusedFlags, Set<Character> unusedFlags) throws ArgumentException, ProvisionException {
+    public Object[] parseArguments(CommandArgs args, boolean ignoreUnusedFlags, Set<Character> unusedFlags)
+        throws ArgumentException, ProvisionException {
         Object[] parsedObjects = new Object[parameters.size()];
         List<ParameterEntry> entries = Lists.newArrayList(parameters.values());
 
@@ -124,9 +123,11 @@ public final class ArgumentParser {
 
             try {
                 parsedObjects[i] = entry.getBinding().getProvider().get(argsForParameter, entry.getModifiers());
-            } catch (ArgumentParseException e) {
+            }
+            catch (ArgumentParseException e) {
                 throw new ArgumentParseException(e.getMessage(), e, entry.getParameter());
-            } catch (MissingArgumentException e) {
+            }
+            catch (MissingArgumentException e) {
                 if (!optionType.isOptional()) {
                     throw new MissingArgumentException(e, entry.getParameter());
                 }
@@ -158,9 +159,13 @@ public final class ArgumentParser {
         int argId = split.length - 1;
         String arg = split[argId];
 
-        if(argId > userParams.size()) return ImmutableList.of();
+        if (argId > userParams.size()) {
+            return ImmutableList.of();
+        }
         Parameter parameter = userParams.get(argId);
-        if(parameter == null) return ImmutableList.of();
+        if (parameter == null) {
+            return ImmutableList.of();
+        }
 
         ParameterEntry entry = parameters.get(parameter);
         return entry.getBinding().getProvider().getSuggestions(arg, namespace, entry.getModifiers());
@@ -172,17 +177,24 @@ public final class ArgumentParser {
         List<String> defaultValue = entry.getParameter().getDefaultValue();
         if (defaultValue.isEmpty()) {
             return null;
-        } else {
+        }
+        else {
             try {
-                return provider.get(Arguments.copyOf(defaultValue, arguments.getFlags(), arguments.getNamespace()), entry.getModifiers());
-            } catch (ProvisionException | ArgumentException e) {
-                throw new IllegalParameterException("No value was specified for the '" + entry.getParameter().getName() + "' parameter " +
-                        "so the default value '" + Joiner.on(" ").join(defaultValue) + "' was used, but this value doesn't work due to an error: " + e.getMessage());
+                return provider.get(Arguments.copyOf(defaultValue, arguments.getFlags(), arguments.getNamespace()),
+                                    entry.getModifiers()
+                                   );
+            }
+            catch (ProvisionException | ArgumentException e) {
+                throw new IllegalParameterException(
+                    "No value was specified for the '" + entry.getParameter().getName() + "' parameter " +
+                    "so the default value '" + Joiner.on(" ").join(defaultValue)
+                    + "' was used, but this value doesn't work due to an error: " + e.getMessage());
             }
         }
     }
 
-    private void checkUnconsumed(CommandArgs arguments, boolean ignoreUnusedFlags, Set<Character> unusedFlags) throws UnusedArgumentException {
+    private void checkUnconsumed(CommandArgs arguments, boolean ignoreUnusedFlags, Set<Character> unusedFlags)
+        throws UnusedArgumentException {
         List<String> unconsumedArguments = Lists.newArrayList();
 
         if (!ignoreUnusedFlags) {
@@ -221,7 +233,8 @@ public final class ArgumentParser {
         while (true) {
             try {
                 unconsumedArguments.add(arguments.next());
-            } catch (MissingArgumentException ignored) {
+            }
+            catch (MissingArgumentException ignored) {
                 break;
             }
         }
@@ -235,6 +248,7 @@ public final class ArgumentParser {
      * Builds instances of ArgumentParser.
      */
     public static class Builder {
+
         private final Injector injector;
         private final Map<Parameter, ParameterEntry> parameters = Maps.newLinkedHashMap(); // Order matters
         private final List<Parameter> userProvidedParameters = Lists.newArrayList();
@@ -251,6 +265,15 @@ public final class ArgumentParser {
             this.injector = injector;
         }
 
+        private static String getFriendlyName(Provider provider, Annotation classifier, int index) {
+            if (classifier != null) {
+                return classifier.annotationType().getSimpleName().toLowerCase();
+            }
+            else {
+                return provider.getName();
+            }
+        }
+
         /**
          * Add a parameter to parse.
          *
@@ -264,7 +287,7 @@ public final class ArgumentParser {
         /**
          * Add a parameter to parse.
          *
-         * @param type The type of the parameter
+         * @param type        The type of the parameter
          * @param annotations A list of annotations on the parameter
          * @throws IllegalParameterException If there is a problem with the parameter
          */
@@ -282,7 +305,8 @@ public final class ArgumentParser {
             Supplier<IllegalParameterException> exceptionSupplier = new Supplier<IllegalParameterException>() {
                 @Override
                 public IllegalParameterException get() {
-                    return new IllegalParameterException("Optional<?>, @Default, @Nullable, and @Switch cannot be mixed for parameter #" + index);
+                    return new IllegalParameterException(
+                        "Optional<?>, @Default, @Nullable, and @Switch cannot be mixed for parameter #" + index);
                 }
             };
 
@@ -298,7 +322,8 @@ public final class ArgumentParser {
             for (Annotation annotation : annotations) {
                 if (annotation.annotationType().getAnnotation(Classifier.class) != null) {
                     classifier = annotation;
-                } else {
+                }
+                else {
                     modifiers.add(annotation);
 
                     if (annotation instanceof Switch) {
@@ -306,9 +331,13 @@ public final class ArgumentParser {
                             throw exceptionSupplier.get();
                         }
 
-                        optionType = (type == boolean.class || type == Boolean.class) ? OptionType.flag(((Switch) annotation).value()) : OptionType.valueFlag(((Switch) annotation).value());
+                        optionType =
+                            (type == boolean.class || type == Boolean.class) ? OptionType.flag(((Switch) annotation).value())
+                                                                             : OptionType
+                                                                                   .valueFlag(((Switch) annotation).value());
 
-                    } else if (annotation instanceof Default || annotation instanceof Nullable) {
+                    }
+                    else if (annotation instanceof Default || annotation instanceof Nullable) {
                         if (seenOptionalParameter || optionType != null) {
                             throw exceptionSupplier.get();
                         }
@@ -369,17 +398,10 @@ public final class ArgumentParser {
         public ArgumentParser build() {
             return new ArgumentParser(parameters, userProvidedParameters, valueFlags);
         }
-
-        private static String getFriendlyName(Provider provider, Annotation classifier, int index) {
-            if (classifier != null) {
-                return classifier.annotationType().getSimpleName().toLowerCase();
-            } else {
-                return provider.getName();
-            }
-        }
     }
 
     private static class ParameterEntry {
+
         private final Parameter parameter;
         private final Key<?> key;
         private final Binding<?> binding;

@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.util.auth;
 
 import app.ashcon.intake.argument.Namespace;
@@ -29,7 +28,7 @@ public interface Authorizer {
     /**
      * Tests whether permission is granted for the given context.
      *
-     * @param namespace The namespace
+     * @param namespace  The namespace
      * @param permission The permission string
      * @return Whether the action is permitted
      */

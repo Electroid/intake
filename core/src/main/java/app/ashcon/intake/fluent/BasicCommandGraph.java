@@ -7,9 +7,8 @@ public class BasicCommandGraph extends CommandGraph<GroupDispatcherNode> {
 
     /**
      * Create a new command graph.
-     *
      */
     public BasicCommandGraph(ParametricBuilder builder) {
-        super(builder, (tHis) -> new GroupDispatcherNode(tHis, null, new SimpleDispatcher(), builder) );
+        super(builder, (tHis) -> new GroupDispatcherNode(tHis, null, new SimpleDispatcher(), builder));
     }
 }

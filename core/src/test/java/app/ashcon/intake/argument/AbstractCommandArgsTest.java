@@ -16,18 +16,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.argument;
-
-import com.google.common.collect.ImmutableList;
-import org.junit.Test;
-
-import java.util.List;
 
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+
+import com.google.common.collect.ImmutableList;
+import java.util.List;
+import org.junit.Test;
 
 public abstract class AbstractCommandArgsTest {
 

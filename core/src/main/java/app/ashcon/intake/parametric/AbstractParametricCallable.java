@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import app.ashcon.intake.CommandCallable;
 import app.ashcon.intake.CommandException;
@@ -37,7 +38,6 @@ import app.ashcon.intake.parametric.handler.InvokeListener;
 import app.ashcon.intake.util.auth.AuthorizationException;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,8 +46,6 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * A base class for commands that use {@link ArgumentParser}.
  */
@@ -55,7 +53,6 @@ public abstract class AbstractParametricCallable implements CommandCallable {
 
     private final ParametricBuilder builder;
     private final ArgumentParser parser;
-
     private List<? extends Annotation> commandAnnotations = Collections.emptyList();
     private boolean ignoreUnusedFlags = false;
     private Set<Character> unusedFlags = Collections.emptySet();
@@ -64,7 +61,7 @@ public abstract class AbstractParametricCallable implements CommandCallable {
      * Create a new instance.
      *
      * @param builder An instance of the parametric builder
-     * @param parser The argument parser
+     * @param parser  The argument parser
      */
     protected AbstractParametricCallable(ParametricBuilder builder, ArgumentParser parser) {
         checkNotNull(builder, "builder");
@@ -155,7 +152,8 @@ public abstract class AbstractParametricCallable implements CommandCallable {
     }
 
     @Override
-    public final boolean call(String stringArguments, Namespace namespace, List<String> parentCommands) throws CommandException, InvocationCommandException, AuthorizationException {
+    public final boolean call(String stringArguments, Namespace namespace, List<String> parentCommands)
+        throws CommandException, InvocationCommandException, AuthorizationException {
         // Test permission
         if (!testPermission(namespace)) {
             throw new AuthorizationException();
@@ -163,7 +161,6 @@ public abstract class AbstractParametricCallable implements CommandCallable {
 
         String calledCommand = !parentCommands.isEmpty() ? parentCommands.get(parentCommands.size() - 1) : "_";
         String[] split = CommandContext.split(calledCommand + " " + stringArguments);
-
 
         final CommandContext context = new CommandContext(split, parser.getValueFlags(), false, namespace);
         namespace.put(CommandContext.class, context);
@@ -219,7 +216,8 @@ public abstract class AbstractParametricCallable implements CommandCallable {
                         return null;
                     }
                 }, commandArgs).get();
-            } catch (ExecutionException e) {
+            }
+            catch (ExecutionException e) {
                 throw e.getCause();
             }
 
@@ -228,35 +226,47 @@ public abstract class AbstractParametricCallable implements CommandCallable {
                 handler.postInvoke(commandAnnotations, parser, args, commandArgs);
             }
 
-        } catch (MissingArgumentException e) {
+        }
+        catch (MissingArgumentException e) {
             if (e.getParameter() != null) {
-                throw new InvalidUsageException("Too few arguments! Expected another '" + e.getParameter().getName() + "'", this, parentCommands, false, e);
-            } else {
+                throw new InvalidUsageException(
+                    "Too few arguments! Expected another '" + e.getParameter().getName() + "'", this, parentCommands, false, e);
+            }
+            else {
                 throw new InvalidUsageException("Too few arguments!", this, parentCommands, true, e);
             }
 
-        } catch (UnusedArgumentException e) {
-            throw new InvalidUsageException("Too many arguments! Did not use '" + e.getUnconsumed() + "'", this, parentCommands, false, e);
+        }
+        catch (UnusedArgumentException e) {
+            throw new InvalidUsageException(
+                "Too many arguments! Did not use '" + e.getUnconsumed() + "'", this, parentCommands, false, e);
 
-        } catch (ArgumentParseException e) {
+        }
+        catch (ArgumentParseException e) {
             throw new InvalidUsageException(e.getMessage(), this, parentCommands, false, e);
 
-        } catch (ArgumentException e) { // Something else wrong with an argument
+        }
+        catch (ArgumentException e) { // Something else wrong with an argument
             throw new InvalidUsageException(e.getMessage(), this, parentCommands, false, e);
 
-        } catch (CommandException e) { // Thrown by commands
+        }
+        catch (CommandException e) { // Thrown by commands
             throw e;
 
-        } catch (ProvisionException e) { // Argument binding failed
+        }
+        catch (ProvisionException e) { // Argument binding failed
             throw new InvocationCommandException("Exception binding arguments: " + e.getMessage(), e);
 
-        } catch (InterruptedException e) { // Thrown by execution
+        }
+        catch (InterruptedException e) { // Thrown by execution
             throw new InvocationCommandException("Interruption exception: " + e.getCause().getMessage(), e.getCause());
 
-        } catch (IllegalArgumentException e) { // Generic argument exceptions
+        }
+        catch (IllegalArgumentException e) { // Generic argument exceptions
             throw new InvalidUsageException(e.getMessage(), this, parentCommands, false, e);
 
-        } catch (Throwable e) { // Catch all
+        }
+        catch (Throwable e) { // Catch all
             for (ExceptionConverter converter : builder.getExceptionConverters()) {
                 converter.convert(e);
             }

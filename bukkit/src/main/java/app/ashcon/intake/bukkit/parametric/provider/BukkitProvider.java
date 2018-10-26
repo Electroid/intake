@@ -6,11 +6,10 @@ import app.ashcon.intake.argument.Namespace;
 import app.ashcon.intake.parametric.Provider;
 import app.ashcon.intake.parametric.ProvisionException;
 import com.google.common.collect.ImmutableList;
-import org.bukkit.command.CommandSender;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
+import javax.annotation.Nullable;
+import org.bukkit.command.CommandSender;
 
 /**
  * A {@link Provider} where the {@link CommandSender} is always present.
@@ -31,7 +30,8 @@ public interface BukkitProvider<T> extends Provider<T> {
         return getSuggestions(prefix, namespace.need(CommandSender.class), namespace, modifiers);
     }
 
-    default List<String> getSuggestions(String prefix, CommandSender sender, Namespace namespace, List<? extends Annotation> mods) {
+    default List<String> getSuggestions(String prefix, CommandSender sender, Namespace namespace,
+                                        List<? extends Annotation> mods) {
         return ImmutableList.of();
     }
 

@@ -1,13 +1,12 @@
 package app.ashcon.intake.bukkit.util;
 
+import java.lang.reflect.InvocationTargetException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Utility methods for accessing various {@link Bukkit} APIs.
@@ -17,7 +16,7 @@ public class BukkitUtil {
     /**
      * Some forks of {@link Bukkit}, namely SportBukkit, support
      * a fake name patch which allows different players to see different names.
-     *
+     * <p>
      * Try to use the path with reflection and if it fails, assume the patch
      * is not loaded.
      */
@@ -26,8 +25,10 @@ public class BukkitUtil {
     public static Player getPlayer(String name, CommandSender viewer) {
         if (canSearchByViewer) {
             try {
-                return (Player) Bukkit.class.getDeclaredMethod("getPlayer", String.class, CommandSender.class).invoke(name, viewer);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException error) {
+                return (Player) Bukkit.class.getDeclaredMethod("getPlayer", String.class, CommandSender.class)
+                                    .invoke(name, viewer);
+            }
+            catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException error) {
                 canSearchByViewer = false;
             }
         }
@@ -38,7 +39,8 @@ public class BukkitUtil {
         if (canSearchByViewer) {
             try {
                 return (String) Player.class.getDeclaredMethod("getName", CommandSender.class).invoke(player, viewer);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException error) {
+            }
+            catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException error) {
                 canSearchByViewer = false;
             }
         }
@@ -48,11 +50,14 @@ public class BukkitUtil {
     public static World getWorld(CommandSender sender) {
         if (sender instanceof Player) {
             return ((Player) sender).getWorld();
-        } else if (sender instanceof Block) {
+        }
+        else if (sender instanceof Block) {
             return ((Block) sender).getWorld();
-        } else if (sender instanceof Entity) {
+        }
+        else if (sender instanceof Entity) {
             return ((Entity) sender).getWorld();
-        } else {
+        }
+        else {
             return null;
         }
     }

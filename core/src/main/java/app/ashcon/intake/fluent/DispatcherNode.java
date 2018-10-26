@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.fluent;
 
 import app.ashcon.intake.dispatcher.Dispatcher;
@@ -30,8 +29,8 @@ public class DispatcherNode extends AbstractDispatcherNode {
     /**
      * Create a new instance.
      *
-     * @param graph the root fluent graph object
-     * @param parent the parent node, or null
+     * @param graph      the root fluent graph object
+     * @param parent     the parent node, or null
      * @param dispatcher the dispatcher for this node
      */
     DispatcherNode(CommandGraph graph, AbstractDispatcherNode parent, Dispatcher dispatcher) {

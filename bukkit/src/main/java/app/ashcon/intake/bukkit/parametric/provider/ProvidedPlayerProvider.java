@@ -4,12 +4,11 @@ import app.ashcon.intake.argument.ArgumentException;
 import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.bukkit.parametric.annotation.Sender;
 import app.ashcon.intake.parametric.ProvisionException;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
+import javax.annotation.Nullable;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Provides the {@link Player} who sent the command, annotated with {@link Sender}.
@@ -23,7 +22,8 @@ public class ProvidedPlayerProvider implements BukkitProvider<Player> {
 
     @Nullable
     @Override
-    public Player get(CommandSender sender, CommandArgs args, List<? extends Annotation> mods) throws ArgumentException, ProvisionException {
+    public Player get(CommandSender sender, CommandArgs args, List<? extends Annotation> mods)
+        throws ArgumentException, ProvisionException {
         if (sender instanceof Player) {
             return (Player) sender;
         }

@@ -16,18 +16,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.fluent;
-
-import app.ashcon.intake.parametric.ParametricBuilder;
-
-import java.util.function.Function;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import app.ashcon.intake.parametric.ParametricBuilder;
+import java.util.function.Function;
+
 /**
  * A fluent interface to creating a command graph.
- * 
+ *
  * <p>A command graph may have multiple commands, and multiple sub-commands below that,
  * and possibly below that.</p>
  */
@@ -48,10 +46,10 @@ public class CommandGraph<T extends AbstractDispatcherNode> {
         this.builder = builder;
         this.rootDispatcherNode = rootDispatcherNodeCreator.apply(this);
     }
-    
+
     /**
      * Get the root dispatcher node.
-     * 
+     *
      * @return the root dispatcher node
      */
     public T getRootDispatcherNode() {

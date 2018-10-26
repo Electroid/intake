@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.provider;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import app.ashcon.intake.argument.ArgumentException;
 import app.ashcon.intake.argument.ArgumentParseException;
@@ -26,13 +27,10 @@ import app.ashcon.intake.argument.Namespace;
 import app.ashcon.intake.parametric.Provider;
 import app.ashcon.intake.parametric.ProvisionException;
 import com.google.common.collect.Lists;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nullable;
 
 /**
  * Searches an enum for a near-matching value.
@@ -45,7 +43,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class EnumProvider<T extends Enum<T>> implements Provider<T> {
 
     private static final Pattern NON_ALPHANUMERIC = Pattern.compile("[^A-Za-z0-9]");
-
     private final Class<T> enumClass;
 
     /**
@@ -56,6 +53,10 @@ public class EnumProvider<T extends Enum<T>> implements Provider<T> {
     public EnumProvider(Class<T> enumClass) {
         checkNotNull(enumClass, "enumClass");
         this.enumClass = enumClass;
+    }
+
+    private static String simplify(String t) {
+        return NON_ALPHANUMERIC.matcher(t.toLowerCase()).replaceAll("");
     }
 
     @Override
@@ -91,9 +92,5 @@ public class EnumProvider<T extends Enum<T>> implements Provider<T> {
         }
 
         return suggestions;
-    }
-
-    private static String simplify(String t) {
-        return NON_ALPHANUMERIC.matcher(t.toLowerCase()).replaceAll("");
     }
 }

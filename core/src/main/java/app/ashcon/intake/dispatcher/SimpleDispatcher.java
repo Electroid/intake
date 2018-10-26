@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.dispatcher;
 
 import app.ashcon.intake.CommandCallable;
@@ -36,7 +35,6 @@ import app.ashcon.intake.util.auth.AuthorizationException;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -72,16 +70,16 @@ public class SimpleDispatcher implements Dispatcher, Lockable {
         }
 
         CommandMapping mapping = new ImmutableCommandMapping(callable, alias);
-        
+
         // Check for replacements
         for (String a : alias) {
             String lower = a.toLowerCase();
             if (commands.containsKey(lower)) {
                 throw new IllegalArgumentException(
-                        "Can't add the command '" + a + "' because SimpleDispatcher does not support replacing commands");
+                    "Can't add the command '" + a + "' because SimpleDispatcher does not support replacing commands");
             }
         }
-        
+
         for (String a : alias) {
             String lower = a.toLowerCase();
             commands.put(lower, mapping);
@@ -92,12 +90,12 @@ public class SimpleDispatcher implements Dispatcher, Lockable {
     public Set<CommandMapping> getCommands() {
         return Collections.unmodifiableSet(new HashSet<CommandMapping>(commands.values()));
     }
-    
+
     @Override
     public Set<String> getAliases() {
         return Collections.unmodifiableSet(commands.keySet());
     }
-    
+
     @Override
     public Set<String> getPrimaryAliases() {
         Set<String> aliases = new HashSet<String>();
@@ -118,7 +116,8 @@ public class SimpleDispatcher implements Dispatcher, Lockable {
     }
 
     @Override
-    public boolean call(String arguments, Namespace namespace, List<String> parentCommands) throws CommandException, InvocationCommandException, AuthorizationException {
+    public boolean call(String arguments, Namespace namespace, List<String> parentCommands)
+        throws CommandException, InvocationCommandException, AuthorizationException {
         // We have permission for this command if we have permissions for subcommands
         if (!testPermission(namespace)) {
             throw new AuthorizationException();
@@ -129,7 +128,8 @@ public class SimpleDispatcher implements Dispatcher, Lockable {
 
         if (aliases.isEmpty()) {
             throw new ProvisionException("There are no sub-commands for " + parentCommands);
-        } else if (split.length > 0) {
+        }
+        else if (split.length > 0) {
             String subCommand = split[0];
             String subArguments = Joiner.on(" ").join(Arrays.copyOfRange(split, 1, split.length));
             List<String> subParents = ImmutableList.<String>builder().addAll(parentCommands).add(subCommand).build();
@@ -138,13 +138,17 @@ public class SimpleDispatcher implements Dispatcher, Lockable {
             if (mapping != null) {
                 try {
                     mapping.getCallable().call(subArguments, namespace, subParents);
-                } catch (AuthorizationException e) {
+                }
+                catch (AuthorizationException e) {
                     throw e;
-                } catch (CommandException e) {
+                }
+                catch (CommandException e) {
                     throw e;
-                } catch (InvocationCommandException e) {
+                }
+                catch (InvocationCommandException e) {
                     throw e;
-                } catch (Throwable t) {
+                }
+                catch (Throwable t) {
                     throw new InvocationCommandException(t);
                 }
 
@@ -177,14 +181,16 @@ public class SimpleDispatcher implements Dispatcher, Lockable {
             }
 
             return suggestions;
-        } else {
+        }
+        else {
             String subCommand = split[0];
             CommandMapping mapping = get(subCommand);
             String passedArguments = Joiner.on(" ").join(Arrays.copyOfRange(split, 1, split.length));
 
             if (mapping != null) {
                 return mapping.getCallable().getSuggestions(passedArguments, locals);
-            } else {
+            }
+            else {
                 return Collections.emptyList();
             }
         }
@@ -199,12 +205,12 @@ public class SimpleDispatcher implements Dispatcher, Lockable {
         }
 
         return new ImmutableDescription.Builder()
-                .setParameters(Lists.newArrayList(
-                        new ImmutableParameter.Builder()
-                            .setName(Joiner.on("|").join(commands))
-                            .setOptionType(OptionType.positional())
-                            .build()))
-                .build();
+                   .setParameters(Lists.newArrayList(
+                       new ImmutableParameter.Builder()
+                           .setName(Joiner.on("|").join(commands))
+                           .setOptionType(OptionType.positional())
+                           .build()))
+                   .build();
     }
 
     @Override

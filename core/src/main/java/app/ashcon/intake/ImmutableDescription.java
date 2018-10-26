@@ -16,15 +16,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake;
 
-import com.google.common.collect.ImmutableList;
-
-import javax.annotation.Nullable;
-import java.util.List;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.google.common.collect.ImmutableList;
+import java.util.List;
+import javax.annotation.Nullable;
 
 /**
  * An immutable implementation of a Description.
@@ -32,7 +30,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * <p>Use {@link Builder} to create instances.</p>
  */
 public final class ImmutableDescription implements Description {
-    
+
     private final List<Parameter> parameters;
     private final List<String> permissions;
     private final String shortDescription;
@@ -40,7 +38,8 @@ public final class ImmutableDescription implements Description {
     @Nullable
     private String usage;
 
-    private ImmutableDescription(List<Parameter> parameters, List<String> permissions, String shortDescription, String help, @Nullable String usage) {
+    private ImmutableDescription(List<Parameter> parameters, List<String> permissions, String shortDescription, String help,
+                                 @Nullable String usage) {
         this.parameters = ImmutableList.copyOf(parameters);
         this.permissions = ImmutableList.copyOf(permissions);
         this.shortDescription = shortDescription;
@@ -75,11 +74,11 @@ public final class ImmutableDescription implements Description {
         if (usage != null) {
             return usage;
         }
-        
+
         StringBuilder builder = new StringBuilder();
         StringBuilder flagBuilder = new StringBuilder();
         boolean first = true;
-        
+
         for (Parameter parameter : parameters) {
             if (!first) {
                 builder.append(" ");
@@ -91,13 +90,16 @@ public final class ImmutableDescription implements Description {
             if (flag == null) {
                 if (type.isOptional()) {
                     text = "[" + name + "]";
-                } else {
+                }
+                else {
                     text = "<" + name + ">";
                 }
-            } else {
+            }
+            else {
                 if (type.isValueFlag()) {
                     text = "[-" + flag + "=" + name + "]";
-                } else {
+                }
+                else {
                     // Accumulate boolean flags to be appended at the end
                     flagBuilder.append(flag);
                     first = true;
@@ -115,7 +117,7 @@ public final class ImmutableDescription implements Description {
             }
             builder.append("[-").append(flags).append("]");
         }
-        
+
         return usage = builder.toString();
     }
 
@@ -131,6 +133,7 @@ public final class ImmutableDescription implements Description {
      * be empty lists.</p>
      */
     public static class Builder {
+
         private List<Parameter> parameters = ImmutableList.of();
         private List<String> permissions = ImmutableList.of();
         @Nullable

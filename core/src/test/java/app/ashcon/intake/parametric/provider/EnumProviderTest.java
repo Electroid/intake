@@ -16,21 +16,19 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.provider;
+
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import app.ashcon.intake.argument.ArgumentParseException;
 import app.ashcon.intake.argument.Arguments;
 import app.ashcon.intake.argument.Namespace;
 import com.google.common.collect.ImmutableList;
+import java.lang.annotation.Annotation;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-
-import java.lang.annotation.Annotation;
-
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 public class EnumProviderTest {
 
@@ -52,11 +50,15 @@ public class EnumProviderTest {
     public void testGetSuggestions() throws Exception {
         Namespace namespace = new Namespace();
 
-        assertThat(provider.getSuggestions("", namespace, ImmutableList.<Annotation>of()), containsInAnyOrder("small", "medium", "large", "very_large"));
+        assertThat(
+            provider.getSuggestions("", namespace, ImmutableList.<Annotation>of()),
+            containsInAnyOrder("small", "medium", "large", "very_large")
+                  );
         assertThat(provider.getSuggestions("s", namespace, ImmutableList.<Annotation>of()), containsInAnyOrder("small"));
         assertThat(provider.getSuggestions("la", namespace, ImmutableList.<Annotation>of()), containsInAnyOrder("large"));
         assertThat(provider.getSuggestions("very", namespace, ImmutableList.<Annotation>of()), containsInAnyOrder("very_large"));
-        assertThat(provider.getSuggestions("verylarg", namespace, ImmutableList.<Annotation>of()), containsInAnyOrder("very_large"));
+        assertThat(
+            provider.getSuggestions("verylarg", namespace, ImmutableList.<Annotation>of()), containsInAnyOrder("very_large"));
         assertThat(provider.getSuggestions("very_", namespace, ImmutableList.<Annotation>of()), containsInAnyOrder("very_large"));
         assertThat(provider.getSuggestions("tiny", namespace, ImmutableList.<Annotation>of()), Matchers.<String>empty());
     }

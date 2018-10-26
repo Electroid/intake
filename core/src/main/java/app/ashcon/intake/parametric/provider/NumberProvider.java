@@ -16,15 +16,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.provider;
 
 import app.ashcon.intake.argument.ArgumentParseException;
 import app.ashcon.intake.parametric.annotation.Range;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
+import javax.annotation.Nullable;
 
 interface NumberProvider {
 
@@ -43,7 +41,8 @@ interface NumberProvider {
 
         try {
             return Double.parseDouble(input);
-        } catch (NumberFormatException ignored) {
+        }
+        catch (NumberFormatException ignored) {
             throw new ArgumentParseException(String.format("Expected '%s' to be a number", input));
         }
     }
@@ -51,7 +50,7 @@ interface NumberProvider {
     /**
      * Validate a number value using relevant modifiers.
      *
-     * @param number the number
+     * @param number    the number
      * @param modifiers the list of modifiers to scan
      * @throws ArgumentParseException on a validation error
      */
@@ -60,9 +59,12 @@ interface NumberProvider {
             if (modifier instanceof Range) {
                 Range range = (Range) modifier;
                 if (number < range.min()) {
-                    throw new ArgumentParseException(String.format("A valid value is greater than or equal to %s (you entered %s)", range.min(), number));
-                } else if (number > range.max()) {
-                    throw new ArgumentParseException(String.format("A valid value is less than or equal to %s (you entered %s)", range.max(), number));
+                    throw new ArgumentParseException(
+                        String.format("A valid value is greater than or equal to %s (you entered %s)", range.min(), number));
+                }
+                else if (number > range.max()) {
+                    throw new ArgumentParseException(
+                        String.format("A valid value is less than or equal to %s (you entered %s)", range.max(), number));
                 }
             }
         }
@@ -71,7 +73,7 @@ interface NumberProvider {
     /**
      * Validate a number value using relevant modifiers.
      *
-     * @param number the number
+     * @param number    the number
      * @param modifiers the list of modifiers to scan
      * @throws ArgumentParseException on a validation error
      */
@@ -80,9 +82,12 @@ interface NumberProvider {
             if (modifier instanceof Range) {
                 Range range = (Range) modifier;
                 if (number < range.min()) {
-                    throw new ArgumentParseException(String.format("A valid value is greater than or equal to %s (you entered %s)", range.min(), number));
-                } else if (number > range.max()) {
-                    throw new ArgumentParseException(String.format("A valid value is less than or equal to %s (you entered %s)", range.max(), number));
+                    throw new ArgumentParseException(
+                        String.format("A valid value is greater than or equal to %s (you entered %s)", range.min(), number));
+                }
+                else if (number > range.max()) {
+                    throw new ArgumentParseException(
+                        String.format("A valid value is less than or equal to %s (you entered %s)", range.max(), number));
                 }
             }
         }

@@ -16,17 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric;
 
 import app.ashcon.intake.argument.ArgumentException;
 import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.argument.Namespace;
 import com.google.common.collect.ImmutableList;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
+import javax.annotation.Nullable;
 
 /**
  * An object that provides instances given a key and some arguments.
@@ -44,7 +42,8 @@ public interface Provider<T> {
     default String getName() {
         if (isProvided()) {
             return "context";
-        } else {
+        }
+        else {
             throw new UnsupportedOperationException("Must implement name for provider");
         }
     }
@@ -65,7 +64,7 @@ public interface Provider<T> {
      * @param arguments The arguments
      * @param modifiers The modifiers on the parameter
      * @return The value provided
-     * @throws ArgumentException If there is a problem with the argument
+     * @throws ArgumentException  If there is a problem with the argument
      * @throws ProvisionException If there is a problem with the provider
      */
     @Nullable
@@ -77,7 +76,7 @@ public interface Provider<T> {
      * <p>If no suggestions could be enumerated, an empty list should
      * be returned.</p>
      *
-     * @param prefix What the user has typed so far (may be an empty string)
+     * @param prefix    What the user has typed so far (may be an empty string)
      * @param namespace The namespace under which this command's suggestions are being provided
      * @param modifiers The modifiers on the parameter
      * @return A list of suggestions

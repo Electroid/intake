@@ -16,12 +16,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.argument;
 
 import app.ashcon.intake.CommandException;
 import com.google.common.collect.Lists;
-
 import java.util.List;
 
 public class ContextArgsTest extends AbstractCommandArgsTest {
@@ -35,7 +33,8 @@ public class ContextArgsTest extends AbstractCommandArgsTest {
             String[] newArgsArray = new String[newArgs.size()];
             newArgs.toArray(newArgsArray);
             return new ContextArgs(new CommandContext(newArgsArray));
-        } catch (CommandException e) {
+        }
+        catch (CommandException e) {
             throw new RuntimeException(e);
         }
     }

@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.fluent;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 import app.ashcon.intake.Command;
 import app.ashcon.intake.CommandCallable;
@@ -28,11 +29,8 @@ import app.ashcon.intake.group.At;
 import app.ashcon.intake.group.Group;
 import app.ashcon.intake.group.Root;
 import app.ashcon.intake.parametric.ParametricBuilder;
-
-import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
-
-import static com.google.common.base.Preconditions.checkArgument;
+import javax.annotation.Nonnull;
 
 /**
  * A collection of grouped commands.
@@ -59,7 +57,7 @@ public class GroupDispatcherNode extends AbstractDispatcherNode {
      * @param object the object containing the methods
      * @return this object
      */
-    public GroupDispatcherNode registerGrouped(Object object)  {
+    public GroupDispatcherNode registerGrouped(Object object) {
         boolean classRegistered = this.registerClass(object);
         this.registerClassMethods(object, classRegistered);
         return this;
@@ -86,10 +84,10 @@ public class GroupDispatcherNode extends AbstractDispatcherNode {
 
         final Group group = object.getClass().getAnnotation(Group.class);
         if (group != null) {
+            result = true;
             for (final At at : group.value()) {
                 checkArgument(!at.value().isEmpty(), "group cannot be empty");
                 this.builder.registerMethodsAsCommands(this.getGroup(at.value()), object);
-                result = true;
             }
         }
 
@@ -127,9 +125,11 @@ public class GroupDispatcherNode extends AbstractDispatcherNode {
             SimpleDispatcher child = new SimpleDispatcher();
             this.dispatcher.registerCommand(child, group);
             return child;
-        } else if (mapping.getCallable() instanceof SimpleDispatcher) {
+        }
+        else if (mapping.getCallable() instanceof SimpleDispatcher) {
             return (SimpleDispatcher) mapping.getCallable();
-        } else {
+        }
+        else {
             throw new IllegalStateException("Can't put group at '" + group + "' because there is an existing command there");
         }
     }

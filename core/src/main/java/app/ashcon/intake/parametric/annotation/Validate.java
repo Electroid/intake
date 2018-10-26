@@ -16,11 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.annotation;
 
 import app.ashcon.intake.parametric.provider.PrimitivesModule;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -33,14 +31,14 @@ import java.util.regex.Pattern;
  * @see PrimitivesModule Where this validation is used
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.PARAMETER, ElementType.FIELD })
+@Target({ElementType.PARAMETER, ElementType.FIELD})
 public @interface Validate {
-    
+
     /**
      * An optional regular expression that must match the string.
-     * 
-     * @see Pattern
+     *
      * @return The pattern
+     * @see Pattern
      */
     String regex() default "";
 

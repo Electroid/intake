@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.provider;
 
 import app.ashcon.intake.argument.ArgumentException;
@@ -24,10 +23,9 @@ import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.argument.CommandContext;
 import app.ashcon.intake.parametric.Provider;
 import app.ashcon.intake.parametric.ProvisionException;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
+import javax.annotation.Nullable;
 
 /**
  * Provides the context.
@@ -41,7 +39,8 @@ public final class CommandContextProvider implements Provider<CommandContext> {
 
     @Nullable
     @Override
-    public CommandContext get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException {
+    public CommandContext get(CommandArgs arguments, List<? extends Annotation> modifiers)
+        throws ArgumentException, ProvisionException {
         return arguments.getNamespace().need(CommandContext.class);
     }
 

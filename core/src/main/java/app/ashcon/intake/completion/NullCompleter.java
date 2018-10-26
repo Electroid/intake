@@ -16,12 +16,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.completion;
 
 import app.ashcon.intake.CommandException;
 import app.ashcon.intake.argument.Namespace;
-
 import java.util.Collections;
 import java.util.List;
 
