@@ -10,6 +10,7 @@ import app.ashcon.intake.bukkit.command.BukkitHelpTopic;
 import app.ashcon.intake.dispatcher.Dispatcher;
 import app.ashcon.intake.dispatcher.Lockable;
 import app.ashcon.intake.dispatcher.SimpleDispatcher;
+import app.ashcon.intake.fluent.BasicCommandGraph;
 import app.ashcon.intake.fluent.CommandGraph;
 import app.ashcon.intake.parametric.Injector;
 import app.ashcon.intake.parametric.Module;
@@ -54,30 +55,43 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
     private final ParametricBuilder builder;
     private final Dispatcher dispatcher;
 
-    public BukkitIntake(Plugin plugin, Consumer<CommandGraph> init) {
-        this(plugin, new CommandGraph(), new BukkitAuthorizer(), Intake.createInjector(),
-                ParametricBuilder::new, init, new BukkitModule(), new PrimitivesModule());
+    public BukkitIntake(Plugin plugin, CommandGraph commandGraph) {
+        this(plugin, commandGraph, new BukkitAuthorizer(), Intake.createInjector(),
+                ParametricBuilder::new);
+    }
+
+    public BukkitIntake(Plugin plugin, CommandGraph commandGraph, BukkitAuthorizer authorizer) {
+        this(plugin, commandGraph, authorizer, Intake.createInjector(), ParametricBuilder::new);
+    }
+
+    public BukkitIntake(Plugin plugin, CommandGraph commandGraph, Module... modules) {
+        this(plugin, commandGraph, new BukkitAuthorizer(), Intake.createInjector(),
+                ParametricBuilder::new, modules);
+    }
+
+    public BukkitIntake(Plugin plugin, CommandGraph commandGraph, BukkitAuthorizer authorizer,
+                        Module... modules) {
+        this(plugin, commandGraph, authorizer, Intake.createInjector(),
+                ParametricBuilder::new, modules);
     }
 
     public BukkitIntake(Plugin plugin, CommandGraph commandGraph, BukkitAuthorizer bukkitAuthorizer,
-                        Injector injector, ParametricBuilder parametricBuilder, Consumer<CommandGraph> init,
+                        Injector injector, ParametricBuilder builder,
                         Module... modules) {
-        this(plugin, new CommandGraph(), new BukkitAuthorizer(), Intake.createInjector(),
-                (unused -> parametricBuilder), init, new BukkitModule(), new PrimitivesModule());
+        this(plugin, commandGraph, bukkitAuthorizer, injector, (nA) -> builder, modules);
     }
 
-    private BukkitIntake(Plugin plugin, CommandGraph commandGraph, BukkitAuthorizer bukkitAuthorizer,
+    public BukkitIntake(Plugin plugin, CommandGraph commandGraph, BukkitAuthorizer bukkitAuthorizer,
                         Injector injector, Function<Injector, ParametricBuilder> parametricBuilderCreator,
-                        Consumer<CommandGraph> init, Module... modules) {
+                        Module... modules) {
         this.plugin = plugin;
-        Arrays.stream(modules).forEach( (module) -> injector.install(module));
+        injector.install(new BukkitModule());
+        injector.install(new PrimitivesModule());
+        Arrays.stream(modules).forEach(injector::install);
         this.injector = injector;
-        ParametricBuilder builder = parametricBuilderCreator.apply(injector);
+        this.builder = parametricBuilderCreator.apply(injector);
         builder.setAuthorizer(bukkitAuthorizer);
-        this.builder = builder;
-        CommandGraph graph = commandGraph.builder(builder);
-        init.accept(graph);
-        this.dispatcher = graph.getDispatcher();
+        this.dispatcher = commandGraph.getRootDispatcherNode().getDispatcher();
         if (dispatcher instanceof Lockable) {
             ((Lockable) dispatcher).lock();
         }
@@ -88,8 +102,38 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
         getCommandMap().registerAll(plugin.getName(), commands);
     }
 
+    // DO NOT USE THIS!!!! This is ONLY here to support backwards compatibility.
+    // Instead, create a command graph, register your commands, and pass the command graph into
+    // one of the other BukkitIntake constructors.
+    @Deprecated
     public BukkitIntake(Plugin plugin, Object... commands) {
-        this(plugin, graph -> Stream.of(commands).forEachOrdered(command -> graph.groupedCommands().registerGrouped(command)));
+        this(plugin, graph -> Stream.of(commands).forEachOrdered(command -> graph.getRootDispatcherNode().registerGrouped(command)));
+    }
+
+    // DO NOT USE THIS!!!! This is ONLY here to support backwards compatibility.
+    // Instead, create a command graph, register your commands, and pass the command graph into
+    // one of the other BukkitIntake constructors.
+    @Deprecated
+    public BukkitIntake(Plugin plugin, Consumer<BasicCommandGraph> init) {
+        this.plugin = plugin;
+        Injector injector = Intake.createInjector();
+        injector.install(new PrimitivesModule());
+        injector.install(new BukkitModule());
+        this.injector = injector;
+        ParametricBuilder builder = new ParametricBuilder(injector);
+        builder.setAuthorizer(new BukkitAuthorizer());
+        this.builder = builder;
+        BasicCommandGraph graph = new BasicCommandGraph(builder);
+        init.accept(graph);
+        this.dispatcher = graph.getRootDispatcherNode().getDispatcher();
+        if (dispatcher instanceof SimpleDispatcher) {
+            ((SimpleDispatcher) dispatcher).lock();
+        }
+        List<Command> commands = dispatcher.getCommands()
+                .stream()
+                .map(cmd -> new BukkitCommand(plugin, this, this, cmd))
+                .collect(Collectors.toList());
+        getCommandMap().registerAll(plugin.getName(), commands);
     }
 
     public Injector getInjector() {

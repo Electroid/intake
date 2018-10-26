@@ -19,6 +19,7 @@
 
 package app.ashcon.intake.fluent;
 
+import app.ashcon.intake.dispatcher.Dispatcher;
 import app.ashcon.intake.dispatcher.SimpleDispatcher;
 
 /**
@@ -33,7 +34,7 @@ public class DispatcherNode extends AbstractDispatcherNode {
      * @param parent the parent node, or null
      * @param dispatcher the dispatcher for this node
      */
-    DispatcherNode(CommandGraph graph, AbstractDispatcherNode parent, SimpleDispatcher dispatcher) {
+    DispatcherNode(CommandGraph graph, AbstractDispatcherNode parent, Dispatcher dispatcher) {
         super(graph, parent, dispatcher);
     }
 

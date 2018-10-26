@@ -22,6 +22,7 @@ package app.ashcon.intake.fluent;
 import app.ashcon.intake.Command;
 import app.ashcon.intake.CommandCallable;
 import app.ashcon.intake.CommandMapping;
+import app.ashcon.intake.dispatcher.Dispatcher;
 import app.ashcon.intake.dispatcher.SimpleDispatcher;
 import app.ashcon.intake.group.At;
 import app.ashcon.intake.group.Group;
@@ -40,7 +41,7 @@ public class GroupDispatcherNode extends AbstractDispatcherNode {
 
     private final ParametricBuilder builder;
 
-    protected GroupDispatcherNode(CommandGraph graph, DispatcherNode parent, SimpleDispatcher dispatcher, ParametricBuilder builder) {
+    protected GroupDispatcherNode(CommandGraph graph, DispatcherNode parent, Dispatcher dispatcher, ParametricBuilder builder) {
         super(graph, parent, dispatcher);
         this.builder = builder;
     }
@@ -120,7 +121,7 @@ public class GroupDispatcherNode extends AbstractDispatcherNode {
         }
     }
 
-    protected SimpleDispatcher getGroup(String group) {
+    protected Dispatcher getGroup(String group) {
         CommandMapping mapping = this.dispatcher.get(group);
         if (mapping == null) {
             SimpleDispatcher child = new SimpleDispatcher();

@@ -28,7 +28,7 @@ public abstract class AbstractDispatcherNode {
 
     protected final CommandGraph graph;
     protected final AbstractDispatcherNode parent;
-    protected final SimpleDispatcher dispatcher;
+    protected final Dispatcher dispatcher;
 
     /**
      * Create a new instance.
@@ -37,7 +37,7 @@ public abstract class AbstractDispatcherNode {
      * @param parent the parent node, or null
      * @param dispatcher the dispatcher for this node
      */
-    protected AbstractDispatcherNode(CommandGraph graph, AbstractDispatcherNode parent, SimpleDispatcher dispatcher) {
+    protected AbstractDispatcherNode(CommandGraph graph, AbstractDispatcherNode parent, Dispatcher dispatcher) {
         this.graph = graph;
         this.parent = parent;
         this.dispatcher = dispatcher;
@@ -47,10 +47,10 @@ public abstract class AbstractDispatcherNode {
      * Register a command with this dispatcher.
      *
      * @param callable the executor
-     * @param alias the list of aliases, where the first alias is the primary one
+     * @param aliases the list of aliases, where the first alias is the primary one
      */
-    public void register(CommandCallable callable, String... alias) {
-        dispatcher.registerCommand(callable, alias);
+    public void register(CommandCallable callable, String... aliases) {
+        dispatcher.registerCommand(callable, aliases);
     }
 
     /**
@@ -62,11 +62,7 @@ public abstract class AbstractDispatcherNode {
      * @see ParametricBuilder#registerMethodsAsCommands(Dispatcher, Object)
      */
     public AbstractDispatcherNode registerMethods(Object object) {
-        ParametricBuilder builder = graph.getBuilder();
-        if (builder == null) {
-            throw new RuntimeException("No ParametricBuilder set");
-        }
-        builder.registerMethodsAsCommands(getDispatcher(), object);
+        graph.getBuilder().registerMethodsAsCommands(getDispatcher(), object);
         return this;
     }
 
@@ -76,12 +72,12 @@ public abstract class AbstractDispatcherNode {
      * <p>The object returned by this method can be used to add sub-commands. To
      * return to this "parent" context, use {@link DispatcherNode#graph()}.</p>
      *
-     * @param alias the list of aliases, where the first alias is the primary one
+     * @param aliases the list of aliases, where the first alias is the primary one
      * @return an object to place sub-commands
      */
-    public DispatcherNode group(String... alias) {
+    public DispatcherNode group(String... aliases) {
         SimpleDispatcher command = new SimpleDispatcher();
-        getDispatcher().registerCommand(command, alias);
+        getDispatcher().registerCommand(command, aliases);
         return new DispatcherNode(graph, this, command);
     }
 
