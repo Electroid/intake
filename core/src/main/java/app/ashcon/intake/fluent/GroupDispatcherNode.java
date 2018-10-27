@@ -37,11 +37,8 @@ import javax.annotation.Nonnull;
  */
 public class GroupDispatcherNode extends AbstractDispatcherNode {
 
-    private final ParametricBuilder builder;
-
-    protected GroupDispatcherNode(CommandGraph graph, DispatcherNode parent, Dispatcher dispatcher, ParametricBuilder builder) {
+    public GroupDispatcherNode(CommandGraph graph, DispatcherNode parent, Dispatcher dispatcher) {
         super(graph, parent, dispatcher);
-        this.builder = builder;
     }
 
     /**
@@ -87,12 +84,12 @@ public class GroupDispatcherNode extends AbstractDispatcherNode {
             result = true;
             for (final At at : group.value()) {
                 checkArgument(!at.value().isEmpty(), "group cannot be empty");
-                this.builder.registerMethodsAsCommands(this.getGroup(at.value()), object);
+                graph.getBuilder().registerMethodsAsCommands(this.getGroup(at.value()), object);
             }
         }
 
         if (object.getClass().getAnnotation(Root.class) != null) {
-            this.builder.registerMethodsAsCommands(this.dispatcher, object);
+            graph.getBuilder().registerMethodsAsCommands(this.dispatcher, object);
         }
 
         return result;
@@ -102,7 +99,7 @@ public class GroupDispatcherNode extends AbstractDispatcherNode {
         for (final Method method : object.getClass().getDeclaredMethods()) {
             final Command definition = method.getAnnotation(Command.class);
             if (definition != null) {
-                final CommandCallable callable = this.builder.build(object, method);
+                final CommandCallable callable = graph.getBuilder().build(object, method);
                 final Group group = method.getAnnotation(Group.class);
                 if (group != null) {
                     for (At at : group.value()) {

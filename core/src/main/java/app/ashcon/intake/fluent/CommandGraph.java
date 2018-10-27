@@ -31,26 +31,53 @@ import java.util.function.Function;
  */
 public class CommandGraph<T extends AbstractDispatcherNode> {
 
-    private final T rootDispatcherNode;
-    private final ParametricBuilder builder;
+    private T rootDispatcherNode;
+    private ParametricBuilder builder;
 
     /**
-     * Create a new command graph.
+     * Constructor to be used by children that do not have either the
+     *    rootDispatcherNode or builder on initialization
+     *
+     * Note: The rootDispatcherNode and builder must still be initialized
+     */
+    protected CommandGraph() {}
+
+    /**
+     * Create a new {@link CommandGraph} instance
      *
      * @param rootDispatcherNodeCreator the function responsible for creating a root dispatcher node.
      *                                  The function's parameter is a reference to this CommandGraph class
      */
     public CommandGraph(ParametricBuilder builder, Function<CommandGraph, T> rootDispatcherNodeCreator) {
-        checkNotNull(builder);
+        checkNotNull(builder, "builder can not be null");
+        checkNotNull(rootDispatcherNodeCreator, "root dispatcher can not be null");
 
         this.builder = builder;
         this.rootDispatcherNode = rootDispatcherNodeCreator.apply(this);
     }
 
     /**
-     * Get the root dispatcher node.
+     * Set the {@link T}
      *
-     * @return the root dispatcher node
+     * @param rootDispatcherNode the root dispatcher node
+     */
+    protected void setRootDispatcherNode(T rootDispatcherNode) {
+        this.rootDispatcherNode = rootDispatcherNode;
+    }
+
+    /**
+     * Set the {@link ParametricBuilder}
+     *
+     * @param builder the parametric builder
+     */
+    protected void setBuilder(ParametricBuilder builder) {
+        this.builder = builder;
+    }
+
+    /**
+     * Get the {@link T}.
+     *
+     * @return the root dispatcher node, or null.
      */
     public T getRootDispatcherNode() {
         return rootDispatcherNode;
