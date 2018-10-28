@@ -15,8 +15,8 @@ public class ExamplePlugin extends JavaPlugin {
 
         DispatcherNode testNode = cmdGraph.getRootDispatcherNode().registerNode("test");
 
-        testNode.registerClassMethods(new TestCommands());
-        testNode.registerNode("math").registerClassMethods(new MathCommands());
+        testNode.registerCommands(new TestCommands());
+        testNode.registerNode("math").registerCommands(new MathCommands());
 
         BukkitIntake intake = new BukkitIntake(this, cmdGraph);
 

@@ -47,7 +47,7 @@ public class DispatcherNode extends AbstractDispatcherNode {
      * @return this object
      * @see ParametricBuilder#registerMethodAsCommand(Dispatcher, Method)
      */
-    public AbstractDispatcherNode registerClassMethods(Object object) {
+    public AbstractDispatcherNode registerCommands(Object object) {
         for(Method method : object.getClass().getDeclaredMethods())
             graph.getBuilder().registerMethodAsCommand(getDispatcher(), object, method);
         return this;

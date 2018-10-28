@@ -86,3 +86,22 @@ It makes use of the parameter injection framework.
 ### Fluent API
 
 There is also a fluent API that combines the command framework with the parametric command framework.
+
+The fluent API uses CommandGraphs and DispatcherNodes to combine frameworks. A basic command graph holds references to the root dispatcher node and to the parametric builder. The root dispatcher node can be used to register commands or to register child dispatcher nodes that can register sub-commands. The builder is responsible for supplying command's with their parameters and holds a reference to the injector which can be used to install modules.
+
+A basic implementation of the fluent API can be found in the bukkit-intake module. All users have to do is create a new instance of the BasicBukkitCommandGraph class and begin registering commands to the root dispatcher node. If they need to add providers, they can do that in the constructor or by getting a reference to the injector from the command graph's builder.
+
+The following is a basic (Bukkit) example of the fluent API:
+```java
+BasicBukkitCommandGraph cmdGraph = new BasicBukkitCommandGraph();
+
+cmdGraph.getRootDispatcherNode().registerCommands(new SimpleCommand());
+
+DispatcherNode testNode = cmdGraph.getRootDispatcherNode().registerNode("test");
+
+testNode.registerCommands(new TestCommands());
+testNode.registerNode("math").registerCommands(new MathCommands());
+```
+
+
+For a more thorough look at any of the intake APIs, check out the example bukkit command [here](examples/bukkit/src/main/java/app/ashcon/intake/example/).
