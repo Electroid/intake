@@ -26,7 +26,7 @@ public interface Subject {
     /**
      * Get a list of groups that this subject is a part of.
      *
-     * @return An array containing a group name per entry
+     * @return An array containing a registerNode name per entry
      */
     String[] getGroups();
 

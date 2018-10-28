@@ -11,26 +11,6 @@
     <module>core</module>
     <module>bukkit</module>
   </modules>
-  <repositories>
-    <repository>
-      <id>ashcon-releases</id>
-      <url>https://repo.ashcon.app/nexus/content/repositories/releases</url>
-    </repository>
-    <repository>
-      <id>ashcon-snapshots</id>
-      <url>https://repo.ashcon.app/nexus/content/repositories/snapshots</url>
-    </repository>
-  </repositories>
-  <distributionManagement>
-    <repository>
-      <id>ashcon-releases</id>
-      <url>https://repo.ashcon.app/nexus/content/repositories/releases</url>
-    </repository>
-    <snapshotRepository>
-      <id>ashcon-snapshots</id>
-      <url>https://repo.ashcon.app/nexus/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
   <build>
     <sourceDirectory>${project.basedir}/src/main/java/</sourceDirectory>
     <plugins>

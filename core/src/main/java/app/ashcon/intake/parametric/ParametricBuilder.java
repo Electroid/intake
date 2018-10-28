@@ -131,21 +131,35 @@ public class ParametricBuilder {
      * (and other relevant annotations) and register them all with the given
      * {@link Dispatcher}.
      *
-     * @param dispatcher The dispatcher to register commands with
-     * @param object     The object contain the methods
+     * @param dispatcher           The dispatcher to register commands with
+     * @param method               The method being registered
      * @throws ParametricException thrown if the commands cannot be registered
      */
-    public void registerMethodsAsCommands(Dispatcher dispatcher, Object object) throws ParametricException {
-        checkNotNull(dispatcher);
-        checkNotNull(object);
+    public void registerMethodAsCommand(Dispatcher dispatcher, Method method) throws ParametricException {
+        this.registerMethodAsCommand(dispatcher, method.getDeclaringClass(), method);
+    }
 
-        for (Method method : object.getClass().getDeclaredMethods()) {
-            Command definition = method.getAnnotation(Command.class);
-            if (definition != null) {
-                CommandCallable callable = build(object, method);
-                dispatcher.registerCommand(callable, definition.aliases());
-            }
-        }
+    /**
+     * Build a list of commands from methods specially annotated with {@link Command}
+     * (and other relevant annotations) and register them all with the given
+     * {@link Dispatcher}.
+     *
+     * @param dispatcher           The dispatcher to register commands with
+     * @param object               The method's calling class
+     * @param method               The method being registered
+     * @throws ParametricException thrown if the commands cannot be registered
+     */
+    public void registerMethodAsCommand(Dispatcher dispatcher, Object object, Method method) throws ParametricException {
+        checkNotNull(dispatcher);
+        checkNotNull(method);
+
+        Command definition = method.getAnnotation(Command.class);
+
+        if (definition == null)
+            return;
+
+        CommandCallable callable = build(object, method);
+        dispatcher.registerCommand(callable, definition.aliases());
     }
 
     /**

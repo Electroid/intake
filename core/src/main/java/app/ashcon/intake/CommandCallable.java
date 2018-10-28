@@ -32,9 +32,9 @@ public interface CommandCallable extends CommandCompleter {
     /**
      * Execute the command.
      *
-     * <p>{@code parentCommands} is a list of "parent" commands, including
+     * <p>{@code parentCommands} is a list of "getParent" commands, including
      * the current command, where each deeper command is appended to
-     * the list of parent commands.</p>
+     * the list of getParent commands.</p>
      *
      * <p>For bukkit, if the command entered was {@code /world create ocean} and
      * the command in question was the "create" command, then:</p>
@@ -53,7 +53,7 @@ public interface CommandCallable extends CommandCompleter {
      *
      * @param arguments      The arguments
      * @param namespace      Additional values used for execution
-     * @param parentCommands The list of parent commands
+     * @param parentCommands The list of getParent commands
      * @return Whether the command succeeded
      * @throws CommandException           If there is an error with the command
      * @throws InvocationCommandException If there is an error with executing the command

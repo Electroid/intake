@@ -13,8 +13,8 @@
   <packaging>jar</packaging>
   <repositories>
     <repository>
-      <id>spigotmc-public</id>
-      <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+      <id>ashcon.app</id>
+      <url>https://repo.ashcon.app/nexus/content/repositories/snapshots/</url>
     </repository>
   </repositories>
   <dependencies>
@@ -24,9 +24,14 @@
       <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>1.11.2-R0.1-SNAPSHOT</version>
+      <groupId>network.stratus</groupId>
+      <artifactId>sportpaper-api</artifactId>
+      <version>1.8.8-R0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>network.stratus</groupId>
+      <artifactId>sportpaper</artifactId>
+      <version>1.8.8-R0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>

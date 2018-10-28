@@ -47,7 +47,7 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
      * @param plugin          The plugin's main class
      * @param commandGraph    A {@link CommandGraph} instance
      */
-    private BukkitIntake(Plugin plugin, CommandGraph commandGraph) {
+    public BukkitIntake(Plugin plugin, CommandGraph commandGraph) {
         Preconditions.checkNotNull(plugin, "Plugin can not be null");
         Preconditions.checkNotNull(commandGraph, "Command graph can not be null");
 
@@ -62,6 +62,7 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
         Dispatcher dispatcher = getCommandGraph().getRootDispatcherNode().getDispatcher();
         if (dispatcher instanceof Lockable)
             ((Lockable) dispatcher).lock();
+
         List<Command> commands = dispatcher.getCommands()
                                      .stream()
                                      .map(cmd -> new BukkitCommand(plugin, this, this, cmd))

@@ -22,7 +22,6 @@ import app.ashcon.intake.CommandCallable;
 import app.ashcon.intake.CommandMapping;
 import java.util.Collection;
 import java.util.Set;
-import javax.annotation.Nullable;
 
 /**
  * Executes a command based on user input.
@@ -67,15 +66,6 @@ public interface Dispatcher extends CommandCallable {
     Collection<String> getAliases();
 
     /**
-     * Get the {@link CommandCallable} associated with an alias. Returns
-     * null if no command is named by the given alias.
-     *
-     * @param alias the alias
-     * @return the command mapping (null if not found)
-     */
-    @Nullable CommandMapping get(String alias);
-
-    /**
      * Returns whether the dispatcher contains a registered command for the given alias.
      *
      * @param alias the alias
@@ -83,4 +73,11 @@ public interface Dispatcher extends CommandCallable {
      */
     boolean contains(String alias);
 
+    /**
+     * Returns CommandMapping with a given alias
+     *
+     * @param alias the aluas
+     * @return
+     */
+    CommandMapping get(String alias);
 }

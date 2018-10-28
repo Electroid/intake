@@ -47,7 +47,7 @@ public class InvalidUsageException extends CommandException {
      * result in a generic error message.
      *
      * @param command    the command
-     * @param aliasStack the command text that was typed, including parent commands
+     * @param aliasStack the command text that was typed, including getParent commands
      */
     public InvalidUsageException(CommandCallable command, List<String> aliasStack) {
         this(null, command, aliasStack);
@@ -59,7 +59,7 @@ public class InvalidUsageException extends CommandException {
      *
      * @param message    the message
      * @param command    the command
-     * @param aliasStack the command text that was typed, including parent commands
+     * @param aliasStack the command text that was typed, including getParent commands
      */
     public InvalidUsageException(@Nullable String message, CommandCallable command, List<String> aliasStack) {
         this(message, command, aliasStack, false);
@@ -70,7 +70,7 @@ public class InvalidUsageException extends CommandException {
      *
      * @param message           the message
      * @param command           the command
-     * @param aliasStack        the command text that was typed, including parent commands
+     * @param aliasStack        the command text that was typed, including getParent commands
      * @param fullHelpSuggested true if the full help for the command should be shown
      */
     public InvalidUsageException(@Nullable String message, CommandCallable command, List<String> aliasStack,
@@ -83,7 +83,7 @@ public class InvalidUsageException extends CommandException {
      *
      * @param message           the message
      * @param command           the command
-     * @param aliasStack        the command text that was typed, including parent commands
+     * @param aliasStack        the command text that was typed, including getParent commands
      * @param fullHelpSuggested true if the full help for the command should be shown
      * @param cause             the original cause
      */

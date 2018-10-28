@@ -49,7 +49,7 @@ import java.util.Set;
  */
 public class SimpleDispatcher implements Dispatcher, Lockable {
 
-    private final Map<String, CommandMapping> commands = new HashMap<String, CommandMapping>();
+    private final Map<String, CommandMapping> commands = new HashMap<>();
     private volatile boolean locked = false;
     private Description description;
 
