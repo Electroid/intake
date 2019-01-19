@@ -40,6 +40,7 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
 
     private final Plugin plugin;
     private final CommandGraph commandGraph;
+    private final List<Command> commands = Lists.newArrayList();
 
     /**
      * Create a new {@link BukkitIntake} instance
@@ -60,14 +61,32 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
      */
     public void register() {
         Dispatcher dispatcher = getCommandGraph().getRootDispatcherNode().getDispatcher();
+
+        if (!commands.isEmpty())
+            throw new IllegalStateException("Commands have already been registered!");
+
         if (dispatcher instanceof Lockable)
             ((Lockable) dispatcher).lock();
 
-        List<Command> commands = dispatcher.getCommands()
-                                     .stream()
-                                     .map(cmd -> new BukkitCommand(plugin, this, this, cmd))
-                                     .collect(Collectors.toList());
+        commands.addAll(dispatcher.getCommands()
+                .stream()
+                .map(cmd -> new BukkitCommand(plugin, this, this, cmd))
+                .collect(Collectors.toList()));
+
         getCommandMap().registerAll(plugin.getName(), commands);
+    }
+
+    /**
+     * Unregister all of the commands in the command graph
+     */
+    public void unregister() {
+        if (commands.isEmpty())
+            return;
+
+        getCommandMap().unregisterAll(commands::contains);
+
+        // Allow for re-registration
+        commands.clear();
     }
 
     public CommandMap getCommandMap() {
