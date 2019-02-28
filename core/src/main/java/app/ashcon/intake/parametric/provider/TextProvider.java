@@ -54,7 +54,7 @@ class TextProvider extends StringProvider {
         if (first) {
             throw new MissingArgumentException();
         }
-        String v = builder.toString();
+        String v = builder.toString().trim();
         validate(v, modifiers);
         return v;
     }
