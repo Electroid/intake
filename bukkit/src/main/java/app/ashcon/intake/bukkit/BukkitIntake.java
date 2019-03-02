@@ -6,6 +6,7 @@ import app.ashcon.intake.InvocationCommandException;
 import app.ashcon.intake.argument.Namespace;
 import app.ashcon.intake.bukkit.command.BukkitCommand;
 import app.ashcon.intake.bukkit.command.BukkitHelpTopic;
+import app.ashcon.intake.bukkit.exception.TranslatableCommandException;
 import app.ashcon.intake.dispatcher.Dispatcher;
 import app.ashcon.intake.dispatcher.Lockable;
 import app.ashcon.intake.fluent.CommandGraph;
@@ -106,6 +107,9 @@ public class BukkitIntake implements CommandExecutor, TabCompleter {
         try {
             return getCommandGraph().getRootDispatcherNode().getDispatcher()
                        .call(getCommand(command, args), getNamespace(sender));
+        }
+        catch (TranslatableCommandException e) {
+            sender.sendMessage(e.getComponent());
         }
         catch (AuthorizationException e) {
             sender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
