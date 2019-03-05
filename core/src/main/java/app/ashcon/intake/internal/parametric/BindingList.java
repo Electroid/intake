@@ -34,20 +34,20 @@ import javax.annotation.Nullable;
 
 class BindingList {
 
-    private final Multimap<Type, BindingEntry<?>> providers =
-        Multimaps.newMultimap(Maps.<Type, Collection<BindingEntry<?>>>newHashMap(), new CollectionSupplier());
+    private final Multimap<String, BindingEntry<?>> providers =
+        Multimaps.newMultimap(Maps.<String, Collection<BindingEntry<?>>>newHashMap(), new CollectionSupplier());
 
     public <T> void addBinding(Key<T> key, Provider<T> provider) {
         checkNotNull(key, "key");
         checkNotNull(provider, "provider");
-        providers.put(key.getType(), new BindingEntry<T>(key, provider));
+        providers.put(key.getType().getTypeName(), new BindingEntry<T>(key, provider));
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Nullable
     public <T> Binding<T> getBinding(Key<T> key) {
         checkNotNull(key, "key");
-        for (BindingEntry binding : providers.get(key.getType())) {
+        for (BindingEntry binding : providers.get(key.getType().getTypeName())) {
             if (binding.getKey().matches(key)) {
                 return (Binding<T>) binding;
             }
