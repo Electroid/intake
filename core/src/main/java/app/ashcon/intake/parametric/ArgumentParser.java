@@ -302,11 +302,12 @@ public final class ArgumentParser {
             List<Annotation> modifiers = Lists.newArrayList();
             boolean seenJavaOptional = false;
 
+            Type finalType = type;
             Supplier<IllegalParameterException> exceptionSupplier = new Supplier<IllegalParameterException>() {
                 @Override
                 public IllegalParameterException get() {
                     return new IllegalParameterException(
-                        "Optional<?>, @Default, @Nullable, and @Switch cannot be mixed for parameter #" + index);
+                        "Optional<?>, @Default, @Nullable, and @Switch cannot be mixed for parameter #" + index + " of type " + finalType.getTypeName());
                 }
             };
 
@@ -367,7 +368,7 @@ public final class ArgumentParser {
             Key<?> key = Key.get(type, classifier != null ? classifier.annotationType() : null);
             Binding<?> binding = injector.getBinding(key);
             if (binding == null) {
-                throw new IllegalParameterException("Can't finding a binding for the parameter type '" + type + "'");
+                throw new IllegalParameterException("Can't find a binding for the parameter type '" + type + "' when searching using '" + key.getType() + "'");
             }
 
             ImmutableParameter.Builder builder = new ImmutableParameter.Builder();
