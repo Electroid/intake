@@ -182,7 +182,11 @@ public class SimpleDispatcher implements Dispatcher {
             String passedArguments = Joiner.on(" ").join(Arrays.copyOfRange(split, 1, split.length));
 
             if (mapping != null) {
-                return mapping.getCallable().getSuggestions(passedArguments, locals);
+            	try {
+            		return mapping.getCallable().getSuggestions(passedArguments, locals);
+            	} catch (ArrayIndexOutOfBoundsException ex) {
+            		return Collections.emptyList();
+            	}
             } else {
                 return Collections.emptyList();
             }
