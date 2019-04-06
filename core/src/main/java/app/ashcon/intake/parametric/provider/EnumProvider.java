@@ -86,7 +86,7 @@ public class EnumProvider<T extends Enum<T>> implements Provider<T> {
 
         for (T entry : enumClass.getEnumConstants()) {
             String name = simplify(entry.name());
-            if (name.startsWith(test)) {
+            if (name.toLowerCase().startsWith(test.toLowerCase())) {
                 suggestions.add(entry.name().toLowerCase());
             }
         }
