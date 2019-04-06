@@ -58,7 +58,7 @@ public class DynamicPlayerProvider implements BukkitProvider<Player> {
         return Bukkit.getOnlinePlayers()
                    .stream()
                    .map(player -> BukkitUtil.getPlayerName(player, sender))
-                   .filter(name -> name.startsWith(prefix))
+                   .filter(name -> name.toLowerCase().startsWith(prefix.toLowerCase()))
                    .sorted()
                    .collect(Collectors.toList());
     }
