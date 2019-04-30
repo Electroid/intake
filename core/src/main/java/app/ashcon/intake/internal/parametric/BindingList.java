@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.internal.parametric;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import app.ashcon.intake.parametric.Binding;
 import app.ashcon.intake.parametric.Key;
@@ -27,28 +28,26 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.Sets;
-
-import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 import java.util.Collection;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nullable;
 
 class BindingList {
 
-    private final Multimap<Type, BindingEntry<?>> providers = Multimaps.newMultimap(Maps.<Type, Collection<BindingEntry<?>>>newHashMap(), new CollectionSupplier());
+    private final Multimap<String, BindingEntry<?>> providers =
+        Multimaps.newMultimap(Maps.<String, Collection<BindingEntry<?>>>newHashMap(), new CollectionSupplier());
 
     public <T> void addBinding(Key<T> key, Provider<T> provider) {
         checkNotNull(key, "key");
         checkNotNull(provider, "provider");
-        providers.put(key.getType(), new BindingEntry<T>(key, provider));
+        providers.put(key.getType().getTypeName(), new BindingEntry<T>(key, provider));
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Nullable
     public <T> Binding<T> getBinding(Key<T> key) {
         checkNotNull(key, "key");
-        for (BindingEntry binding : providers.get(key.getType())) {
+        for (BindingEntry binding : providers.get(key.getType().getTypeName())) {
             if (binding.getKey().matches(key)) {
                 return (Binding<T>) binding;
             }
@@ -58,6 +57,7 @@ class BindingList {
     }
 
     private static class CollectionSupplier implements Supplier<Collection<BindingEntry<?>>> {
+
         @Override
         public Collection<BindingEntry<?>> get() {
             return Sets.newTreeSet();
@@ -65,6 +65,7 @@ class BindingList {
     }
 
     private static final class BindingEntry<T> implements Binding<T>, Comparable<BindingEntry<?>> {
+
         private final Key<T> key;
         private final Provider<T> provider;
 
@@ -91,9 +92,9 @@ class BindingList {
         @Override
         public String toString() {
             return "BindingEntry{" +
-                    "key=" + key +
-                    ", provider=" + provider +
-                    '}';
+                   "key=" + key +
+                   ", provider=" + provider +
+                   '}';
         }
     }
 }

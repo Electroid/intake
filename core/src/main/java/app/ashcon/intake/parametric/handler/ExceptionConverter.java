@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.handler;
 
 import app.ashcon.intake.CommandException;
@@ -33,16 +32,16 @@ import app.ashcon.intake.InvocationCommandException;
  * will perform that job.</p>
  */
 public interface ExceptionConverter {
-    
+
     /**
      * Attempt to convert the given throwable into a friendly
      * {@link CommandException}.
-     * 
+     *
      * <p>If the exception is not recognized, then
      * {@link InvocationCommandException} should be thrown to wrap the exception.</p>
-     * 
+     *
      * @param t The throwable
-     * @throws CommandException If there is a problem with the command
+     * @throws CommandException           If there is a problem with the command
      * @throws InvocationCommandException If there is a problem with command invocation
      */
     void convert(Throwable t) throws CommandException, InvocationCommandException;

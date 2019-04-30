@@ -16,12 +16,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.provider;
 
 import app.ashcon.intake.parametric.AbstractModule;
 import app.ashcon.intake.parametric.annotation.Text;
-
 import java.time.Duration;
 
 /**

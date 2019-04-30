@@ -2,11 +2,10 @@ package app.ashcon.intake.bukkit.parametric.provider;
 
 import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.parametric.ProvisionException;
-import org.bukkit.command.CommandSender;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
+import javax.annotation.Nullable;
+import org.bukkit.command.CommandSender;
 
 /**
  * Provides the {@link CommandSender} of the command.

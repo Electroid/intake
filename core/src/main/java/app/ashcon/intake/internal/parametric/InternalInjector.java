@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.internal.parametric;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import app.ashcon.intake.argument.ArgumentException;
 import app.ashcon.intake.argument.CommandArgs;
@@ -28,12 +29,9 @@ import app.ashcon.intake.parametric.Module;
 import app.ashcon.intake.parametric.Provider;
 import app.ashcon.intake.parametric.ProvisionException;
 import app.ashcon.intake.parametric.provider.DefaultModule;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nullable;
 
 public class InternalInjector implements Injector {
 
@@ -75,17 +73,20 @@ public class InternalInjector implements Injector {
     }
 
     @Override
-    public <T> T getInstance(Key<T> key, CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException {
+    public <T> T getInstance(Key<T> key, CommandArgs arguments, List<? extends Annotation> modifiers)
+        throws ArgumentException, ProvisionException {
         Provider<T> provider = getProvider(key);
         if (provider != null) {
             return provider.get(arguments, modifiers);
-        } else {
+        }
+        else {
             throw new ProvisionException("No binding was found for " + key);
         }
     }
 
     @Override
-    public <T> T getInstance(Class<T> type, CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException {
+    public <T> T getInstance(Class<T> type, CommandArgs arguments, List<? extends Annotation> modifiers)
+        throws ArgumentException, ProvisionException {
         return getInstance(Key.get(type), arguments, modifiers);
     }
 

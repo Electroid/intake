@@ -16,15 +16,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.argument;
 
-import com.google.common.collect.Lists;
+import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.Map;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 class StringListArgs extends AbstractCommandArgs {
 
@@ -55,7 +53,8 @@ class StringListArgs extends AbstractCommandArgs {
     public String next() throws MissingArgumentException {
         try {
             return arguments.get(position++);
-        } catch (IndexOutOfBoundsException ignored) {
+        }
+        catch (IndexOutOfBoundsException ignored) {
             throw new MissingArgumentException();
         }
     }
@@ -64,7 +63,8 @@ class StringListArgs extends AbstractCommandArgs {
     public String peek() throws MissingArgumentException {
         try {
             return arguments.get(position);
-        } catch (IndexOutOfBoundsException ignored) {
+        }
+        catch (IndexOutOfBoundsException ignored) {
             throw new MissingArgumentException();
         }
     }

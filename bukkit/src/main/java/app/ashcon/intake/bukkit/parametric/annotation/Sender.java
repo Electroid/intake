@@ -1,11 +1,10 @@
 package app.ashcon.intake.bukkit.parametric.annotation;
 
 import app.ashcon.intake.parametric.annotation.Classifier;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Attaches to a {@link Player} parameter to signal
@@ -13,4 +12,6 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Classifier
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Sender {}
+public @interface Sender {
+
+}

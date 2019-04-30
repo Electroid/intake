@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.argument;
 
 abstract class AbstractCommandArgs implements CommandArgs {
@@ -26,7 +25,8 @@ abstract class AbstractCommandArgs implements CommandArgs {
         String next = next();
         try {
             return Integer.parseInt(next);
-        } catch (NumberFormatException ignored) {
+        }
+        catch (NumberFormatException ignored) {
             throw new ArgumentParseException("Expected a number, got '" + next + "'");
         }
     }
@@ -36,7 +36,8 @@ abstract class AbstractCommandArgs implements CommandArgs {
         String next = next();
         try {
             return Short.parseShort(next);
-        } catch (NumberFormatException ignored) {
+        }
+        catch (NumberFormatException ignored) {
             throw new ArgumentParseException("Expected a number, got '" + next + "'");
         }
     }
@@ -46,7 +47,8 @@ abstract class AbstractCommandArgs implements CommandArgs {
         String next = next();
         try {
             return Byte.parseByte(next);
-        } catch (NumberFormatException ignored) {
+        }
+        catch (NumberFormatException ignored) {
             throw new ArgumentParseException("Expected a number, got '" + next + "'");
         }
     }
@@ -56,7 +58,8 @@ abstract class AbstractCommandArgs implements CommandArgs {
         String next = next();
         try {
             return Double.parseDouble(next);
-        } catch (NumberFormatException ignored) {
+        }
+        catch (NumberFormatException ignored) {
             throw new ArgumentParseException("Expected a number, got '" + next + "'");
         }
     }
@@ -66,7 +69,8 @@ abstract class AbstractCommandArgs implements CommandArgs {
         String next = next();
         try {
             return Float.parseFloat(next);
-        } catch (NumberFormatException ignored) {
+        }
+        catch (NumberFormatException ignored) {
             throw new ArgumentParseException("Expected a number, got '" + next + "'");
         }
     }
@@ -74,11 +78,15 @@ abstract class AbstractCommandArgs implements CommandArgs {
     @Override
     public boolean nextBoolean() throws MissingArgumentException, ArgumentParseException {
         String next = next();
-        if (next.equalsIgnoreCase("yes") || next.equalsIgnoreCase("true") || next.equalsIgnoreCase("y") || next.equalsIgnoreCase("1")) {
+        if (next.equalsIgnoreCase("yes") || next.equalsIgnoreCase("true") || next.equalsIgnoreCase("y") || next.equalsIgnoreCase(
+            "1")) {
             return true;
-        } else if (next.equalsIgnoreCase("no") || next.equalsIgnoreCase("false") || next.equalsIgnoreCase("n") || next.equalsIgnoreCase("0")) {
+        }
+        else if (next.equalsIgnoreCase("no") || next.equalsIgnoreCase("false") || next.equalsIgnoreCase("n")
+                 || next.equalsIgnoreCase("0")) {
             return false;
-        } else {
+        }
+        else {
             throw new ArgumentParseException("Expected a boolean (yes/no), got '" + next + "'");
         }
     }

@@ -16,15 +16,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric;
 
 import app.ashcon.intake.argument.ArgumentException;
 import app.ashcon.intake.argument.CommandArgs;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
+import javax.annotation.Nullable;
 
 /**
  * An injector knows a list of "bindings" that map types to a provider.
@@ -49,18 +47,16 @@ public interface Injector {
      * @param <T> The type provided for
      * @return The binding, or null if one does not exist
      */
-    @Nullable
-    <T> Binding<T> getBinding(Key<T> key);
+    @Nullable <T> Binding<T> getBinding(Key<T> key);
 
     /**
      * Get the binding for the given class, if one exists.
      *
      * @param type The class
-     * @param <T> The type provided for
+     * @param <T>  The type provided for
      * @return The binding, or null if one does not exist
      */
-    @Nullable
-    <T> Binding<T> getBinding(Class<T> type);
+    @Nullable <T> Binding<T> getBinding(Class<T> type);
 
     /**
      * Get the provider for the given key, if one exists.
@@ -69,45 +65,45 @@ public interface Injector {
      * @param <T> The type provided for
      * @return The binding, or null if one does not exist
      */
-    @Nullable
-    <T> Provider<T> getProvider(Key<T> key);
+    @Nullable <T> Provider<T> getProvider(Key<T> key);
 
     /**
      * Get the provider for the given class, if one exists.
      *
      * @param type The class
-     * @param <T> The type provided for
+     * @param <T>  The type provided for
      * @return The binding, or null if one does not exist
      */
-    @Nullable
-    <T> Provider<T> getProvider(Class<T> type);
+    @Nullable <T> Provider<T> getProvider(Class<T> type);
 
     /**
      * Attempt to provide a value for the given key using the given
      * arguments.
      *
-     * @param key The key
+     * @param key       The key
      * @param arguments The arguments
      * @param modifiers The modifier annotations on the parameter
-     * @param <T> The type provided
+     * @param <T>       The type provided
      * @return An instance
-     * @throws ArgumentException If there is a problem with the argument
+     * @throws ArgumentException  If there is a problem with the argument
      * @throws ProvisionException If there is a problem with the provider
      */
-    <T> T getInstance(Key<T> key, CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException;
+    <T> T getInstance(Key<T> key, CommandArgs arguments, List<? extends Annotation> modifiers)
+        throws ArgumentException, ProvisionException;
 
     /**
      * Attempt to provide a value for the given class using the given
      * arguments.
      *
-     * @param type The class
+     * @param type      The class
      * @param arguments The arguments
      * @param modifiers The modifier annotations on the parameter
-     * @param <T> The type provided
+     * @param <T>       The type provided
      * @return An instance
-     * @throws ArgumentException If there is a problem with the argument
+     * @throws ArgumentException  If there is a problem with the argument
      * @throws ProvisionException If there is a problem with the provider
      */
-    <T> T getInstance(Class<T> type, CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException;
+    <T> T getInstance(Class<T> type, CommandArgs arguments, List<? extends Annotation> modifiers)
+        throws ArgumentException, ProvisionException;
 
 }

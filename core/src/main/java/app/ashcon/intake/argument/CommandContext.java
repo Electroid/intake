@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.argument;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import app.ashcon.intake.CommandException;
 import com.google.common.collect.ImmutableList;
@@ -25,15 +26,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class CommandContext {
 
@@ -46,10 +44,6 @@ public class CommandContext {
     private final Map<Character, String> allFlags;
     private final SuggestionContext suggestionContext;
     private final Namespace namespace;
-
-    public static String[] split(String args) {
-        return args.split(" ", -1);
-    }
 
     public CommandContext(String args) throws CommandException {
         this(args.split(" ", -1), null);
@@ -64,7 +58,7 @@ public class CommandContext {
     }
 
     public CommandContext(String args, Set<Character> valueFlags, boolean allowHangingFlag)
-            throws CommandException {
+        throws CommandException {
         this(args.split(" ", -1), valueFlags, allowHangingFlag, new Namespace());
     }
 
@@ -74,16 +68,17 @@ public class CommandContext {
 
     /**
      * Parse the given array of arguments.
-     * 
+     *
      * <p>Empty arguments are removed from the list of arguments.</p>
      *
-     * @param args             an array with arguments
-     * @param expectedValueFlags       a set containing all value flags (pass null to disable value flag parsing)
-     * @param allowHangingFlag true if hanging flags are allowed
-     * @param namespace        the locals, null to create empty one
+     * @param args               an array with arguments
+     * @param expectedValueFlags a set containing all value flags (pass null to disable value flag parsing)
+     * @param allowHangingFlag   true if hanging flags are allowed
+     * @param namespace          the locals, null to create empty one
      * @throws CommandException thrown on a parsing error
      */
-    public CommandContext(String[] args, Set<Character> expectedValueFlags, boolean allowHangingFlag, Namespace namespace) throws CommandException {
+    public CommandContext(String[] args, Set<Character> expectedValueFlags, boolean allowHangingFlag, Namespace namespace)
+        throws CommandException {
         if (expectedValueFlags == null) {
             expectedValueFlags = Collections.emptySet();
         }
@@ -118,12 +113,16 @@ public class CommandContext {
                     for (endIndex = i; endIndex < args.length; ++endIndex) {
                         final String arg2 = args[endIndex];
                         if (arg2.charAt(arg2.length() - 1) == quotedChar && arg2.length() > 1) {
-                            if (endIndex != i) build.append(' ');
+                            if (endIndex != i) {
+                                build.append(' ');
+                            }
                             build.append(arg2.substring(endIndex == i ? 1 : 0, arg2.length() - 1));
                             break;
-                        } else if (endIndex == i) {
+                        }
+                        else if (endIndex == i) {
                             build.append(arg2.substring(1));
-                        } else {
+                        }
+                        else {
                             build.append(' ').append(arg2);
                         }
                     }
@@ -187,7 +186,8 @@ public class CommandContext {
                         if (allowHangingFlag) {
                             suggestionContext = SuggestionContext.flag(flagName);
                             break;
-                        } else {
+                        }
+                        else {
                             throw new CommandException("No value specified for the '-" + flagName + "' flag.");
                         }
                     }
@@ -197,14 +197,15 @@ public class CommandContext {
                     if (!isHanging) {
                         suggestionContext = SuggestionContext.flag(flagName);
                     }
-                } else {
+                }
+                else {
                     booleanFlags.add(flagName);
                 }
             }
         }
 
         ImmutableMap.Builder<Character, String> allFlagsBuilder = new ImmutableMap.Builder<Character, String>()
-                .putAll(valueFlags);
+                                                                      .putAll(valueFlags);
         for (Character flag : booleanFlags) {
             allFlagsBuilder.put(flag, "true");
         }
@@ -215,6 +216,10 @@ public class CommandContext {
         this.valueFlags = ImmutableMap.copyOf(valueFlags);
         this.allFlags = allFlagsBuilder.build();
         this.suggestionContext = suggestionContext;
+    }
+
+    public static String[] split(String args) {
+        return args.split(" ", -1);
     }
 
     public SuggestionContext getSuggestionContext() {
@@ -372,18 +377,18 @@ public class CommandContext {
             return Arrays.copyOf(arguments, arguments.length);
         }
 
+        public Builder setArguments(String arguments) {
+            checkNotNull(arguments, "arguments");
+            setArguments(split(arguments));
+            return this;
+        }
+
         public Builder setArguments(String[] arguments) {
             checkNotNull(arguments, "arguments");
             String[] newArguments = new String[arguments.length + 1];
             newArguments[0] = "_";
             System.arraycopy(arguments, 0, newArguments, 1, arguments.length);
             this.arguments = newArguments;
-            return this;
-        }
-
-        public Builder setArguments(String arguments) {
-            checkNotNull(arguments, "arguments");
-            setArguments(split(arguments));
             return this;
         }
 

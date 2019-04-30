@@ -16,22 +16,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake;
 
-import com.google.common.collect.ImmutableList;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nullable;
+import com.google.common.collect.ImmutableList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nullable;
 
 /**
  * An immutable implementation of {@link Parameter}.
  */
 public final class ImmutableParameter implements Parameter {
-    
+
     private final String name;
     @Nullable
     private final OptionType optionType;
@@ -71,6 +69,7 @@ public final class ImmutableParameter implements Parameter {
      * <p>By default, the default value will be an empty list.</p>
      */
     public static class Builder {
+
         private String name;
         private OptionType optionType;
         private List<String> defaultValue = Collections.emptyList();

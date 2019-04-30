@@ -16,16 +16,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.provider;
 
 import app.ashcon.intake.argument.ArgumentException;
 import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.parametric.Provider;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
+import javax.annotation.Nullable;
 
 class FloatProvider implements Provider<Float>, NumberProvider {
 
@@ -43,7 +41,8 @@ class FloatProvider implements Provider<Float>, NumberProvider {
         if (v != null) {
             validate(v, modifiers);
             return v.floatValue();
-        } else {
+        }
+        else {
             return null;
         }
     }

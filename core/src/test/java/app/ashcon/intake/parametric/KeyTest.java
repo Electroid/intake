@@ -16,29 +16,28 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assume.assumeThat;
 
 import app.ashcon.intake.parametric.annotation.Classifier;
 import app.ashcon.intake.parametric.annotation.Text;
 import com.google.common.collect.Sets;
-import org.junit.Test;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.TreeSet;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assume.assumeThat;
+import org.junit.Test;
 
 /**
  * Tests correct behaviour of the Key class, currently only focusing on correct collection
  * behaviour.
  */
 public class KeyTest {
+
     @Test
     public void testMultipleClassifiersInTreeSet() {
         Key<String> keyWithoutClassifier = Key.get(String.class);
@@ -52,12 +51,15 @@ public class KeyTest {
         boolean added = keySet.add(keyWithClassifier);
 
         assertThat("two keys with different classifiers must be accepted in a single set", added, is(true));
-        assertThat("other classifier must be contained in set", keySet.contains(Key.get(String.class, MyClassifier.class)), is(true));
+        assertThat(
+            "other classifier must be contained in set", keySet.contains(Key.get(String.class, MyClassifier.class)), is(true));
     }
 
     @Classifier
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.PARAMETER)
-    private @interface MyClassifier {}
+    private @interface MyClassifier {
+
+    }
 
 }

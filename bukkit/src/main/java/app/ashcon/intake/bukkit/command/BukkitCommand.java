@@ -3,14 +3,13 @@ package app.ashcon.intake.bukkit.command;
 import app.ashcon.intake.CommandMapping;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.Plugin;
-
-import java.util.List;
 
 /**
  * A wrapped {@link Command} that hooks up to a {@link CommandMapping},
@@ -33,7 +32,7 @@ public class BukkitCommand extends Command implements PluginIdentifiableCommand 
             command.getDescription().getShortDescription(),
             "/" + command.getPrimaryAlias() + " " + command.getDescription().getUsage(),
             Lists.newArrayList(command.getAllAliases())
-        );
+             );
         this.plugin = plugin;
         this.executor = executor;
         this.completer = completer;

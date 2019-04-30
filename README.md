@@ -32,7 +32,9 @@ To see how easy it is to implement Intake, take a look at the [Bukkit](bukkit/sr
 ```java
 @Override
 public void onLoad() {
-   new BukkitIntake(this, new Commands());
+   BasicBukkitCommandGraph cmdGraph = new BasicBukkitCommandGraph();
+   cmdGraph.getRootDispatcherNode().registerCommands(new Commands());
+   new BukkitIntake(this, cmdGraph).register();
 }
 ```
 

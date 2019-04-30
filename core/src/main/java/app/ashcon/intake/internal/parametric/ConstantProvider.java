@@ -16,17 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.internal.parametric;
 
 import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.argument.Namespace;
 import app.ashcon.intake.parametric.Provider;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.Nullable;
 
 class ConstantProvider<T> implements Provider<T> {
 

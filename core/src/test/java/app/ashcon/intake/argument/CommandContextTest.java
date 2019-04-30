@@ -16,28 +16,27 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.argument;
-
-import app.ashcon.intake.CommandException;
-import com.google.common.collect.ImmutableSet;
-import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import app.ashcon.intake.CommandException;
+import com.google.common.collect.ImmutableSet;
+import org.junit.Test;
+
 public class CommandContextTest {
 
     public void testBuilderArguments() throws CommandException {
-        CommandContext context = new CommandContext.Builder().setArguments(new String[] { "test" }).build();
+        CommandContext context = new CommandContext.Builder().setArguments(new String[]{"test"}).build();
         assertThat(context.getCommand(), equalTo("_"));
         assertThat(context.getString(0), equalTo("test"));
         assertThat(context.argsLength(), is(1));
     }
 
     public void testBuilderCommandAndArguments() throws CommandException {
-        CommandContext context = new CommandContext.Builder().setCommandAndArguments(new String[] { "action", "test" }).build();
+        CommandContext context = new CommandContext.Builder().setCommandAndArguments(new String[]{"action", "test"}).build();
         assertThat(context.getCommand(), equalTo("action"));
         assertThat(context.getString(0), equalTo("test"));
         assertThat(context.argsLength(), is(1));

@@ -16,16 +16,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import app.ashcon.intake.argument.Arguments;
 import app.ashcon.intake.argument.CommandArgs;
 import com.google.common.collect.ImmutableList;
-
 import javax.annotation.Nullable;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Defines the type of parameter, whether it is positional, a flag, optional,
@@ -38,43 +36,6 @@ public abstract class OptionType {
 
     private OptionType() {
     }
-
-    /**
-     * Get the flag associated with this parameter.
-     *
-     * @return the flag, or null if there is no flag associated
-     * @see #isValueFlag()
-     */
-    @Nullable
-    public abstract Character getFlag();
-
-    /**
-     * Return whether the flag is a value flag.
-     *
-     * @return true if the flag is a value flag
-     * @see #getFlag()
-     */
-    public abstract boolean isValueFlag();
-
-    /**
-     * Get whether this parameter is optional.
-     *
-     * @return true if the parameter does not have to be specified
-     */
-    public abstract boolean isOptional();
-
-    /**
-     * Create a new list of command arguments for the given arguments that
-     * is appropriate for this type of parameter.
-     *
-     * <p>For bukkit, if the type of parameter is a value flag,
-     * then the returned arguments object will only have the value flag's
-     * value as the argument.</p>
-     *
-     * @param arguments The list of arguments
-     * @return The new list of arguments
-     */
-    public abstract CommandArgs transform(CommandArgs arguments);
 
     /**
      * Get the required positional type of parameter.
@@ -116,7 +77,45 @@ public abstract class OptionType {
         return new ValueFlag(flag);
     }
 
+    /**
+     * Get the flag associated with this parameter.
+     *
+     * @return the flag, or null if there is no flag associated
+     * @see #isValueFlag()
+     */
+    @Nullable
+    public abstract Character getFlag();
+
+    /**
+     * Return whether the flag is a value flag.
+     *
+     * @return true if the flag is a value flag
+     * @see #getFlag()
+     */
+    public abstract boolean isValueFlag();
+
+    /**
+     * Get whether this parameter is optional.
+     *
+     * @return true if the parameter does not have to be specified
+     */
+    public abstract boolean isOptional();
+
+    /**
+     * Create a new list of command arguments for the given arguments that
+     * is appropriate for this type of parameter.
+     *
+     * <p>For bukkit, if the type of parameter is a value flag,
+     * then the returned arguments object will only have the value flag's
+     * value as the argument.</p>
+     *
+     * @param arguments The list of arguments
+     * @return The new list of arguments
+     */
+    public abstract CommandArgs transform(CommandArgs arguments);
+
     private static final class RequiredPositional extends OptionType {
+
         @Nullable
         @Override
         public Character getFlag() {
@@ -140,6 +139,7 @@ public abstract class OptionType {
     }
 
     private static final class OptionalPositional extends OptionType {
+
         @Nullable
         @Override
         public Character getFlag() {
@@ -163,6 +163,7 @@ public abstract class OptionType {
     }
 
     private static final class BooleanFlag extends OptionType {
+
         private final Character flag;
 
         private BooleanFlag(Character flag) {
@@ -193,6 +194,7 @@ public abstract class OptionType {
     }
 
     private static final class ValueFlag extends OptionType {
+
         private final Character flag;
 
         private ValueFlag(Character flag) {

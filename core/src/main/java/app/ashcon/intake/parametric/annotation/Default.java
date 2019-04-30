@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.annotation;
 
 import java.lang.annotation.ElementType;
@@ -28,12 +27,12 @@ import java.lang.annotation.Target;
  * Indicates an optional parameter with a default value.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.PARAMETER, ElementType.FIELD })
+@Target({ElementType.PARAMETER, ElementType.FIELD})
 public @interface Default {
-    
+
     /**
      * The default value to use if no value is set.
-     * 
+     *
      * @return A string value, or an empty list
      */
     String[] value() default {};

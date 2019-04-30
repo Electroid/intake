@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import app.ashcon.intake.Command;
 import app.ashcon.intake.CommandCallable;
@@ -32,12 +33,9 @@ import app.ashcon.intake.util.auth.Authorizer;
 import app.ashcon.intake.util.auth.NullAuthorizer;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.MoreExecutors;
-
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Keeps a mapping of types to bindings and generates commands from classes
@@ -59,29 +57,29 @@ public class ParametricBuilder {
     public Injector getInjector() {
         return injector;
     }
-    
+
     /**
      * Attach an invocation listener.
-     * 
+     *
      * <p>Invocation handlers are called in order that their listeners are
      * registered with a ParametricBuilder. It is not guaranteed that
      * a listener may be called, in the case of a {@link CommandException} being
      * thrown at any time before the appropriate listener or handler is called.
-     * 
+     *
      * @param listener The listener
-     * @see InvokeHandler tThe handler
+     * @see InvokeHandler The handler
      */
     public void addInvokeListener(InvokeListener listener) {
         checkNotNull(listener);
         invokeListeners.add(listener);
     }
-    
+
     /**
      * Attach an exception converter to this builder in order to wrap unknown
      * {@link Throwable}s into known {@link CommandException}s.
-     * 
+     *
      * <p>Exception converters are called in order that they are registered.</p>
-     * 
+     *
      * @param converter The converter
      * @see ExceptionConverter for an explanation
      */
@@ -107,19 +105,8 @@ public class ParametricBuilder {
      *
      * <p>Bindings will still be resolved in the thread in which the
      * callable was called.</p>
+     * a
      *
-     * @param commandExecutor The executor
-     */
-    public void setCommandExecutor(ExecutorService commandExecutor) {
-        setCommandExecutor(new CommandExecutorWrapper(commandExecutor));
-    }
-
-    /**
-     * Set the executor service used to invoke the actual command.
-     *
-     * <p>Bindings will still be resolved in the thread in which the
-     * callable was called.</p>
-     *a
      * @param commandExecutor The executor
      */
     public void setCommandExecutor(CommandExecutor commandExecutor) {
@@ -128,30 +115,56 @@ public class ParametricBuilder {
     }
 
     /**
+     * Set the executor service used to invoke the actual command.
+     *
+     * <p>Bindings will still be resolved in the thread in which the
+     * callable was called.</p>
+     *
+     * @param commandExecutor The executor
+     */
+    public void setCommandExecutor(ExecutorService commandExecutor) {
+        setCommandExecutor(new CommandExecutorWrapper(commandExecutor));
+    }
+
+    /**
      * Build a list of commands from methods specially annotated with {@link Command}
      * (and other relevant annotations) and register them all with the given
      * {@link Dispatcher}.
-     * 
-     * @param dispatcher The dispatcher to register commands with
-     * @param object The object contain the methods
+     *
+     * @param dispatcher           The dispatcher to register commands with
+     * @param method               The method being registered
      * @throws ParametricException thrown if the commands cannot be registered
      */
-    public void registerMethodsAsCommands(Dispatcher dispatcher, Object object) throws ParametricException {
-        checkNotNull(dispatcher);
-        checkNotNull(object);
+    public void registerMethodAsCommand(Dispatcher dispatcher, Method method) throws ParametricException {
+        this.registerMethodAsCommand(dispatcher, method.getDeclaringClass(), method);
+    }
 
-        for (Method method : object.getClass().getDeclaredMethods()) {
-            Command definition = method.getAnnotation(Command.class);
-            if (definition != null) {
-                CommandCallable callable = build(object, method);
-                dispatcher.registerCommand(callable, definition.aliases());
-            }
-        }
+    /**
+     * Build a list of commands from methods specially annotated with {@link Command}
+     * (and other relevant annotations) and register them all with the given
+     * {@link Dispatcher}.
+     *
+     * @param dispatcher           The dispatcher to register commands with
+     * @param object               The method's calling class
+     * @param method               The method being registered
+     * @throws ParametricException thrown if the commands cannot be registered
+     */
+    public void registerMethodAsCommand(Dispatcher dispatcher, Object object, Method method) throws ParametricException {
+        checkNotNull(dispatcher);
+        checkNotNull(method);
+
+        Command definition = method.getAnnotation(Command.class);
+
+        if (definition == null)
+            return;
+
+        CommandCallable callable = build(object, method);
+        dispatcher.registerCommand(callable, definition.aliases());
     }
 
     /**
      * Build a {@link CommandCallable} for the given method.
-     * 
+     *
      * @param object The object to be invoked on
      * @param method The method to invoke
      * @return The command executor
@@ -163,7 +176,7 @@ public class ParametricBuilder {
 
     /**
      * Get a list of invocation listeners.
-     * 
+     *
      * @return A list of invocation listeners
      */
     List<InvokeListener> getInvokeListeners() {
@@ -172,7 +185,7 @@ public class ParametricBuilder {
 
     /**
      * Get the list of exception converters.
-     * 
+     *
      * @return A list of exception converters
      */
     List<ExceptionConverter> getExceptionConverters() {

@@ -16,14 +16,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric;
-
-import app.ashcon.intake.parametric.binder.Binder;
-import app.ashcon.intake.parametric.binder.BindingBuilder;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import app.ashcon.intake.parametric.binder.Binder;
+import app.ashcon.intake.parametric.binder.BindingBuilder;
 
 /**
  * Modules should extend this class and call the bind() functions to

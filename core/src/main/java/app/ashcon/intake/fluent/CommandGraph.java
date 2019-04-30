@@ -16,86 +16,81 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.fluent;
-
-import app.ashcon.intake.dispatcher.Dispatcher;
-import app.ashcon.intake.dispatcher.SimpleDispatcher;
-import app.ashcon.intake.parametric.ParametricBuilder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import app.ashcon.intake.parametric.ParametricBuilder;
+import java.util.function.Function;
+
 /**
  * A fluent interface to creating a command graph.
- * 
+ *
  * <p>A command graph may have multiple commands, and multiple sub-commands below that,
  * and possibly below that.</p>
  */
-public class CommandGraph {
+public class CommandGraph<T extends AbstractDispatcherNode> {
 
-    private final DispatcherNode rootDispatcher;
+    private T rootDispatcherNode;
     private ParametricBuilder builder;
-    private GroupDispatcherNode groupDispatcher;
 
     /**
-     * Create a new command graph.
-     */
-    public CommandGraph() {
-        SimpleDispatcher dispatcher = new SimpleDispatcher();
-        rootDispatcher = new DispatcherNode(this, null, dispatcher);
-    }
-    
-    /**
-     * Get the root dispatcher node.
-     * 
-     * @return the root dispatcher node
-     */
-    public DispatcherNode commands() {
-        return rootDispatcher;
-    }
-
-    /**
-     * Get the group dispatcher node.
+     * Constructor to be used by children that do not have either the
+     *    rootDispatcherNode or builder on initialization
      *
-     * @return the group dispatcher node
+     * Note: The rootDispatcherNode and builder must still be initialized
      */
-    public GroupDispatcherNode groupedCommands() {
-        checkNotNull(this.builder, "builder must be set to use grouped commands");
-        if (this.groupDispatcher == null) {
-            this.groupDispatcher = new GroupDispatcherNode(this, null, (SimpleDispatcher) this.rootDispatcher.getDispatcher(), this.builder);
-        }
+    protected CommandGraph() {}
 
-        return this.groupDispatcher;
+    /**
+     * Create a new {@link CommandGraph} instance
+     *
+     * @param rootDispatcherNodeCreator the function responsible for creating a root dispatcher node.
+     *                                  The function's parameter is a reference to this CommandGraph class
+     */
+    public CommandGraph(ParametricBuilder builder, Function<CommandGraph, T> rootDispatcherNodeCreator) {
+        checkNotNull(builder, "builder can not be null");
+        checkNotNull(rootDispatcherNodeCreator, "root dispatcher can not be null");
+
+        this.builder = builder;
+        this.rootDispatcherNode = rootDispatcherNodeCreator.apply(this);
+    }
+
+    /**
+     * Set the {@link T}
+     *
+     * @param rootDispatcherNode the root dispatcher node
+     */
+    protected void setRootDispatcherNode(T rootDispatcherNode) {
+        this.rootDispatcherNode = rootDispatcherNode;
+    }
+
+    /**
+     * Set the {@link ParametricBuilder}
+     *
+     * @param builder the parametric builder
+     */
+    protected void setBuilder(ParametricBuilder builder) {
+        this.builder = builder;
+    }
+
+    /**
+     * Get the {@link T}.
+     *
+     * @return the root dispatcher node, or null.
+     */
+    public T getRootDispatcherNode() {
+        return rootDispatcherNode;
     }
 
     /**
      * Get the {@link ParametricBuilder}.
-     * 
+     *
      * @return the builder, or null.
      */
     public ParametricBuilder getBuilder() {
         return builder;
     }
 
-    /**
-     * Set the {@link ParametricBuilder} used for calls to 
-     * {@link DispatcherNode#registerMethods(Object)}.
-     * 
-     * @param builder the builder, or null
-     * @return this object
-     */
-    public CommandGraph builder(ParametricBuilder builder) {
-        this.builder = builder;
-        return this;
-    }
-
-    /**
-     * Get the root dispatcher.
-     * 
-     * @return the root dispatcher
-     */
-    public Dispatcher getDispatcher() {
-        return rootDispatcher.getDispatcher();
-    }
 
 }

@@ -16,16 +16,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.provider;
 
 import app.ashcon.intake.argument.ArgumentException;
 import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.argument.MissingArgumentException;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
+import javax.annotation.Nullable;
 
 class TextProvider extends StringProvider {
 
@@ -47,7 +45,8 @@ class TextProvider extends StringProvider {
             }
             try {
                 builder.append(arguments.next());
-            } catch (MissingArgumentException ignored) {
+            }
+            catch (MissingArgumentException ignored) {
                 break;
             }
             first = false;
@@ -55,7 +54,7 @@ class TextProvider extends StringProvider {
         if (first) {
             throw new MissingArgumentException();
         }
-        String v = builder.toString();
+        String v = builder.toString().trim();
         validate(v, modifiers);
         return v;
     }

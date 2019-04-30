@@ -16,14 +16,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.util;
 
 import app.ashcon.intake.CommandMapping;
-
-import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 
 /**
  * Compares the primary aliases of two {@link CommandMapping} using

@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package app.ashcon.intake.parametric.provider;
 
 import app.ashcon.intake.argument.ArgumentException;
@@ -24,32 +23,18 @@ import app.ashcon.intake.argument.ArgumentParseException;
 import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.parametric.Provider;
 import app.ashcon.intake.parametric.annotation.Validate;
-
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.List;
+import javax.annotation.Nullable;
 
 class StringProvider implements Provider<String> {
 
     static final StringProvider INSTANCE = new StringProvider();
 
-    @Override
-    public String getName() {
-        return "string";
-    }
-
-    @Nullable
-    @Override
-    public String get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
-        String v = arguments.next();
-        validate(v, modifiers);
-        return v;
-    }
-
     /**
      * Validate a string value using relevant modifiers.
      *
-     * @param string the string
+     * @param string    the string
      * @param modifiers the list of modifiers to scan
      * @throws ArgumentParseException on a validation error
      */
@@ -65,13 +50,27 @@ class StringProvider implements Provider<String> {
                 if (!validate.regex().isEmpty()) {
                     if (!string.matches(validate.regex())) {
                         throw new ArgumentParseException(
-                                String.format(
-                                        "The given text doesn't match the right format (technically speaking, the 'format' is %s)",
-                                        validate.regex()));
+                            String.format(
+                                "The given text doesn't match the right format (technically speaking, the 'format' is %s)",
+                                validate.regex()
+                                         ));
                     }
                 }
             }
         }
+    }
+
+    @Override
+    public String getName() {
+        return "string";
+    }
+
+    @Nullable
+    @Override
+    public String get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
+        String v = arguments.next();
+        validate(v, modifiers);
+        return v;
     }
 
 }
