@@ -78,11 +78,11 @@ final class MethodCallable extends AbstractParametricCallable {
         }
         ArgumentParser parser = parserBuilder.build();
 
+        String shortDes = !definition.desc().isEmpty() ? definition.desc() : null;
         ImmutableDescription.Builder descBuilder = new ImmutableDescription.Builder()
                                                        .setParameters(parser.getUserParameters())
-                                                       .setShortDescription(
-                                                           !definition.desc().isEmpty() ? definition.desc() : null)
-                                                       .setHelp(!definition.help().isEmpty() ? definition.help() : null)
+                                                       .setShortDescription(shortDes)
+                                                       .setHelp(!definition.help().isEmpty() ? definition.help() : shortDes)
                                                        .setUsageOverride(
                                                            !definition.usage().isEmpty() ? definition.usage() : null)
                                                        .setPermissions(Arrays.asList(definition.perms()));
