@@ -10,25 +10,22 @@ import javax.annotation.Nullable;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
-/**
- * Provides the {@link World} of the {@link CommandSender}.
- */
+/** Provides the {@link World} of the {@link CommandSender}. */
 public class WorldProvider implements BukkitProvider<World> {
 
-    @Override
-    public boolean isProvided() {
-        return true;
-    }
+  @Override
+  public boolean isProvided() {
+    return true;
+  }
 
-    @Nullable
-    @Override
-    public World get(CommandSender sender, CommandArgs args, List<? extends Annotation> mods)
-        throws ArgumentException, ProvisionException {
-        World world = BukkitUtil.getWorld(sender);
-        if (world == null) {
-            throw new ArgumentException("You must be in a world to execute this command");
-        }
-        return world;
+  @Nullable
+  @Override
+  public World get(CommandSender sender, CommandArgs args, List<? extends Annotation> mods)
+      throws ArgumentException, ProvisionException {
+    World world = BukkitUtil.getWorld(sender);
+    if (world == null) {
+      throw new ArgumentException("You must be in a world to execute this command");
     }
-
+    return world;
+  }
 }

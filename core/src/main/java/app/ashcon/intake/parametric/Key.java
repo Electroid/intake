@@ -24,106 +24,95 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import javax.annotation.Nullable;
 
-/**
- * Represents a parameter that a binding can provide a value for.
- */
+/** Represents a parameter that a binding can provide a value for. */
 public final class Key<T> implements Comparable<Key<?>> {
 
-    private final Type type;
-    @Nullable
-    private final Class<? extends Annotation> classifier;
+  private final Type type;
+  @Nullable private final Class<? extends Annotation> classifier;
 
-    private Key(Type type, @Nullable Class<? extends Annotation> classifier) {
-        this.type = type;
-        this.classifier = classifier;
+  private Key(Type type, @Nullable Class<? extends Annotation> classifier) {
+    this.type = type;
+    this.classifier = classifier;
+  }
+
+  public static <T> Key<T> get(Class<T> type) {
+    return new Key<T>(type, null);
+  }
+
+  public static <T> Key<T> get(Class<T> type, @Nullable Class<? extends Annotation> classifier) {
+    return new Key<T>(type, classifier);
+  }
+
+  public static <T> Key<T> get(Type type) {
+    return new Key<T>(type, null);
+  }
+
+  public static <T> Key<T> get(Type type, @Nullable Class<? extends Annotation> classifier) {
+    return new Key<T>(type, classifier);
+  }
+
+  public Type getType() {
+    return type;
+  }
+
+  @Nullable
+  public Class<? extends Annotation> getClassifier() {
+    return classifier;
+  }
+
+  public Key<T> setClassifier(@Nullable Class<? extends Annotation> classifier) {
+    return new Key<T>(type, classifier);
+  }
+
+  public boolean matches(Key<T> key) {
+    checkNotNull(key, "key");
+    return type.equals(key.getType())
+        && (classifier == null || classifier.equals(key.getClassifier()));
+  }
+
+  @Override
+  public int compareTo(Key<?> o) {
+    if (classifier != null && o.classifier == null) {
+      return -1;
+    } else if (classifier == null && o.classifier != null) {
+      return 1;
+    } else if (classifier != null) {
+      if (type != null && o.type == null) {
+        return -1;
+      } else if (type == null && o.type != null) {
+        return 1;
+      } else {
+        return classifier.getName().compareTo(o.classifier.getName());
+      }
+    } else {
+      return 0;
     }
+  }
 
-    public static <T> Key<T> get(Class<T> type) {
-        return new Key<T>(type, null);
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
-
-    public static <T> Key<T> get(Class<T> type, @Nullable Class<? extends Annotation> classifier) {
-        return new Key<T>(type, classifier);
+    if (!(o instanceof Key)) {
+      return false;
     }
-
-    public static <T> Key<T> get(Type type) {
-        return new Key<T>(type, null);
+    Key<?> key = (Key<?>) o;
+    if (type != null ? !type.equals(key.type) : key.type != null) {
+      return false;
     }
+    return classifier != null ? classifier.equals(key.classifier) : key.classifier == null;
+  }
 
-    public static <T> Key<T> get(Type type, @Nullable Class<? extends Annotation> classifier) {
-        return new Key<T>(type, classifier);
-    }
+  @Override
+  public int hashCode() {
+    int result = type != null ? type.hashCode() : 0;
+    result = 31 * result + (classifier != null ? classifier.hashCode() : 0);
+    return result;
+  }
 
-    public Type getType() {
-        return type;
-    }
-
-    @Nullable
-    public Class<? extends Annotation> getClassifier() {
-        return classifier;
-    }
-
-    public Key<T> setClassifier(@Nullable Class<? extends Annotation> classifier) {
-        return new Key<T>(type, classifier);
-    }
-
-    public boolean matches(Key<T> key) {
-        checkNotNull(key, "key");
-        return type.equals(key.getType()) && (classifier == null || classifier.equals(key.getClassifier()));
-    }
-
-    @Override
-    public int compareTo(Key<?> o) {
-        if (classifier != null && o.classifier == null) {
-            return -1;
-        }
-        else if (classifier == null && o.classifier != null) {
-            return 1;
-        }
-        else if (classifier != null) {
-            if (type != null && o.type == null) {
-                return -1;
-            }
-            else if (type == null && o.type != null) {
-                return 1;
-            }
-            else {
-                return classifier.getName().compareTo(o.classifier.getName());
-            }
-        }
-        else {
-            return 0;
-        }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Key)) {
-            return false;
-        }
-        Key<?> key = (Key<?>) o;
-        if (type != null ? !type.equals(key.type) : key.type != null) {
-            return false;
-        }
-        return classifier != null ? classifier.equals(key.classifier) : key.classifier == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = type != null ? type.hashCode() : 0;
-        result = 31 * result + (classifier != null ? classifier.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Key{" +
-               "type=" + type +
-               ", classifier=" + classifier +
-               '}';
-    }
-
+  @Override
+  public String toString() {
+    return "Key{" + "type=" + type + ", classifier=" + classifier + '}';
+  }
 }

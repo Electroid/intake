@@ -7,20 +7,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ExamplePlugin extends JavaPlugin {
 
-    @Override
-    public void onLoad() {
-        super.onLoad();
+  @Override
+  public void onLoad() {
+    super.onLoad();
 
-        BasicBukkitCommandGraph cmdGraph = new BasicBukkitCommandGraph();
+    BasicBukkitCommandGraph cmdGraph = new BasicBukkitCommandGraph();
 
-        DispatcherNode testNode = cmdGraph.getRootDispatcherNode().registerNode("test");
+    DispatcherNode testNode = cmdGraph.getRootDispatcherNode().registerNode("test");
 
-        testNode.registerCommands(new TestCommands());
-        testNode.registerNode("math").registerCommands(new MathCommands());
+    testNode.registerCommands(new TestCommands());
+    testNode.registerNode("math").registerCommands(new MathCommands());
 
-        BukkitIntake intake = new BukkitIntake(this, cmdGraph);
+    BukkitIntake intake = new BukkitIntake(this, cmdGraph);
 
-        intake.register();
-    }
-
+    intake.register();
+  }
 }

@@ -26,18 +26,17 @@ import java.lang.annotation.Target;
 /**
  * Indicates a command flag, such as {@code /command -f}.
  *
- * <p>If used on a boolean type, then the flag will be a non-value flag. If
- * used on any other type, then the flag will be a value flag.</p>
+ * <p>If used on a boolean type, then the flag will be a non-value flag. If used on any other type,
+ * then the flag will be a value flag.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 public @interface Switch {
 
-    /**
-     * The flag character.
-     *
-     * @return The flag character (A-Z a-z 0-9 is acceptable)
-     */
-    char value();
-
+  /**
+   * The flag character.
+   *
+   * @return The flag character (A-Z a-z 0-9 is acceptable)
+   */
+  char value();
 }

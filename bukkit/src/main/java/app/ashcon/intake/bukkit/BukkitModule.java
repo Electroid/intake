@@ -11,17 +11,14 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-/**
- * Default binding list of {@link Provider}s.
- */
+/** Default binding list of {@link Provider}s. */
 public class BukkitModule extends AbstractModule {
 
-    @Override
-    protected void configure() {
-        bind(CommandSender.class).toProvider(new CommandSenderProvider());
-        bind(Player.class).annotatedWith(Sender.class).toProvider(new ProvidedPlayerProvider());
-        bind(Player.class).toProvider(new DynamicPlayerProvider());
-        bind(World.class).toProvider(new WorldProvider());
-    }
-
+  @Override
+  protected void configure() {
+    bind(CommandSender.class).toProvider(new CommandSenderProvider());
+    bind(Player.class).annotatedWith(Sender.class).toProvider(new ProvidedPlayerProvider());
+    bind(Player.class).toProvider(new DynamicPlayerProvider());
+    bind(World.class).toProvider(new WorldProvider());
+  }
 }

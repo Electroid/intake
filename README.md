@@ -56,7 +56,7 @@ Release and snapshot artifacts are automatically deployed to my Nexus repo. Incl
     <groupId>app.ashcon.intake</groupId>
     <!-- Use "intake-core" if you don't want Minecraft -->
     <artifactId>intake-bukkit</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```

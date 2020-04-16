@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
  * @see Fallback
  */
 public enum Type {
-    SELF,  // Player to sender
-    NULL,  // Player to a null value
-    THROW; // Player to a thrown exception (default)
+  SELF, // Player to sender
+  NULL, // Player to a null value
+  THROW; // Player to a thrown exception (default)
 }

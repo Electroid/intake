@@ -27,17 +27,17 @@ import javax.annotation.Nullable;
 
 class CommandArgsProvider implements Provider<CommandArgs> {
 
-    @Override
-    public boolean isProvided() {
-        return true;
-    }
+  @Override
+  public boolean isProvided() {
+    return true;
+  }
 
-    @Nullable
-    @Override
-    public CommandArgs get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ProvisionException {
-        CommandArgs commandArgs = arguments.getNamespace().need(CommandArgs.class);
-        arguments.markConsumed();
-        return arguments;
-    }
-
+  @Nullable
+  @Override
+  public CommandArgs get(CommandArgs arguments, List<? extends Annotation> modifiers)
+      throws ProvisionException {
+    CommandArgs commandArgs = arguments.getNamespace().need(CommandArgs.class);
+    arguments.markConsumed();
+    return arguments;
+  }
 }

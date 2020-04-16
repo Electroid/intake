@@ -28,26 +28,26 @@ import javax.annotation.Nullable;
 
 class ConstantProvider<T> implements Provider<T> {
 
-    private final T value;
+  private final T value;
 
-    public ConstantProvider(T value) {
-        this.value = value;
-    }
+  public ConstantProvider(T value) {
+    this.value = value;
+  }
 
-    @Override
-    public boolean isProvided() {
-        return true;
-    }
+  @Override
+  public boolean isProvided() {
+    return true;
+  }
 
-    @Nullable
-    @Override
-    public T get(CommandArgs arguments, List<? extends Annotation> modifiers) {
-        return value;
-    }
+  @Nullable
+  @Override
+  public T get(CommandArgs arguments, List<? extends Annotation> modifiers) {
+    return value;
+  }
 
-    @Override
-    public List<String> getSuggestions(String prefix, Namespace namespace, List<? extends Annotation> modifiers) {
-        return Collections.emptyList();
-    }
-
+  @Override
+  public List<String> getSuggestions(
+      String prefix, Namespace namespace, List<? extends Annotation> modifiers) {
+    return Collections.emptyList();
+  }
 }

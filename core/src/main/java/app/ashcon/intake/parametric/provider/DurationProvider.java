@@ -29,35 +29,32 @@ import javax.annotation.Nullable;
 
 class DurationProvider implements Provider<Duration> {
 
-    static final DurationProvider INSTANCE = new DurationProvider();
+  static final DurationProvider INSTANCE = new DurationProvider();
 
-    @Override
-    public String getName() {
-        return "duration";
+  @Override
+  public String getName() {
+    return "duration";
+  }
+
+  @Nullable
+  @Override
+  public Duration get(CommandArgs arguments, List<? extends Annotation> modifiers)
+      throws ArgumentException {
+    String query = arguments.next().toLowerCase();
+    if (query.equals("oo") || query.equals("infinity")) {
+      return Duration.ofNanos(Long.MAX_VALUE);
+    } else if (query.matches("[0-9]*")) {
+      return Duration.ofSeconds(Integer.parseInt(query));
     }
-
-    @Nullable
-    @Override
-    public Duration get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
-        String query = arguments.next().toLowerCase();
-        if (query.equals("oo") || query.equals("infinity")) {
-            return Duration.ofNanos(Long.MAX_VALUE);
-        }
-        else if (query.matches("[0-9]*")) {
-            return Duration.ofSeconds(Integer.parseInt(query));
-        }
-        try {
-            String[] parts = query.split("d");
-            if (parts.length == 1) {
-                return Duration.parse((query.contains("d") ? "P" : "PT") + query);
-            }
-            else {
-                return Duration.parse("P" + parts[0] + "dT" + parts[1]);
-            }
-        }
-        catch (DateTimeParseException e) {
-            throw new ArgumentException("Could not parse duration '" + query + "'", e);
-        }
+    try {
+      String[] parts = query.split("d");
+      if (parts.length == 1) {
+        return Duration.parse((query.contains("d") ? "P" : "PT") + query);
+      } else {
+        return Duration.parse("P" + parts[0] + "dT" + parts[1]);
+      }
+    } catch (DateTimeParseException e) {
+      throw new ArgumentException("Could not parse duration '" + query + "'", e);
     }
-
+  }
 }

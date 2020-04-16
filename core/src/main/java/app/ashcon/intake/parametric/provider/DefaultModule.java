@@ -21,14 +21,11 @@ package app.ashcon.intake.parametric.provider;
 import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.parametric.AbstractModule;
 
-/**
- * A default module that binds {@link CommandArgs}.
- */
+/** A default module that binds {@link CommandArgs}. */
 public class DefaultModule extends AbstractModule {
 
-    @Override
-    protected void configure() {
-        bind(CommandArgs.class).toProvider(new CommandArgsProvider());
-    }
-
+  @Override
+  protected void configure() {
+    bind(CommandArgs.class).toProvider(new CommandArgsProvider());
+  }
 }

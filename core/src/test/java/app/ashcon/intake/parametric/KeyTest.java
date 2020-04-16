@@ -38,28 +38,28 @@ import org.junit.Test;
  */
 public class KeyTest {
 
-    @Test
-    public void testMultipleClassifiersInTreeSet() {
-        Key<String> keyWithoutClassifier = Key.get(String.class);
-        Key<String> keyWithClassifier = Key.get(String.class, Text.class);
-        Key<String> keyWithAnotherClassifier = Key.get(String.class, MyClassifier.class);
-        TreeSet<Key<?>> keySet = Sets.newTreeSet();
+  @Test
+  public void testMultipleClassifiersInTreeSet() {
+    Key<String> keyWithoutClassifier = Key.get(String.class);
+    Key<String> keyWithClassifier = Key.get(String.class, Text.class);
+    Key<String> keyWithAnotherClassifier = Key.get(String.class, MyClassifier.class);
+    TreeSet<Key<?>> keySet = Sets.newTreeSet();
 
-        keySet.add(keyWithoutClassifier);
-        assumeThat(keySet.add(keyWithAnotherClassifier), is(true));
+    keySet.add(keyWithoutClassifier);
+    assumeThat(keySet.add(keyWithAnotherClassifier), is(true));
 
-        boolean added = keySet.add(keyWithClassifier);
+    boolean added = keySet.add(keyWithClassifier);
 
-        assertThat("two keys with different classifiers must be accepted in a single set", added, is(true));
-        assertThat(
-            "other classifier must be contained in set", keySet.contains(Key.get(String.class, MyClassifier.class)), is(true));
-    }
+    assertThat(
+        "two keys with different classifiers must be accepted in a single set", added, is(true));
+    assertThat(
+        "other classifier must be contained in set",
+        keySet.contains(Key.get(String.class, MyClassifier.class)),
+        is(true));
+  }
 
-    @Classifier
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.PARAMETER)
-    private @interface MyClassifier {
-
-    }
-
+  @Classifier
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.PARAMETER)
+  private @interface MyClassifier {}
 }

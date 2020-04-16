@@ -27,24 +27,23 @@ import javax.annotation.Nullable;
 
 class FloatProvider implements Provider<Float>, NumberProvider {
 
-    static final FloatProvider INSTANCE = new FloatProvider();
+  static final FloatProvider INSTANCE = new FloatProvider();
 
-    @Override
-    public String getName() {
-        return "number";
+  @Override
+  public String getName() {
+    return "number";
+  }
+
+  @Nullable
+  @Override
+  public Float get(CommandArgs arguments, List<? extends Annotation> modifiers)
+      throws ArgumentException {
+    Double v = parseNumericInput(arguments.next());
+    if (v != null) {
+      validate(v, modifiers);
+      return v.floatValue();
+    } else {
+      return null;
     }
-
-    @Nullable
-    @Override
-    public Float get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
-        Double v = parseNumericInput(arguments.next());
-        if (v != null) {
-            validate(v, modifiers);
-            return v.floatValue();
-        }
-        else {
-            return null;
-        }
-    }
-
+  }
 }

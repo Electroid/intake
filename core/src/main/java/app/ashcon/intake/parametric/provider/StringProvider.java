@@ -29,48 +29,48 @@ import javax.annotation.Nullable;
 
 class StringProvider implements Provider<String> {
 
-    static final StringProvider INSTANCE = new StringProvider();
+  static final StringProvider INSTANCE = new StringProvider();
 
-    /**
-     * Validate a string value using relevant modifiers.
-     *
-     * @param string    the string
-     * @param modifiers the list of modifiers to scan
-     * @throws ArgumentParseException on a validation error
-     */
-    protected static void validate(String string, List<? extends Annotation> modifiers) throws ArgumentParseException {
-        if (string == null) {
-            return;
+  /**
+   * Validate a string value using relevant modifiers.
+   *
+   * @param string the string
+   * @param modifiers the list of modifiers to scan
+   * @throws ArgumentParseException on a validation error
+   */
+  protected static void validate(String string, List<? extends Annotation> modifiers)
+      throws ArgumentParseException {
+    if (string == null) {
+      return;
+    }
+
+    for (Annotation modifier : modifiers) {
+      if (modifier instanceof Validate) {
+        Validate validate = (Validate) modifier;
+
+        if (!validate.regex().isEmpty()) {
+          if (!string.matches(validate.regex())) {
+            throw new ArgumentParseException(
+                String.format(
+                    "The given text doesn't match the right format (technically speaking, the 'format' is %s)",
+                    validate.regex()));
+          }
         }
-
-        for (Annotation modifier : modifiers) {
-            if (modifier instanceof Validate) {
-                Validate validate = (Validate) modifier;
-
-                if (!validate.regex().isEmpty()) {
-                    if (!string.matches(validate.regex())) {
-                        throw new ArgumentParseException(
-                            String.format(
-                                "The given text doesn't match the right format (technically speaking, the 'format' is %s)",
-                                validate.regex()
-                                         ));
-                    }
-                }
-            }
-        }
+      }
     }
+  }
 
-    @Override
-    public String getName() {
-        return "string";
-    }
+  @Override
+  public String getName() {
+    return "string";
+  }
 
-    @Nullable
-    @Override
-    public String get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
-        String v = arguments.next();
-        validate(v, modifiers);
-        return v;
-    }
-
+  @Nullable
+  @Override
+  public String get(CommandArgs arguments, List<? extends Annotation> modifiers)
+      throws ArgumentException {
+    String v = arguments.next();
+    validate(v, modifiers);
+    return v;
+  }
 }

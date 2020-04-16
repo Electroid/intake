@@ -27,21 +27,18 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import javax.annotation.Nullable;
 
-/**
- * Provides the context.
- */
+/** Provides the context. */
 public final class CommandContextProvider implements Provider<CommandContext> {
 
-    @Override
-    public boolean isProvided() {
-        return true;
-    }
+  @Override
+  public boolean isProvided() {
+    return true;
+  }
 
-    @Nullable
-    @Override
-    public CommandContext get(CommandArgs arguments, List<? extends Annotation> modifiers)
-        throws ArgumentException, ProvisionException {
-        return arguments.getNamespace().need(CommandContext.class);
-    }
-
+  @Nullable
+  @Override
+  public CommandContext get(CommandArgs arguments, List<? extends Annotation> modifiers)
+      throws ArgumentException, ProvisionException {
+    return arguments.getNamespace().need(CommandContext.class);
+  }
 }

@@ -28,26 +28,25 @@ import java.lang.annotation.Annotation;
  */
 public interface BindingBuilder<T> {
 
-    /**
-     * Indicates a classifier that the binding will listen for.
-     *
-     * @param annotation The classifier annotation class
-     * @return The same class
-     */
-    BindingBuilder<T> annotatedWith(Class<? extends Annotation> annotation);
+  /**
+   * Indicates a classifier that the binding will listen for.
+   *
+   * @param annotation The classifier annotation class
+   * @return The same class
+   */
+  BindingBuilder<T> annotatedWith(Class<? extends Annotation> annotation);
 
-    /**
-     * Creates a binding that is provided by the given provider class.
-     *
-     * @param provider The provider
-     */
-    void toProvider(Provider<T> provider);
+  /**
+   * Creates a binding that is provided by the given provider class.
+   *
+   * @param provider The provider
+   */
+  void toProvider(Provider<T> provider);
 
-    /**
-     * Creates a binding that is provided by the given static instance.
-     *
-     * @param instance The instance
-     */
-    void toInstance(T instance);
-
+  /**
+   * Creates a binding that is provided by the given static instance.
+   *
+   * @param instance The instance
+   */
+  void toInstance(T instance);
 }

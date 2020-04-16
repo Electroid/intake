@@ -10,24 +10,21 @@ import javax.annotation.Nullable;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-/**
- * Provides the {@link Player} who sent the command, annotated with {@link Sender}.
- */
+/** Provides the {@link Player} who sent the command, annotated with {@link Sender}. */
 public class ProvidedPlayerProvider implements BukkitProvider<Player> {
 
-    @Override
-    public boolean isProvided() {
-        return true;
-    }
+  @Override
+  public boolean isProvided() {
+    return true;
+  }
 
-    @Nullable
-    @Override
-    public Player get(CommandSender sender, CommandArgs args, List<? extends Annotation> mods)
-        throws ArgumentException, ProvisionException {
-        if (sender instanceof Player) {
-            return (Player) sender;
-        }
-        throw new ArgumentException("You must be a player to use this command");
+  @Nullable
+  @Override
+  public Player get(CommandSender sender, CommandArgs args, List<? extends Annotation> mods)
+      throws ArgumentException, ProvisionException {
+    if (sender instanceof Player) {
+      return (Player) sender;
     }
-
+    throw new ArgumentException("You must be a player to use this command");
+  }
 }

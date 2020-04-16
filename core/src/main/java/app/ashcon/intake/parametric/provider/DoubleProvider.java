@@ -26,23 +26,22 @@ import java.util.List;
 
 class DoubleProvider implements Provider<Double>, NumberProvider {
 
-    static final DoubleProvider INSTANCE = new DoubleProvider();
+  static final DoubleProvider INSTANCE = new DoubleProvider();
 
-    @Override
-    public String getName() {
-        return "number";
+  @Override
+  public String getName() {
+    return "number";
+  }
+
+  @Override
+  public Double get(CommandArgs arguments, List<? extends Annotation> modifiers)
+      throws ArgumentException {
+    Double v = parseNumericInput(arguments.next());
+    if (v != null) {
+      validate(v, modifiers);
+      return v;
+    } else {
+      return null;
     }
-
-    @Override
-    public Double get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
-        Double v = parseNumericInput(arguments.next());
-        if (v != null) {
-            validate(v, modifiers);
-            return v;
-        }
-        else {
-            return null;
-        }
-    }
-
+  }
 }

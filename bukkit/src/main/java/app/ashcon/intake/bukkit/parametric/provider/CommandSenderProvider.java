@@ -7,20 +7,18 @@ import java.util.List;
 import javax.annotation.Nullable;
 import org.bukkit.command.CommandSender;
 
-/**
- * Provides the {@link CommandSender} of the command.
- */
+/** Provides the {@link CommandSender} of the command. */
 public class CommandSenderProvider implements BukkitProvider<CommandSender> {
 
-    @Override
-    public boolean isProvided() {
-        return true;
-    }
+  @Override
+  public boolean isProvided() {
+    return true;
+  }
 
-    @Nullable
-    @Override
-    public CommandSender get(CommandSender sender, CommandArgs args, List<? extends Annotation> mods) throws ProvisionException {
-        return sender;
-    }
-
+  @Nullable
+  @Override
+  public CommandSender get(CommandSender sender, CommandArgs args, List<? extends Annotation> mods)
+      throws ProvisionException {
+    return sender;
+  }
 }

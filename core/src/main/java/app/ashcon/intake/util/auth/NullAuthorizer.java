@@ -20,15 +20,11 @@ package app.ashcon.intake.util.auth;
 
 import app.ashcon.intake.argument.Namespace;
 
-/**
- * An implementation of {@link Authorizer} that always returns false for
- * tests of permissions.
- */
+/** An implementation of {@link Authorizer} that always returns false for tests of permissions. */
 public class NullAuthorizer implements Authorizer {
 
-    @Override
-    public boolean testPermission(Namespace namespace, String permission) {
-        return false;
-    }
-
+  @Override
+  public boolean testPermission(Namespace namespace, String permission) {
+    return false;
+  }
 }

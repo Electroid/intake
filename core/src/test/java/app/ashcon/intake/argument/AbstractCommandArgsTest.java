@@ -29,205 +29,205 @@ import org.junit.Test;
 
 public abstract class AbstractCommandArgsTest {
 
-    protected abstract CommandArgs createCommandArgs(List<String> args);
+  protected abstract CommandArgs createCommandArgs(List<String> args);
 
-    @Test
-    public void testHasNext() throws Exception {
-        CommandArgs args;
+  @Test
+  public void testHasNext() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.<String>of());
-        assertThat(args.position(), is(0));
-        assertThat(args.hasNext(), is(false));
-        assertThat(args.position(), is(0));
+    args = createCommandArgs(ImmutableList.<String>of());
+    assertThat(args.position(), is(0));
+    assertThat(args.hasNext(), is(false));
+    assertThat(args.position(), is(0));
 
-        args = createCommandArgs(ImmutableList.of("alpha"));
-        assertThat(args.position(), is(0));
-        assertThat(args.hasNext(), is(true));
-        assertThat(args.position(), is(0));
-    }
+    args = createCommandArgs(ImmutableList.of("alpha"));
+    assertThat(args.position(), is(0));
+    assertThat(args.hasNext(), is(true));
+    assertThat(args.position(), is(0));
+  }
 
-    @Test(expected = MissingArgumentException.class)
-    public void testNextNoArgs() throws Exception {
-        CommandArgs args = createCommandArgs(ImmutableList.<String>of());
-        assertThat(args.position(), is(0));
-        args.next();
-    }
+  @Test(expected = MissingArgumentException.class)
+  public void testNextNoArgs() throws Exception {
+    CommandArgs args = createCommandArgs(ImmutableList.<String>of());
+    assertThat(args.position(), is(0));
+    args.next();
+  }
 
-    @Test
-    public void testNext() throws Exception {
-        CommandArgs args = createCommandArgs(ImmutableList.of("alpha", "bravo"));
-        assertThat(args.position(), is(0));
-        assertThat(args.next(), equalTo("alpha"));
-        assertThat(args.position(), is(1));
-        assertThat(args.next(), equalTo("bravo"));
-        assertThat(args.position(), is(2));
-    }
+  @Test
+  public void testNext() throws Exception {
+    CommandArgs args = createCommandArgs(ImmutableList.of("alpha", "bravo"));
+    assertThat(args.position(), is(0));
+    assertThat(args.next(), equalTo("alpha"));
+    assertThat(args.position(), is(1));
+    assertThat(args.next(), equalTo("bravo"));
+    assertThat(args.position(), is(2));
+  }
 
-    @Test(expected = MissingArgumentException.class)
-    public void testPeekNoArgs() throws Exception {
-        CommandArgs args = createCommandArgs(ImmutableList.<String>of());
-        assertThat(args.position(), is(0));
-        args.peek();
-    }
+  @Test(expected = MissingArgumentException.class)
+  public void testPeekNoArgs() throws Exception {
+    CommandArgs args = createCommandArgs(ImmutableList.<String>of());
+    assertThat(args.position(), is(0));
+    args.peek();
+  }
 
-    @Test
-    public void testPeek() throws Exception {
-        CommandArgs args = createCommandArgs(ImmutableList.of("alpha"));
-        assertThat(args.position(), is(0));
-        assertThat(args.peek(), equalTo("alpha"));
-        assertThat(args.position(), is(0));
-    }
+  @Test
+  public void testPeek() throws Exception {
+    CommandArgs args = createCommandArgs(ImmutableList.of("alpha"));
+    assertThat(args.position(), is(0));
+    assertThat(args.peek(), equalTo("alpha"));
+    assertThat(args.position(), is(0));
+  }
 
-    @Test
-    public void testSize() throws Exception {
-        CommandArgs args;
+  @Test
+  public void testSize() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.<String>of());
-        assertThat(args.size(), is(0));
+    args = createCommandArgs(ImmutableList.<String>of());
+    assertThat(args.size(), is(0));
 
-        args = createCommandArgs(ImmutableList.of("alpha"));
-        assertThat(args.size(), is(1));
+    args = createCommandArgs(ImmutableList.of("alpha"));
+    assertThat(args.size(), is(1));
 
-        args = createCommandArgs(ImmutableList.of("alpha", "bravo"));
-        assertThat(args.size(), is(2));
-    }
+    args = createCommandArgs(ImmutableList.of("alpha", "bravo"));
+    assertThat(args.size(), is(2));
+  }
 
-    @Test
-    public void testMarkConsumed() throws Exception {
-        CommandArgs args = createCommandArgs(ImmutableList.of("alpha", "bravo"));
-        assertThat(args.position(), is(0));
-        args.markConsumed();
-        assertThat(args.position(), is(2));
-        args.markConsumed();
-        assertThat(args.position(), is(2));
-    }
+  @Test
+  public void testMarkConsumed() throws Exception {
+    CommandArgs args = createCommandArgs(ImmutableList.of("alpha", "bravo"));
+    assertThat(args.position(), is(0));
+    args.markConsumed();
+    assertThat(args.position(), is(2));
+    args.markConsumed();
+    assertThat(args.position(), is(2));
+  }
 
-    @Test(expected = ArgumentParseException.class)
-    public void testNextBadInt() throws Exception {
-        CommandArgs args;
+  @Test(expected = ArgumentParseException.class)
+  public void testNextBadInt() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.of("alpha"));
-        assertThat(args.position(), is(0));
-        args.nextInt();
-    }
+    args = createCommandArgs(ImmutableList.of("alpha"));
+    assertThat(args.position(), is(0));
+    args.nextInt();
+  }
 
-    @Test
-    public void testNextInt() throws Exception {
-        CommandArgs args;
+  @Test
+  public void testNextInt() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.of("4000"));
-        assertThat(args.position(), is(0));
-        assertThat(args.nextInt(), is(4000));
-        assertThat(args.position(), is(1));
-    }
+    args = createCommandArgs(ImmutableList.of("4000"));
+    assertThat(args.position(), is(0));
+    assertThat(args.nextInt(), is(4000));
+    assertThat(args.position(), is(1));
+  }
 
-    @Test(expected = ArgumentParseException.class)
-    public void testNextBadShort() throws Exception {
-        CommandArgs args;
+  @Test(expected = ArgumentParseException.class)
+  public void testNextBadShort() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.of("alpha"));
-        assertThat(args.position(), is(0));
-        args.nextShort();
-    }
+    args = createCommandArgs(ImmutableList.of("alpha"));
+    assertThat(args.position(), is(0));
+    args.nextShort();
+  }
 
-    @Test
-    public void testNextShort() throws Exception {
-        CommandArgs args;
+  @Test
+  public void testNextShort() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.of("4000"));
-        assertThat(args.position(), is(0));
-        assertThat(args.nextShort(), is((short) 4000));
-        assertThat(args.position(), is(1));
-    }
+    args = createCommandArgs(ImmutableList.of("4000"));
+    assertThat(args.position(), is(0));
+    assertThat(args.nextShort(), is((short) 4000));
+    assertThat(args.position(), is(1));
+  }
 
-    @Test(expected = ArgumentParseException.class)
-    public void testNextBadByte() throws Exception {
-        CommandArgs args;
+  @Test(expected = ArgumentParseException.class)
+  public void testNextBadByte() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.of("alpha"));
-        assertThat(args.position(), is(0));
-        args.nextByte();
-    }
+    args = createCommandArgs(ImmutableList.of("alpha"));
+    assertThat(args.position(), is(0));
+    args.nextByte();
+  }
 
-    @Test
-    public void testNextByte() throws Exception {
-        CommandArgs args;
+  @Test
+  public void testNextByte() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.of("40"));
-        assertThat(args.position(), is(0));
-        assertThat(args.nextByte(), is((byte) 40));
-        assertThat(args.position(), is(1));
-    }
+    args = createCommandArgs(ImmutableList.of("40"));
+    assertThat(args.position(), is(0));
+    assertThat(args.nextByte(), is((byte) 40));
+    assertThat(args.position(), is(1));
+  }
 
-    @Test(expected = ArgumentParseException.class)
-    public void testNextBadDouble() throws Exception {
-        CommandArgs args;
+  @Test(expected = ArgumentParseException.class)
+  public void testNextBadDouble() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.of("alpha"));
-        assertThat(args.position(), is(0));
-        args.nextDouble();
-    }
+    args = createCommandArgs(ImmutableList.of("alpha"));
+    assertThat(args.position(), is(0));
+    args.nextDouble();
+  }
 
-    @Test
-    public void testNextDouble() throws Exception {
-        CommandArgs args;
+  @Test
+  public void testNextDouble() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.of("40.23"));
-        assertThat(args.position(), is(0));
-        assertThat(args.nextDouble(), closeTo(40.23, 0.0001));
-        assertThat(args.position(), is(1));
-    }
+    args = createCommandArgs(ImmutableList.of("40.23"));
+    assertThat(args.position(), is(0));
+    assertThat(args.nextDouble(), closeTo(40.23, 0.0001));
+    assertThat(args.position(), is(1));
+  }
 
-    @Test(expected = ArgumentParseException.class)
-    public void testNextBadFloat() throws Exception {
-        CommandArgs args;
+  @Test(expected = ArgumentParseException.class)
+  public void testNextBadFloat() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.of("alpha"));
-        assertThat(args.position(), is(0));
-        args.nextFloat();
-    }
+    args = createCommandArgs(ImmutableList.of("alpha"));
+    assertThat(args.position(), is(0));
+    args.nextFloat();
+  }
 
-    @Test
-    public void testNextFloat() throws Exception {
-        CommandArgs args;
+  @Test
+  public void testNextFloat() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.of("40.23"));
-        assertThat(args.position(), is(0));
-        assertThat((double) args.nextFloat(), closeTo(40.23, 0.0001));
-        assertThat(args.position(), is(1));
-    }
+    args = createCommandArgs(ImmutableList.of("40.23"));
+    assertThat(args.position(), is(0));
+    assertThat((double) args.nextFloat(), closeTo(40.23, 0.0001));
+    assertThat(args.position(), is(1));
+  }
 
-    @Test(expected = ArgumentParseException.class)
-    public void testNextBadBoolean() throws Exception {
-        CommandArgs args;
+  @Test(expected = ArgumentParseException.class)
+  public void testNextBadBoolean() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.of("alpha"));
-        assertThat(args.position(), is(0));
-        args.nextBoolean();
-    }
+    args = createCommandArgs(ImmutableList.of("alpha"));
+    assertThat(args.position(), is(0));
+    args.nextBoolean();
+  }
 
-    @Test
-    public void testNextBoolean() throws Exception {
-        CommandArgs args;
+  @Test
+  public void testNextBoolean() throws Exception {
+    CommandArgs args;
 
-        args = createCommandArgs(ImmutableList.of("true"));
-        assertThat(args.position(), is(0));
-        assertThat(args.nextBoolean(), is(true));
-        assertThat(args.position(), is(1));
+    args = createCommandArgs(ImmutableList.of("true"));
+    assertThat(args.position(), is(0));
+    assertThat(args.nextBoolean(), is(true));
+    assertThat(args.position(), is(1));
 
-        args = createCommandArgs(ImmutableList.of("yes"));
-        assertThat(args.position(), is(0));
-        assertThat(args.nextBoolean(), is(true));
-        assertThat(args.position(), is(1));
+    args = createCommandArgs(ImmutableList.of("yes"));
+    assertThat(args.position(), is(0));
+    assertThat(args.nextBoolean(), is(true));
+    assertThat(args.position(), is(1));
 
-        args = createCommandArgs(ImmutableList.of("false"));
-        assertThat(args.position(), is(0));
-        assertThat(args.nextBoolean(), is(false));
-        assertThat(args.position(), is(1));
+    args = createCommandArgs(ImmutableList.of("false"));
+    assertThat(args.position(), is(0));
+    assertThat(args.nextBoolean(), is(false));
+    assertThat(args.position(), is(1));
 
-        args = createCommandArgs(ImmutableList.of("no"));
-        assertThat(args.position(), is(0));
-        assertThat(args.nextBoolean(), is(false));
-        assertThat(args.position(), is(1));
-    }
+    args = createCommandArgs(ImmutableList.of("no"));
+    assertThat(args.position(), is(0));
+    assertThat(args.nextBoolean(), is(false));
+    assertThat(args.position(), is(1));
+  }
 }

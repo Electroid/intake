@@ -25,21 +25,18 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-/**
- * Wraps an ExecutorService into a CommandExecutor.
- */
+/** Wraps an ExecutorService into a CommandExecutor. */
 public class CommandExecutorWrapper implements CommandExecutor {
 
-    private final ExecutorService executorService;
+  private final ExecutorService executorService;
 
-    public CommandExecutorWrapper(ExecutorService executorService) {
-        checkNotNull(executorService, "executorService");
-        this.executorService = executorService;
-    }
+  public CommandExecutorWrapper(ExecutorService executorService) {
+    checkNotNull(executorService, "executorService");
+    this.executorService = executorService;
+  }
 
-    @Override
-    public <T> Future<T> submit(Callable<T> task, CommandArgs args) {
-        return executorService.submit(task);
-    }
-
+  @Override
+  public <T> Future<T> submit(Callable<T> task, CommandArgs args) {
+    return executorService.submit(task);
+  }
 }

@@ -20,39 +20,36 @@ package app.ashcon.intake;
 
 import java.util.List;
 
-/**
- * Defines a parameter for a command.
- */
+/** Defines a parameter for a command. */
 public interface Parameter {
 
-    /**
-     * The name of the parameter.
-     *
-     * @return The name of the parameter
-     */
-    String getName();
+  /**
+   * The name of the parameter.
+   *
+   * @return The name of the parameter
+   */
+  String getName();
 
-    /**
-     * The type of parameter.
-     *
-     * @return The type of parameter
-     */
-    OptionType getOptionType();
+  /**
+   * The type of parameter.
+   *
+   * @return The type of parameter
+   */
+  OptionType getOptionType();
 
-    /**
-     * Whether the parameter is wrapped in an {@link java.util.Optional}.
-     *
-     * @return Whether the parameter is optional.
-     */
-    boolean isOptional();
+  /**
+   * Whether the parameter is wrapped in an {@link java.util.Optional}.
+   *
+   * @return Whether the parameter is optional.
+   */
+  boolean isOptional();
 
-    /**
-     * The default value as a list of tokenized strings (but one single value).
-     *
-     * <p>If there is no default value, the returned list will be empty.</p>
-     *
-     * @return The default value
-     */
-    List<String> getDefaultValue();
-
+  /**
+   * The default value as a list of tokenized strings (but one single value).
+   *
+   * <p>If there is no default value, the returned list will be empty.
+   *
+   * @return The default value
+   */
+  List<String> getDefaultValue();
 }

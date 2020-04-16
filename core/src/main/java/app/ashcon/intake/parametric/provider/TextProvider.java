@@ -27,36 +27,35 @@ import javax.annotation.Nullable;
 
 class TextProvider extends StringProvider {
 
-    static final TextProvider INSTANCE = new TextProvider();
+  static final TextProvider INSTANCE = new TextProvider();
 
-    @Override
-    public String getName() {
-        return "string...";
+  @Override
+  public String getName() {
+    return "string...";
+  }
+
+  @Nullable
+  @Override
+  public String get(CommandArgs arguments, List<? extends Annotation> modifiers)
+      throws ArgumentException {
+    StringBuilder builder = new StringBuilder();
+    boolean first = true;
+    while (true) {
+      if (!first) {
+        builder.append(" ");
+      }
+      try {
+        builder.append(arguments.next());
+      } catch (MissingArgumentException ignored) {
+        break;
+      }
+      first = false;
     }
-
-    @Nullable
-    @Override
-    public String get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
-        StringBuilder builder = new StringBuilder();
-        boolean first = true;
-        while (true) {
-            if (!first) {
-                builder.append(" ");
-            }
-            try {
-                builder.append(arguments.next());
-            }
-            catch (MissingArgumentException ignored) {
-                break;
-            }
-            first = false;
-        }
-        if (first) {
-            throw new MissingArgumentException();
-        }
-        String v = builder.toString().trim();
-        validate(v, modifiers);
-        return v;
+    if (first) {
+      throw new MissingArgumentException();
     }
-
+    String v = builder.toString().trim();
+    validate(v, modifiers);
+    return v;
+  }
 }

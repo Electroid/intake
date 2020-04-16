@@ -27,241 +27,235 @@ import javax.annotation.Nullable;
 /**
  * An immutable implementation of a Description.
  *
- * <p>Use {@link Builder} to create instances.</p>
+ * <p>Use {@link Builder} to create instances.
  */
 public final class ImmutableDescription implements Description {
 
-    private final List<Parameter> parameters;
-    private final List<String> permissions;
-    private final String shortDescription;
-    private final String help;
-    @Nullable
-    private String usage;
+  private final List<Parameter> parameters;
+  private final List<String> permissions;
+  private final String shortDescription;
+  private final String help;
+  @Nullable private String usage;
 
-    private ImmutableDescription(List<Parameter> parameters, List<String> permissions, String shortDescription, String help,
-                                 @Nullable String usage) {
-        this.parameters = ImmutableList.copyOf(parameters);
-        this.permissions = ImmutableList.copyOf(permissions);
-        this.shortDescription = shortDescription;
-        this.help = help;
-        this.usage = usage;
+  private ImmutableDescription(
+      List<Parameter> parameters,
+      List<String> permissions,
+      String shortDescription,
+      String help,
+      @Nullable String usage) {
+    this.parameters = ImmutableList.copyOf(parameters);
+    this.permissions = ImmutableList.copyOf(permissions);
+    this.shortDescription = shortDescription;
+    this.help = help;
+    this.usage = usage;
+  }
+
+  @Override
+  public List<Parameter> getParameters() {
+    return parameters;
+  }
+
+  @Nullable
+  @Override
+  public String getShortDescription() {
+    return shortDescription;
+  }
+
+  @Nullable
+  @Override
+  public String getHelp() {
+    return help;
+  }
+
+  @Override
+  public List<String> getPermissions() {
+    return permissions;
+  }
+
+  @Override
+  public String getUsage() {
+    if (usage != null) {
+      return usage;
     }
 
-    @Override
+    StringBuilder builder = new StringBuilder();
+    StringBuilder flagBuilder = new StringBuilder();
+    boolean first = true;
+
+    for (Parameter parameter : parameters) {
+      if (!first) {
+        builder.append(" ");
+      }
+      String text;
+      String name = parameter.getName();
+      OptionType type = parameter.getOptionType();
+      Character flag = type.getFlag();
+      if (flag == null) {
+        if (type.isOptional()) {
+          text = "[" + name + "]";
+        } else {
+          text = "<" + name + ">";
+        }
+      } else {
+        if (type.isValueFlag()) {
+          text = "[-" + flag + "=" + name + "]";
+        } else {
+          // Accumulate boolean flags to be appended at the end
+          flagBuilder.append(flag);
+          first = true;
+          continue;
+        }
+      }
+      builder.append(text);
+      first = false;
+    }
+
+    String flags = flagBuilder.toString();
+    if (!flags.isEmpty()) {
+      if (!first) {
+        builder.append(" ");
+      }
+      builder.append("[-").append(flags).append("]");
+    }
+
+    return usage = builder.toString();
+  }
+
+  @Override
+  public String toString() {
+    return getUsage();
+  }
+
+  /**
+   * Builds instances of {@link ImmutableDescription}.
+   *
+   * <p>By default, the list of parameters and permissions will be empty lists.
+   */
+  public static class Builder {
+
+    private List<Parameter> parameters = ImmutableList.of();
+    private List<String> permissions = ImmutableList.of();
+    @Nullable private String shortDescription;
+    @Nullable private String help;
+    @Nullable private String usageOverride;
+
+    /**
+     * Get the list of parameters.
+     *
+     * @return The list of parameters
+     */
     public List<Parameter> getParameters() {
-        return parameters;
-    }
-
-    @Nullable
-    @Override
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    @Nullable
-    @Override
-    public String getHelp() {
-        return help;
-    }
-
-    @Override
-    public List<String> getPermissions() {
-        return permissions;
-    }
-
-    @Override
-    public String getUsage() {
-        if (usage != null) {
-            return usage;
-        }
-
-        StringBuilder builder = new StringBuilder();
-        StringBuilder flagBuilder = new StringBuilder();
-        boolean first = true;
-
-        for (Parameter parameter : parameters) {
-            if (!first) {
-                builder.append(" ");
-            }
-            String text;
-            String name = parameter.getName();
-            OptionType type = parameter.getOptionType();
-            Character flag = type.getFlag();
-            if (flag == null) {
-                if (type.isOptional()) {
-                    text = "[" + name + "]";
-                }
-                else {
-                    text = "<" + name + ">";
-                }
-            }
-            else {
-                if (type.isValueFlag()) {
-                    text = "[-" + flag + "=" + name + "]";
-                }
-                else {
-                    // Accumulate boolean flags to be appended at the end
-                    flagBuilder.append(flag);
-                    first = true;
-                    continue;
-                }
-            }
-            builder.append(text);
-            first = false;
-        }
-
-        String flags = flagBuilder.toString();
-        if (!flags.isEmpty()) {
-            if (!first) {
-                builder.append(" ");
-            }
-            builder.append("[-").append(flags).append("]");
-        }
-
-        return usage = builder.toString();
-    }
-
-    @Override
-    public String toString() {
-        return getUsage();
+      return parameters;
     }
 
     /**
-     * Builds instances of {@link ImmutableDescription}.
+     * Set the list of parameters.
      *
-     * <p>By default, the list of parameters and permissions will
-     * be empty lists.</p>
+     * @param parameters The list of parameters
+     * @return The builder
      */
-    public static class Builder {
-
-        private List<Parameter> parameters = ImmutableList.of();
-        private List<String> permissions = ImmutableList.of();
-        @Nullable
-        private String shortDescription;
-        @Nullable
-        private String help;
-        @Nullable
-        private String usageOverride;
-
-        /**
-         * Get the list of parameters.
-         *
-         * @return The list of parameters
-         */
-        public List<Parameter> getParameters() {
-            return parameters;
-        }
-
-        /**
-         * Set the list of parameters.
-         *
-         * @param parameters The list of parameters
-         * @return The builder
-         */
-        public Builder setParameters(List<Parameter> parameters) {
-            checkNotNull(parameters, "parameters");
-            this.parameters = parameters;
-            return this;
-        }
-
-        /**
-         * Get a list of permissions.
-         *
-         * @return The list of permissions
-         */
-        public List<String> getPermissions() {
-            return permissions;
-        }
-
-        /**
-         * Set the list of permissions.
-         *
-         * @param permissions The list of permissions
-         * @return The builder
-         */
-        public Builder setPermissions(List<String> permissions) {
-            checkNotNull(permissions, "permissions");
-            this.permissions = permissions;
-            return this;
-        }
-
-        /**
-         * Get the short description.
-         *
-         * @return The builder
-         */
-        @Nullable
-        public String getShortDescription() {
-            return shortDescription;
-        }
-
-        /**
-         * Set the short description.
-         *
-         * @param shortDescription The short description.
-         * @return The builder
-         */
-        public Builder setShortDescription(@Nullable String shortDescription) {
-            this.shortDescription = shortDescription;
-            return this;
-        }
-
-        /**
-         * Get the help text.
-         *
-         * @return The help text
-         */
-        @Nullable
-        public String getHelp() {
-            return help;
-        }
-
-        /**
-         * Set the help text.
-         *
-         * @param help The help text
-         * @return The builder
-         */
-        public Builder setHelp(@Nullable String help) {
-            this.help = help;
-            return this;
-        }
-
-        /**
-         * Get the usage override string.
-         *
-         * <p>If null, then usage information will be generated
-         * automatically.</p>
-         *
-         * @return The usage override
-         */
-        @Nullable
-        public String getUsageOverride() {
-            return usageOverride;
-        }
-
-        /**
-         * Set the usage override string.
-         *
-         * <p>If null, then usage information will be generated
-         * automatically.</p>
-         *
-         * @param usageOverride The usage override
-         * @return The builder
-         */
-        public Builder setUsageOverride(@Nullable String usageOverride) {
-            this.usageOverride = usageOverride;
-            return this;
-        }
-
-        /**
-         * Build an instance of the description.
-         *
-         * @return The description
-         */
-        public ImmutableDescription build() {
-            return new ImmutableDescription(parameters, permissions, shortDescription, help, usageOverride);
-        }
+    public Builder setParameters(List<Parameter> parameters) {
+      checkNotNull(parameters, "parameters");
+      this.parameters = parameters;
+      return this;
     }
 
+    /**
+     * Get a list of permissions.
+     *
+     * @return The list of permissions
+     */
+    public List<String> getPermissions() {
+      return permissions;
+    }
+
+    /**
+     * Set the list of permissions.
+     *
+     * @param permissions The list of permissions
+     * @return The builder
+     */
+    public Builder setPermissions(List<String> permissions) {
+      checkNotNull(permissions, "permissions");
+      this.permissions = permissions;
+      return this;
+    }
+
+    /**
+     * Get the short description.
+     *
+     * @return The builder
+     */
+    @Nullable
+    public String getShortDescription() {
+      return shortDescription;
+    }
+
+    /**
+     * Set the short description.
+     *
+     * @param shortDescription The short description.
+     * @return The builder
+     */
+    public Builder setShortDescription(@Nullable String shortDescription) {
+      this.shortDescription = shortDescription;
+      return this;
+    }
+
+    /**
+     * Get the help text.
+     *
+     * @return The help text
+     */
+    @Nullable
+    public String getHelp() {
+      return help;
+    }
+
+    /**
+     * Set the help text.
+     *
+     * @param help The help text
+     * @return The builder
+     */
+    public Builder setHelp(@Nullable String help) {
+      this.help = help;
+      return this;
+    }
+
+    /**
+     * Get the usage override string.
+     *
+     * <p>If null, then usage information will be generated automatically.
+     *
+     * @return The usage override
+     */
+    @Nullable
+    public String getUsageOverride() {
+      return usageOverride;
+    }
+
+    /**
+     * Set the usage override string.
+     *
+     * <p>If null, then usage information will be generated automatically.
+     *
+     * @param usageOverride The usage override
+     * @return The builder
+     */
+    public Builder setUsageOverride(@Nullable String usageOverride) {
+      this.usageOverride = usageOverride;
+      return this;
+    }
+
+    /**
+     * Build an instance of the description.
+     *
+     * @return The description
+     */
+    public ImmutableDescription build() {
+      return new ImmutableDescription(
+          parameters, permissions, shortDescription, help, usageOverride);
+    }
+  }
 }

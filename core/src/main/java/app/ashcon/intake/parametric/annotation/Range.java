@@ -33,18 +33,17 @@ import java.lang.annotation.Target;
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 public @interface Range {
 
-    /**
-     * The minimum value that the number can be at, inclusive.
-     *
-     * @return The minimum value
-     */
-    double min() default Double.MIN_VALUE;
+  /**
+   * The minimum value that the number can be at, inclusive.
+   *
+   * @return The minimum value
+   */
+  double min() default Double.MIN_VALUE;
 
-    /**
-     * The maximum value that the number can be at, inclusive.
-     *
-     * @return The maximum value
-     */
-    double max() default Double.MAX_VALUE;
-
+  /**
+   * The maximum value that the number can be at, inclusive.
+   *
+   * @return The maximum value
+   */
+  double max() default Double.MAX_VALUE;
 }

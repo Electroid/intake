@@ -26,24 +26,23 @@ import java.util.List;
 
 class IntegerProvider implements Provider<Integer>, NumberProvider {
 
-    static final IntegerProvider INSTANCE = new IntegerProvider();
+  static final IntegerProvider INSTANCE = new IntegerProvider();
 
-    @Override
-    public String getName() {
-        return "integer";
+  @Override
+  public String getName() {
+    return "integer";
+  }
+
+  @Override
+  public Integer get(CommandArgs arguments, List<? extends Annotation> modifiers)
+      throws ArgumentException {
+    Double v = parseNumericInput(arguments.next());
+    if (v != null) {
+      int intValue = v.intValue();
+      validate(intValue, modifiers);
+      return intValue;
+    } else {
+      return null;
     }
-
-    @Override
-    public Integer get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
-        Double v = parseNumericInput(arguments.next());
-        if (v != null) {
-            int intValue = v.intValue();
-            validate(intValue, modifiers);
-            return intValue;
-        }
-        else {
-            return null;
-        }
-    }
-
+  }
 }

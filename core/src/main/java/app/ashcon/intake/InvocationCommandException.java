@@ -21,19 +21,17 @@ package app.ashcon.intake;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Thrown when invocation of a command fails, wrapping the exception that
- * is thrown.
+ * Thrown when invocation of a command fails, wrapping the exception that is thrown.
  *
- * <p>{@link #getCause()} will not be null.</p>
+ * <p>{@link #getCause()} will not be null.
  */
 public class InvocationCommandException extends Exception {
 
-    public InvocationCommandException(Throwable cause) {
-        super(checkNotNull(cause));
-    }
+  public InvocationCommandException(Throwable cause) {
+    super(checkNotNull(cause));
+  }
 
-    public InvocationCommandException(String message, Throwable cause) {
-        super(message, checkNotNull(cause));
-    }
-
+  public InvocationCommandException(String message, Throwable cause) {
+    super(message, checkNotNull(cause));
+  }
 }

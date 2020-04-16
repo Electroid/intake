@@ -29,60 +29,59 @@ import javax.annotation.Nullable;
 /**
  * An object that provides instances given a key and some arguments.
  *
- * <p>Providers do the heavy work of reading passed in arguments and
- * transforming them into Java objects.</p>
+ * <p>Providers do the heavy work of reading passed in arguments and transforming them into Java
+ * objects.
  */
 public interface Provider<T> {
 
-    /**
-     * Gets the human-readable name of the provider type.
-     *
-     * @return The name of the provider type.
-     */
-    default String getName() {
-        if (isProvided()) {
-            return "context";
-        }
-        else {
-            throw new UnsupportedOperationException("Must implement name for provider");
-        }
+  /**
+   * Gets the human-readable name of the provider type.
+   *
+   * @return The name of the provider type.
+   */
+  default String getName() {
+    if (isProvided()) {
+      return "context";
+    } else {
+      throw new UnsupportedOperationException("Must implement name for provider");
     }
+  }
 
-    /**
-     * Gets whether this provider does not actually consume values
-     * from the argument stack and instead generates them otherwise.
-     *
-     * @return Whether values are provided without use of the arguments
-     */
-    default boolean isProvided() {
-        return false;
-    }
+  /**
+   * Gets whether this provider does not actually consume values from the argument stack and instead
+   * generates them otherwise.
+   *
+   * @return Whether values are provided without use of the arguments
+   */
+  default boolean isProvided() {
+    return false;
+  }
 
-    /**
-     * Provide a value given the arguments.
-     *
-     * @param arguments The arguments
-     * @param modifiers The modifiers on the parameter
-     * @return The value provided
-     * @throws ArgumentException  If there is a problem with the argument
-     * @throws ProvisionException If there is a problem with the provider
-     */
-    @Nullable
-    T get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException, ProvisionException;
+  /**
+   * Provide a value given the arguments.
+   *
+   * @param arguments The arguments
+   * @param modifiers The modifiers on the parameter
+   * @return The value provided
+   * @throws ArgumentException If there is a problem with the argument
+   * @throws ProvisionException If there is a problem with the provider
+   */
+  @Nullable
+  T get(CommandArgs arguments, List<? extends Annotation> modifiers)
+      throws ArgumentException, ProvisionException;
 
-    /**
-     * Get a list of suggestions for the given parameter and user arguments.
-     *
-     * <p>If no suggestions could be enumerated, an empty list should
-     * be returned.</p>
-     *
-     * @param prefix    What the user has typed so far (may be an empty string)
-     * @param namespace The namespace under which this command's suggestions are being provided
-     * @param modifiers The modifiers on the parameter
-     * @return A list of suggestions
-     */
-    default List<String> getSuggestions(String prefix, Namespace namespace, List<? extends Annotation> modifiers) {
-        return ImmutableList.of();
-    }
-
+  /**
+   * Get a list of suggestions for the given parameter and user arguments.
+   *
+   * <p>If no suggestions could be enumerated, an empty list should be returned.
+   *
+   * @param prefix What the user has typed so far (may be an empty string)
+   * @param namespace The namespace under which this command's suggestions are being provided
+   * @param modifiers The modifiers on the parameter
+   * @return A list of suggestions
+   */
+  default List<String> getSuggestions(
+      String prefix, Namespace namespace, List<? extends Annotation> modifiers) {
+    return ImmutableList.of();
+  }
 }

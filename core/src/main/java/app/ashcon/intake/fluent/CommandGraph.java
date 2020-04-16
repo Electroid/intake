@@ -26,71 +26,70 @@ import java.util.function.Function;
 /**
  * A fluent interface to creating a command graph.
  *
- * <p>A command graph may have multiple commands, and multiple sub-commands below that,
- * and possibly below that.</p>
+ * <p>A command graph may have multiple commands, and multiple sub-commands below that, and possibly
+ * below that.
  */
 public class CommandGraph<T extends AbstractDispatcherNode> {
 
-    private T rootDispatcherNode;
-    private ParametricBuilder builder;
+  private T rootDispatcherNode;
+  private ParametricBuilder builder;
 
-    /**
-     * Constructor to be used by children that do not have either the
-     *    rootDispatcherNode or builder on initialization
-     *
-     * Note: The rootDispatcherNode and builder must still be initialized
-     */
-    protected CommandGraph() {}
+  /**
+   * Constructor to be used by children that do not have either the rootDispatcherNode or builder on
+   * initialization
+   *
+   * <p>Note: The rootDispatcherNode and builder must still be initialized
+   */
+  protected CommandGraph() {}
 
-    /**
-     * Create a new {@link CommandGraph} instance
-     *
-     * @param rootDispatcherNodeCreator the function responsible for creating a root dispatcher node.
-     *                                  The function's parameter is a reference to this CommandGraph class
-     */
-    public CommandGraph(ParametricBuilder builder, Function<CommandGraph, T> rootDispatcherNodeCreator) {
-        checkNotNull(builder, "builder can not be null");
-        checkNotNull(rootDispatcherNodeCreator, "root dispatcher can not be null");
+  /**
+   * Create a new {@link CommandGraph} instance
+   *
+   * @param rootDispatcherNodeCreator the function responsible for creating a root dispatcher node.
+   *     The function's parameter is a reference to this CommandGraph class
+   */
+  public CommandGraph(
+      ParametricBuilder builder, Function<CommandGraph, T> rootDispatcherNodeCreator) {
+    checkNotNull(builder, "builder can not be null");
+    checkNotNull(rootDispatcherNodeCreator, "root dispatcher can not be null");
 
-        this.builder = builder;
-        this.rootDispatcherNode = rootDispatcherNodeCreator.apply(this);
-    }
+    this.builder = builder;
+    this.rootDispatcherNode = rootDispatcherNodeCreator.apply(this);
+  }
 
-    /**
-     * Set the {@link T}
-     *
-     * @param rootDispatcherNode the root dispatcher node
-     */
-    protected void setRootDispatcherNode(T rootDispatcherNode) {
-        this.rootDispatcherNode = rootDispatcherNode;
-    }
+  /**
+   * Get the {@link T}.
+   *
+   * @return the root dispatcher node, or null.
+   */
+  public T getRootDispatcherNode() {
+    return rootDispatcherNode;
+  }
 
-    /**
-     * Set the {@link ParametricBuilder}
-     *
-     * @param builder the parametric builder
-     */
-    protected void setBuilder(ParametricBuilder builder) {
-        this.builder = builder;
-    }
+  /**
+   * Set the {@link T}
+   *
+   * @param rootDispatcherNode the root dispatcher node
+   */
+  protected void setRootDispatcherNode(T rootDispatcherNode) {
+    this.rootDispatcherNode = rootDispatcherNode;
+  }
 
-    /**
-     * Get the {@link T}.
-     *
-     * @return the root dispatcher node, or null.
-     */
-    public T getRootDispatcherNode() {
-        return rootDispatcherNode;
-    }
+  /**
+   * Get the {@link ParametricBuilder}.
+   *
+   * @return the builder, or null.
+   */
+  public ParametricBuilder getBuilder() {
+    return builder;
+  }
 
-    /**
-     * Get the {@link ParametricBuilder}.
-     *
-     * @return the builder, or null.
-     */
-    public ParametricBuilder getBuilder() {
-        return builder;
-    }
-
-
+  /**
+   * Set the {@link ParametricBuilder}
+   *
+   * @param builder the parametric builder
+   */
+  protected void setBuilder(ParametricBuilder builder) {
+    this.builder = builder;
+  }
 }

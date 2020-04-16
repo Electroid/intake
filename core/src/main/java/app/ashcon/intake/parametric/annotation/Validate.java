@@ -34,12 +34,11 @@ import java.util.regex.Pattern;
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 public @interface Validate {
 
-    /**
-     * An optional regular expression that must match the string.
-     *
-     * @return The pattern
-     * @see Pattern
-     */
-    String regex() default "";
-
+  /**
+   * An optional regular expression that must match the string.
+   *
+   * @return The pattern
+   * @see Pattern
+   */
+  String regex() default "";
 }

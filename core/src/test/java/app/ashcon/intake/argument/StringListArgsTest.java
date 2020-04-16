@@ -23,8 +23,8 @@ import java.util.List;
 
 public class StringListArgsTest extends AbstractCommandArgsTest {
 
-    @Override
-    protected CommandArgs createCommandArgs(List<String> args) {
-        return new StringListArgs(args, ImmutableMap.<Character, String>of(), new Namespace());
-    }
+  @Override
+  protected CommandArgs createCommandArgs(List<String> args) {
+    return new StringListArgs(args, ImmutableMap.<Character, String>of(), new Namespace());
+  }
 }

@@ -26,24 +26,23 @@ import java.util.List;
 
 class ShortProvider implements Provider<Short>, NumberProvider {
 
-    static final ShortProvider INSTANCE = new ShortProvider();
+  static final ShortProvider INSTANCE = new ShortProvider();
 
-    @Override
-    public String getName() {
-        return "integer";
+  @Override
+  public String getName() {
+    return "integer";
+  }
+
+  @Override
+  public Short get(CommandArgs arguments, List<? extends Annotation> modifiers)
+      throws ArgumentException {
+    Double v = parseNumericInput(arguments.next());
+    if (v != null) {
+      short shortValue = v.shortValue();
+      validate(shortValue, modifiers);
+      return shortValue;
+    } else {
+      return null;
     }
-
-    @Override
-    public Short get(CommandArgs arguments, List<? extends Annotation> modifiers) throws ArgumentException {
-        Double v = parseNumericInput(arguments.next());
-        if (v != null) {
-            short shortValue = v.shortValue();
-            validate(shortValue, modifiers);
-            return shortValue;
-        }
-        else {
-            return null;
-        }
-    }
-
+  }
 }

@@ -30,43 +30,48 @@ import javax.annotation.Nullable;
 
 class InternalBinderBuilder<T> implements BindingBuilder<T> {
 
-    private final BindingList bindings;
-    private Key<T> key;
+  private final BindingList bindings;
+  private Key<T> key;
 
-    public InternalBinderBuilder(BindingList bindings, Key<T> key) {
-        checkNotNull(bindings, "bindings");
-        checkNotNull(key, "key");
-        this.bindings = bindings;
-        this.key = key;
+  public InternalBinderBuilder(BindingList bindings, Key<T> key) {
+    checkNotNull(bindings, "bindings");
+    checkNotNull(key, "key");
+    this.bindings = bindings;
+    this.key = key;
+  }
+
+  @Override
+  public BindingBuilder<T> annotatedWith(@Nullable Class<? extends Annotation> annotation) {
+    if (annotation != null) {
+      if (annotation.getAnnotation(Classifier.class) == null) {
+        throw new IllegalArgumentException(
+            "The annotation type "
+                + annotation.getName()
+                + " must be marked with @"
+                + Classifier.class.getName()
+                + " to be used as a classifier");
+      }
+
+      if (annotation.getAnnotation(Retention.class) == null) {
+        throw new IllegalArgumentException(
+            "The annotation type "
+                + annotation.getName()
+                + " must be marked with @"
+                + Retention.class.getName()
+                + " to appear at runtime");
+      }
     }
+    key = key.setClassifier(annotation);
+    return this;
+  }
 
-    @Override
-    public BindingBuilder<T> annotatedWith(@Nullable Class<? extends Annotation> annotation) {
-        if (annotation != null) {
-            if (annotation.getAnnotation(Classifier.class) == null) {
-                throw new IllegalArgumentException(
-                    "The annotation type " + annotation.getName() + " must be marked with @" + Classifier.class.getName()
-                    + " to be used as a classifier");
-            }
+  @Override
+  public void toProvider(Provider<T> provider) {
+    bindings.addBinding(key, provider);
+  }
 
-            if (annotation.getAnnotation(Retention.class) == null) {
-                throw new IllegalArgumentException(
-                    "The annotation type " + annotation.getName() + " must be marked with @" + Retention.class.getName()
-                    + " to appear at runtime");
-            }
-        }
-        key = key.setClassifier(annotation);
-        return this;
-    }
-
-    @Override
-    public void toProvider(Provider<T> provider) {
-        bindings.addBinding(key, provider);
-    }
-
-    @Override
-    public void toInstance(T instance) {
-        toProvider(new ConstantProvider<T>(instance));
-    }
-
+  @Override
+  public void toInstance(T instance) {
+    toProvider(new ConstantProvider<T>(instance));
+  }
 }

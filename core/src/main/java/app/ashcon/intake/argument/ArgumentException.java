@@ -19,9 +19,8 @@
 package app.ashcon.intake.argument;
 
 /**
- * Argument exceptions occur when there is a problem with user-provided
- * arguments, whether it be because of incorrect arguments, missing arguments,
- * or excess arguments.
+ * Argument exceptions occur when there is a problem with user-provided arguments, whether it be
+ * because of incorrect arguments, missing arguments, or excess arguments.
  *
  * @see ArgumentParseException
  * @see MissingArgumentException
@@ -29,20 +28,19 @@ package app.ashcon.intake.argument;
  */
 public class ArgumentException extends Exception {
 
-    public ArgumentException() {
-        super();
-    }
+  public ArgumentException() {
+    super();
+  }
 
-    public ArgumentException(String message) {
-        super(message);
-    }
+  public ArgumentException(String message) {
+    super(message);
+  }
 
-    public ArgumentException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  public ArgumentException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    public ArgumentException(Throwable cause) {
-        super(cause);
-    }
-
+  public ArgumentException(Throwable cause) {
+    super(cause);
+  }
 }
