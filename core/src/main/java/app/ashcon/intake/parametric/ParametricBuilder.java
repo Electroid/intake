@@ -35,7 +35,6 @@ import com.google.common.collect.Lists;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Keeps a mapping of types to bindings and generates commands from classes with appropriate
@@ -49,7 +48,8 @@ public class ParametricBuilder {
   private Authorizer authorizer = new NullAuthorizer();
   private CommandCompleter defaultCompleter = new NullCompleter();
   private CommandExecutor commandExecutor =
-      new CommandExecutorWrapper(Executors.newSingleThreadExecutor());
+      new CommandExecutorWrapper(
+          Runnable::run); // Runs commands on the same thread they were submitted on
 
   public ParametricBuilder(Injector injector) {
     this.injector = injector;

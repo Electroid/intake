@@ -22,21 +22,41 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import app.ashcon.intake.argument.CommandArgs;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 
 /** Wraps an ExecutorService into a CommandExecutor. */
 public class CommandExecutorWrapper implements CommandExecutor {
 
-  private final ExecutorService executorService;
+  private final Executor executor;
 
-  public CommandExecutorWrapper(ExecutorService executorService) {
-    checkNotNull(executorService, "executorService");
-    this.executorService = executorService;
+  public CommandExecutorWrapper(Executor executor) {
+    checkNotNull(executor, "executor");
+    this.executor = executor;
   }
 
   @Override
-  public <T> Future<T> submit(Callable<T> task, CommandArgs args) {
-    return executorService.submit(task);
+  public <T> Future<T> submit(Callable<T> callable, CommandArgs args) {
+    Task<T> task = new Task<>(callable);
+    executor.execute(task);
+    return task;
+  }
+
+  private static class Task<V> extends CompletableFuture<V> implements Runnable {
+    private final Callable<V> task;
+
+    private Task(Callable<V> task) {
+      this.task = checkNotNull(task, "task");
+    }
+
+    @Override
+    public void run() {
+      try {
+        complete(task.call());
+      } catch (Throwable t) {
+        completeExceptionally(t);
+      }
+    }
   }
 }
