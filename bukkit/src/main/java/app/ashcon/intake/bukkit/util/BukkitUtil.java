@@ -25,7 +25,7 @@ public class BukkitUtil {
         return (Player)
             Bukkit.class
                 .getDeclaredMethod("getPlayer", String.class, CommandSender.class)
-                .invoke(name, viewer);
+                .invoke(null, name, viewer);
       } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException error) {
         canSearchByViewer = false;
       }
