@@ -51,6 +51,7 @@ public class DynamicPlayerProvider implements BukkitProvider<Player> {
   public List<String> getSuggestions(
       String prefix, CommandSender sender, Namespace namespace, List<? extends Annotation> mods) {
     return Bukkit.getOnlinePlayers().stream()
+        .filter(bukkit -> sender instanceof Player ? ((Player) sender).canSee(bukkit) : true)
         .map(player -> BukkitUtil.getPlayerName(player, sender))
         .filter(name -> name.toLowerCase().startsWith(prefix.toLowerCase()))
         .sorted()
