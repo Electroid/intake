@@ -348,9 +348,6 @@ public final class ArgumentParser {
                     : OptionType.valueFlag(((Switch) annotation).value());
 
           } else if (annotation instanceof Default || annotation instanceof Nullable) {
-            if (seenOptionalParameter || optionType != null) {
-              throw exceptionSupplier.get();
-            }
 
             seenOptionalParameter = true;
 
