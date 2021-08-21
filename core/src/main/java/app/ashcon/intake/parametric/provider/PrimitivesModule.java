@@ -27,18 +27,18 @@ public final class PrimitivesModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(Boolean.class).toProvider(BooleanProvider.INSTANCE);
-    bind(boolean.class).toProvider(BooleanProvider.INSTANCE);
-    bind(Integer.class).toProvider(IntegerProvider.INSTANCE);
-    bind(int.class).toProvider(IntegerProvider.INSTANCE);
-    bind(Short.class).toProvider(ShortProvider.INSTANCE);
-    bind(short.class).toProvider(ShortProvider.INSTANCE);
-    bind(Double.class).toProvider(DoubleProvider.INSTANCE);
-    bind(double.class).toProvider(DoubleProvider.INSTANCE);
-    bind(Float.class).toProvider(FloatProvider.INSTANCE);
-    bind(float.class).toProvider(FloatProvider.INSTANCE);
-    bind(String.class).toProvider(StringProvider.INSTANCE);
-    bind(String.class).annotatedWith(Text.class).toProvider(TextProvider.INSTANCE);
-    bind(Duration.class).toProvider(DurationProvider.INSTANCE);
+    bind(Boolean.class).overridable().toProvider(BooleanProvider.INSTANCE);
+    bind(boolean.class).overridable().toProvider(BooleanProvider.INSTANCE);
+    bind(Integer.class).overridable().toProvider(IntegerProvider.INSTANCE);
+    bind(int.class).overridable().toProvider(IntegerProvider.INSTANCE);
+    bind(Short.class).overridable().toProvider(ShortProvider.INSTANCE);
+    bind(short.class).overridable().toProvider(ShortProvider.INSTANCE);
+    bind(Double.class).overridable().toProvider(DoubleProvider.INSTANCE);
+    bind(double.class).overridable().toProvider(DoubleProvider.INSTANCE);
+    bind(Float.class).overridable().toProvider(FloatProvider.INSTANCE);
+    bind(float.class).overridable().toProvider(FloatProvider.INSTANCE);
+    bind(String.class).overridable().toProvider(StringProvider.INSTANCE);
+    bind(String.class).overridable().annotatedWith(Text.class).toProvider(TextProvider.INSTANCE);
+    bind(Duration.class).overridable().toProvider(DurationProvider.INSTANCE);
   }
 }

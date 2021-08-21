@@ -16,9 +16,12 @@ public class BukkitModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(CommandSender.class).toProvider(new CommandSenderProvider());
-    bind(Player.class).annotatedWith(Sender.class).toProvider(new ProvidedPlayerProvider());
-    bind(Player.class).toProvider(new DynamicPlayerProvider());
-    bind(World.class).toProvider(new WorldProvider());
+    bind(CommandSender.class).overridable().toProvider(new CommandSenderProvider());
+    bind(Player.class)
+        .annotatedWith(Sender.class)
+        .overridable()
+        .toProvider(new ProvidedPlayerProvider());
+    bind(Player.class).overridable().toProvider(new DynamicPlayerProvider());
+    bind(World.class).overridable().toProvider(new WorldProvider());
   }
 }

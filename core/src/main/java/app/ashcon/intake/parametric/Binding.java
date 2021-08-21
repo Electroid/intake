@@ -33,6 +33,13 @@ public interface Binding<T> {
   Key<T> getKey();
 
   /**
+   * Whether this binding is overridable.
+   *
+   * @return Whether it is overridable
+   */
+  boolean isOverridable();
+
+  /**
    * Get the provider
    *
    * @return The provider
