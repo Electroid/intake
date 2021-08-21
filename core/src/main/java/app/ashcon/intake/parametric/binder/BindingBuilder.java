@@ -37,6 +37,13 @@ public interface BindingBuilder<T> {
   BindingBuilder<T> annotatedWith(Class<? extends Annotation> annotation);
 
   /**
+   * Whether this binding can be overriden.
+   *
+   * @return The same class
+   */
+  BindingBuilder<T> overridable();
+
+  /**
    * Creates a binding that is provided by the given provider class.
    *
    * @param provider The provider

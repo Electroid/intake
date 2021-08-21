@@ -29,6 +29,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.Sets;
 import java.util.Collection;
+import java.util.Comparator;
 import javax.annotation.Nullable;
 
 class BindingList {
@@ -37,23 +38,26 @@ class BindingList {
       Multimaps.newMultimap(
           Maps.<String, Collection<BindingEntry<?>>>newHashMap(), new CollectionSupplier());
 
-  public <T> void addBinding(Key<T> key, Provider<T> provider) {
+  public <T> void addBinding(Key<T> key, boolean overridable, Provider<T> provider) {
     checkNotNull(key, "key");
     checkNotNull(provider, "provider");
-    providers.put(key.getType().getTypeName(), new BindingEntry<T>(key, provider));
+
+    providers.put(key.getType().getTypeName(), new BindingEntry<T>(key, overridable, provider));
   }
 
   @SuppressWarnings({"rawtypes", "unchecked"})
   @Nullable
   public <T> Binding<T> getBinding(Key<T> key) {
     checkNotNull(key, "key");
+    BindingEntry closest = null;
     for (BindingEntry binding : providers.get(key.getType().getTypeName())) {
       if (binding.getKey().matches(key)) {
-        return (Binding<T>) binding;
+        if (closest == null || (closest.isOverridable() && !binding.isOverridable()))
+          closest = binding;
       }
     }
 
-    return null;
+    return (Binding<T>) closest;
   }
 
   private static class CollectionSupplier implements Supplier<Collection<BindingEntry<?>>> {
@@ -67,10 +71,12 @@ class BindingList {
   private static final class BindingEntry<T> implements Binding<T>, Comparable<BindingEntry<?>> {
 
     private final Key<T> key;
+    private final boolean overridable;
     private final Provider<T> provider;
 
-    private BindingEntry(Key<T> key, Provider<T> provider) {
+    private BindingEntry(Key<T> key, boolean overridable, Provider<T> provider) {
       this.key = key;
+      this.overridable = overridable;
       this.provider = provider;
     }
 
@@ -80,18 +86,32 @@ class BindingList {
     }
 
     @Override
+    public boolean isOverridable() {
+      return overridable;
+    }
+
+    @Override
     public Provider<T> getProvider() {
       return provider;
     }
 
     @Override
     public int compareTo(BindingEntry<?> o) {
-      return key.compareTo(o.key);
+      return Comparator.comparing(BindingEntry<?>::getKey)
+          .thenComparing(BindingEntry::isOverridable)
+          .compare(this, o);
     }
 
     @Override
     public String toString() {
-      return "BindingEntry{" + "key=" + key + ", provider=" + provider + '}';
+      return "BindingEntry{"
+          + "key="
+          + key
+          + ", overridable="
+          + overridable
+          + ", provider="
+          + provider
+          + '}';
     }
   }
 }

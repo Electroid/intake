@@ -31,6 +31,7 @@ import javax.annotation.Nullable;
 class InternalBinderBuilder<T> implements BindingBuilder<T> {
 
   private final BindingList bindings;
+  private boolean overridable;
   private Key<T> key;
 
   public InternalBinderBuilder(BindingList bindings, Key<T> key) {
@@ -66,8 +67,14 @@ class InternalBinderBuilder<T> implements BindingBuilder<T> {
   }
 
   @Override
+  public BindingBuilder<T> overridable() {
+    this.overridable = true;
+    return this;
+  }
+
+  @Override
   public void toProvider(Provider<T> provider) {
-    bindings.addBinding(key, provider);
+    bindings.addBinding(key, overridable, provider);
   }
 
   @Override
