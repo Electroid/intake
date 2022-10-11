@@ -1,4 +1,4 @@
-# Intake [![Build Status](https://travis-ci.org/Electroid/intake.png?branch=master)](https://travis-ci.org/Electroid/intake)
+# Intake
 
 Intake is a command parsing library that can be implemented along various platforms, such as Minecraft.
 
@@ -56,7 +56,7 @@ Release and snapshot artifacts are automatically deployed to my Nexus repo. Incl
     <groupId>app.ashcon.intake</groupId>
     <!-- Use "intake-core" if you don't want Minecraft -->
     <artifactId>intake-bukkit</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.3-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```
