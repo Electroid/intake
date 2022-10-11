@@ -33,6 +33,7 @@ import app.ashcon.intake.argument.Namespace;
 import app.ashcon.intake.argument.UnusedArgumentException;
 import app.ashcon.intake.parametric.annotation.Classifier;
 import app.ashcon.intake.parametric.annotation.Default;
+import app.ashcon.intake.parametric.annotation.Maybe;
 import app.ashcon.intake.parametric.annotation.Switch;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
@@ -347,7 +348,8 @@ public final class ArgumentParser {
                     : OptionType.valueFlag(((Switch) annotation).value());
 
           } else if (annotation instanceof Default
-              || annotation.getClass().getSimpleName().equals("Nullable")) {
+              || annotation instanceof Maybe
+              || annotation.annotationType().getSimpleName().equals("Nullable")) {
 
             seenOptionalParameter = true;
 
