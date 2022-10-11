@@ -1,0 +1,29 @@
+name: deploy
+on:
+  push:
+    branches:
+      - main
+  repository_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    - name: setup
+      uses: actions/setup-java@v3
+      with:
+        java-version: 8
+        distribution: adopt
+    - name: cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - name: nexus
+      run: mvn deploy -s settings.xml
+      env:
+        NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+        NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}

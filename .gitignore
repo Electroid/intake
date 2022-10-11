@@ -135,3 +135,6 @@ hs_err_pid*
 
 ### Mac OS ###
 .DS_Store
+
+### Visual Studio Code ###
+.vscode

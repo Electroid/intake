@@ -19,7 +19,7 @@
 package app.ashcon.intake.argument;
 
 import app.ashcon.intake.Parameter;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** Thrown when an argument has been provided that is incorrect. */
 public class ArgumentParseException extends ArgumentException {

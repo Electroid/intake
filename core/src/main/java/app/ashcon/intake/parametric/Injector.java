@@ -22,7 +22,7 @@ import app.ashcon.intake.argument.ArgumentException;
 import app.ashcon.intake.argument.CommandArgs;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * An injector knows a list of "bindings" that map types to a provider.

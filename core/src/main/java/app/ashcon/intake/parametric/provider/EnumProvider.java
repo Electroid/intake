@@ -30,7 +30,7 @@ import com.google.common.collect.Lists;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Searches an enum for a near-matching value.

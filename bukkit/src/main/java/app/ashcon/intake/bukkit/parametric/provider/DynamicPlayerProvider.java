@@ -10,10 +10,10 @@ import app.ashcon.intake.parametric.ProvisionException;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 /** Provides {@link Player}s from a name query. */
 public class DynamicPlayerProvider implements BukkitProvider<Player> {

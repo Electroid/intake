@@ -23,7 +23,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import app.ashcon.intake.argument.Arguments;
 import app.ashcon.intake.argument.CommandArgs;
 import com.google.common.collect.ImmutableList;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** Defines the type of parameter, whether it is positional, a flag, optional, or required. */
 public abstract class OptionType {

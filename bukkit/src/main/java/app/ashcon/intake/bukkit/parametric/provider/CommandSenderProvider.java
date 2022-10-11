@@ -4,8 +4,8 @@ import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.parametric.ProvisionException;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import javax.annotation.Nullable;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.Nullable;
 
 /** Provides the {@link CommandSender} of the command. */
 public class CommandSenderProvider implements BukkitProvider<CommandSender> {

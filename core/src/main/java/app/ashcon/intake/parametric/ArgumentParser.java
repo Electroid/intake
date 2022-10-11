@@ -52,7 +52,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
 
 /**
  * An argument parser takes in a list of tokenized arguments and parses them, converting them into
@@ -347,7 +346,8 @@ public final class ArgumentParser {
                     ? OptionType.flag(((Switch) annotation).value())
                     : OptionType.valueFlag(((Switch) annotation).value());
 
-          } else if (annotation instanceof Default || annotation instanceof Nullable) {
+          } else if (annotation instanceof Default
+              || annotation.getClass().getSimpleName().equals("Nullable")) {
 
             seenOptionalParameter = true;
 

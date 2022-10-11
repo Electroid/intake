@@ -19,7 +19,7 @@
 package app.ashcon.intake.argument;
 
 import app.ashcon.intake.Parameter;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Thrown when the user has not provided a sufficient number of arguments, which may include

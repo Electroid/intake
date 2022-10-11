@@ -23,7 +23,7 @@ import app.ashcon.intake.argument.CommandArgs;
 import app.ashcon.intake.argument.MissingArgumentException;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 class TextProvider extends StringProvider {
 

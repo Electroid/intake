@@ -23,7 +23,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.collect.ImmutableList;
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** An immutable implementation of {@link Parameter}. */
 public final class ImmutableParameter implements Parameter {

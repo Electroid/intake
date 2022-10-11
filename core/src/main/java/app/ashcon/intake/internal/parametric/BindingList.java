@@ -30,7 +30,7 @@ import com.google.common.collect.Multimaps;
 import com.google.common.collect.Sets;
 import java.util.Collection;
 import java.util.Comparator;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 class BindingList {
 

@@ -24,7 +24,7 @@ import app.ashcon.intake.parametric.Provider;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 class ConstantProvider<T> implements Provider<T> {
 

@@ -26,7 +26,7 @@ import app.ashcon.intake.parametric.annotation.Classifier;
 import app.ashcon.intake.parametric.binder.BindingBuilder;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 class InternalBinderBuilder<T> implements BindingBuilder<T> {
 

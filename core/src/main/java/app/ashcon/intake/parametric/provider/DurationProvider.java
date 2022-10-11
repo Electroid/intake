@@ -25,7 +25,7 @@ import java.lang.annotation.Annotation;
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 class DurationProvider implements Provider<Duration> {
 

@@ -31,7 +31,7 @@ import app.ashcon.intake.parametric.ProvisionException;
 import app.ashcon.intake.parametric.provider.DefaultModule;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class InternalInjector implements Injector {
 

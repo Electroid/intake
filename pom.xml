@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>app.ashcon.intake</groupId>
     <artifactId>intake-parent</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>core</module>
@@ -19,13 +19,9 @@
     </repositories>
     <distributionManagement>
         <repository>
-            <id>ashcon-releases</id>
-            <url>https://repo.ashcon.app/nexus/content/repositories/releases</url>
+            <id>ashcon.app</id>
+            <url>https://repo.ashcon.app/content/repositories/snapshots</url>
         </repository>
-        <snapshotRepository>
-            <id>ashcon-snapshots</id>
-            <url>https://repo.ashcon.app/nexus/content/repositories/snapshots</url>
-        </snapshotRepository>
     </distributionManagement>
     <dependencies>
         <dependency>
@@ -35,9 +31,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
+            <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>3.0.0</version>
+            <version>23.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

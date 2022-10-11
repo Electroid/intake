@@ -22,7 +22,7 @@ import app.ashcon.intake.argument.ArgumentParseException;
 import app.ashcon.intake.parametric.annotation.Range;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 interface NumberProvider {
 

@@ -24,7 +24,7 @@ import app.ashcon.intake.argument.Namespace;
 import com.google.common.collect.ImmutableList;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * An object that provides instances given a key and some arguments.

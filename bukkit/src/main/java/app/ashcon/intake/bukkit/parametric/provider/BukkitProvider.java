@@ -8,8 +8,8 @@ import app.ashcon.intake.parametric.ProvisionException;
 import com.google.common.collect.ImmutableList;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import javax.annotation.Nullable;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.Nullable;
 
 /** A {@link Provider} where the {@link CommandSender} is always present. */
 public interface BukkitProvider<T> extends Provider<T> {

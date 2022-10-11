@@ -21,7 +21,7 @@ package app.ashcon.intake.util;
 import app.ashcon.intake.CommandMapping;
 import java.util.Comparator;
 import java.util.regex.Pattern;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Compares the primary aliases of two {@link CommandMapping} using {@link

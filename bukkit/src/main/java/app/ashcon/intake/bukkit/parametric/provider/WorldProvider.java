@@ -6,9 +6,9 @@ import app.ashcon.intake.bukkit.util.BukkitUtil;
 import app.ashcon.intake.parametric.ProvisionException;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import javax.annotation.Nullable;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.Nullable;
 
 /** Provides the {@link World} of the {@link CommandSender}. */
 public class WorldProvider implements BukkitProvider<World> {

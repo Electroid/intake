@@ -19,7 +19,7 @@
 package app.ashcon.intake;
 
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A description of a command, providing information on the command's parameters, a short

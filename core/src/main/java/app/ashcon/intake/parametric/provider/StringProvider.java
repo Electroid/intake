@@ -25,7 +25,7 @@ import app.ashcon.intake.parametric.Provider;
 import app.ashcon.intake.parametric.annotation.Validate;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 class StringProvider implements Provider<String> {
 

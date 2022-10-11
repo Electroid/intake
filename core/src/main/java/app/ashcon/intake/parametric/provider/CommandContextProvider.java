@@ -25,7 +25,7 @@ import app.ashcon.intake.parametric.Provider;
 import app.ashcon.intake.parametric.ProvisionException;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** Provides the context. */
 public final class CommandContextProvider implements Provider<CommandContext> {

@@ -22,7 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /** Represents a parameter that a binding can provide a value for. */
 public final class Key<T> implements Comparable<Key<?>> {

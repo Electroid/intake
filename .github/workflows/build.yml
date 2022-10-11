@@ -1,0 +1,24 @@
+name: build
+on:
+  pull_request:
+  repository_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    - name: setup
+      uses: actions/setup-java@v3
+      with:
+        java-version: 8
+        distribution: adopt
+    - name: cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - name: build
+      run: mvn install
